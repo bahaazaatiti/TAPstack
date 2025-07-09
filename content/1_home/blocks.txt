@@ -2,7 +2,7 @@ Title: home
 
 ----
 
-Blocks: [{"content":{"logo":"hello","links":[],"style":"light"},"id":"aec3e95f-3f06-42b6-80df-491cb087e691","isHidden":false,"type":"navbar"},{"content":{"title":"hello","subtitle":"test","buttontext":"bottom text","buttonurl":"http://localhost:8888/panel/pages/home","buttonexternal":"false","style":"default"},"id":"3200a6bf-4ec4-478e-9bcc-28a712010470","isHidden":false,"type":"hero"}]
+Blocks: [{"content":{"logo":"hello","links":[],"style":"light"},"id":"aec3e95f-3f06-42b6-80df-491cb087e691","isHidden":false,"type":"navbar"},{"content":{"title":"hello","subtitle":"test","buttontext":"bottom text","buttonurl":"http://localhost:8888/panel/pages/home","buttonexternal":"false","style":"dark"},"id":"3200a6bf-4ec4-478e-9bcc-28a712010470","isHidden":false,"type":"hero"}]
 
 ----
 
