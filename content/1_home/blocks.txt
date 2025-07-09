@@ -1,0 +1,9 @@
+Title: home
+
+----
+
+Blocks: [{"content":{"logo":"hello","links":[],"style":"default"},"id":"a96cb333-be15-4139-9b53-720882d7bf91","isHidden":false,"type":"navbar"},{"content":{"title":"asdf","subtitle":"adsf","buttontext":"asdf","buttonurl":"","buttonexternal":"false","style":"default"},"id":"8680821c-3648-4b4e-8e8c-e8647aa7bf7d","isHidden":false,"type":"hero"}]
+
+----
+
+Uuid: fFy5lQ5LnHgQhWLw

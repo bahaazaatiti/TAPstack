@@ -1,0 +1,45 @@
+.k-block-type-navbar .navbar-preview {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 1rem;
+  background: #f9f9f9;
+}
+
+.k-block-type-navbar .navbar-preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.k-block-type-navbar .navbar-preview-logo {
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+.k-block-type-navbar .navbar-preview-style {
+  background: #eee;
+  padding: 0.25rem 0.5rem;
+  border-radius: 3px;
+  font-size: 0.8em;
+  text-transform: capitalize;
+}
+
+.k-block-type-navbar .navbar-preview-links {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.k-block-type-navbar .navbar-preview-link {
+  background: #007acc;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 3px;
+  font-size: 0.8em;
+}
+
+.k-block-type-navbar .navbar-preview-empty {
+  color: #666;
+  font-style: italic;
+}

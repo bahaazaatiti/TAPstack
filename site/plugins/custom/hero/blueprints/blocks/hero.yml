@@ -1,0 +1,30 @@
+name: Hero Section
+icon: star
+fields:
+  title:
+    label: Title
+    type: text
+    placeholder: Your Hero Title
+  subtitle:
+    label: Subtitle
+    type: textarea
+    placeholder: Your hero subtitle goes here
+  buttonText:
+    label: Button Text
+    type: text
+    placeholder: Get Started
+  buttonUrl:
+    label: Button URL
+    type: url
+  buttonExternal:
+    label: External Link
+    type: toggle
+    default: false
+  style:
+    label: Style
+    type: select
+    options:
+      default: Default (Gradient)
+      dark: Dark
+      light: Light
+    default: default

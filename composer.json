@@ -1,0 +1,15 @@
+{
+  "name": "arnoson/kirby-vite-basic-kit",
+  "description": "A simple Kirby CMS + Vite starter kit",
+  "type": "project",
+  "license": "MIT",
+  "require": {
+    "getkirby/cms": "^4.0.0",
+    "arnoson/kirby-vite": "^5.0.0"
+  },
+  "config": {
+    "allow-plugins": {
+      "getkirby/composer-installer": true
+    }
+  }
+}

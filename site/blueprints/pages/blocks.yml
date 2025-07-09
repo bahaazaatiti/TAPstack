@@ -1,0 +1,8 @@
+title: Blocks Page
+
+fields:
+  blocks:
+    type: blocks
+    fieldsets:
+      - navbar
+      - hero
