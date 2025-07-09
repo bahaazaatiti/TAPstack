@@ -1,30 +1,30 @@
 import React from 'react'
 
 interface HeroProps {
-  title?: string
-  subtitle?: string
-  buttonText?: string
-  buttonUrl?: string
-  buttonExternal?: boolean
-  style?: 'default' | 'dark' | 'light'
+  [key: string]: any; // Or use a more specific type
 }
 
-const Hero: React.FC<HeroProps> = ({
-  title = 'Your Hero Title',
-  subtitle = 'Your hero subtitle',
-  buttonText = '',
-  buttonUrl = '',
-  buttonExternal = false,
-  style = 'default'
-}) => {
+const Hero: React.FC<HeroProps> = (props) => {
+  const {
+    title = 'Your Hero Title',
+    subtitle = 'Your hero subtitle',
+    buttonText = '',
+    buttonUrl = '',
+    buttonExternal = false,
+    style = 'default'
+  } = props;
   const getHeroClasses = () => {
     const baseClasses = 'hero min-h-[60vh] flex items-center'
     const styleClasses = {
       default: 'bg-gradient-to-r from-blue-600 to-purple-600 text-white',
       dark: 'bg-gray-900 text-white',
       light: 'bg-gray-50 text-gray-900'
-    }
-    return `${baseClasses} ${styleClasses[style] || styleClasses.default}`
+    } as const
+    
+    type StyleKey = keyof typeof styleClasses
+    const validStyle = (style as StyleKey) in styleClasses ? (style as StyleKey) : 'default'
+    
+    return `${baseClasses} ${styleClasses[validStyle]}`
   }
 
   return (

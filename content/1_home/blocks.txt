@@ -2,7 +2,7 @@ Title: home
 
 ----
 
-Blocks: [{"content":{"logo":"hello","links":[],"style":"default"},"id":"a96cb333-be15-4139-9b53-720882d7bf91","isHidden":false,"type":"navbar"},{"content":{"title":"asdf","subtitle":"adsf","buttontext":"asdf","buttonurl":"","buttonexternal":"false","style":"default"},"id":"8680821c-3648-4b4e-8e8c-e8647aa7bf7d","isHidden":false,"type":"hero"}]
+Blocks: [{"content":{"logo":"hello","links":[],"style":"light"},"id":"aec3e95f-3f06-42b6-80df-491cb087e691","isHidden":false,"type":"navbar"},{"content":{"title":"hello","subtitle":"test","buttontext":"bottom text","buttonurl":"http://localhost:8888/panel/pages/home","buttonexternal":"false","style":"default"},"id":"3200a6bf-4ec4-478e-9bcc-28a712010470","isHidden":false,"type":"hero"}]
 
 ----
 
