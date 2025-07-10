@@ -12,7 +12,7 @@ kirby
 vendor
 
 site/plugins/*
-!site/plugins/custom
+!site/plugins/custom/
 
 /public/media/*
 !/public/media/index.html

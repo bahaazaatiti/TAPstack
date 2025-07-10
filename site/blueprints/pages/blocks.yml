@@ -6,3 +6,4 @@ fields:
     fieldsets:
       - navbar
       - hero
+      - navbar04

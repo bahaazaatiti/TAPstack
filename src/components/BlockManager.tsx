@@ -3,11 +3,13 @@ import { createRoot } from 'react-dom/client'
 // TODO: change this to a dynamic import if needed
 import Navbar from './Navbar'
 import Hero from './Hero'
+import Navbar04 from './Navbar04'
 
 // Block registry - add new blocks here
 const blockComponents: Record<string, ComponentType<any>> = {
   navbar: Navbar,
   hero: Hero,
+  navbar04: Navbar04,
   // Add more blocks here as you create them
   // TODO: Consider using dynamic imports for better performance
 }

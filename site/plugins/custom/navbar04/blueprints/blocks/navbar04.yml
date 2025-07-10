@@ -1,0 +1,67 @@
+name: Navbar 04 (Fixed Top)
+icon: menu
+fields:
+  logo:
+    label: Logo Image
+    type: files
+    multiple: false
+    accept:
+      - image/*
+    help: Upload a logo image (optional)
+  logotext:
+    label: Logo Text
+    type: text
+    placeholder: Your Brand
+    default: Logo
+    help: Text to display when no logo image is provided
+  navigationitems:
+    label: Navigation Items
+    type: structure
+    fields:
+      title:
+        label: Link Title
+        type: text
+        required: true
+      url:
+        label: URL
+        type: url
+        required: true
+      external:
+        label: External Link
+        type: toggle
+        default: false
+        help: Opens link in new tab
+  signintext:
+    label: Sign In Button Text
+    type: text
+    default: Sign In
+    placeholder: Sign In
+  signinurl:
+    label: Sign In URL
+    type: url
+    default: "#"
+  signinexternal:
+    label: Sign In External Link
+    type: toggle
+    default: false
+  getstartedtext:
+    label: Get Started Button Text
+    type: text
+    default: Get Started
+    placeholder: Get Started
+  getstartedurl:
+    label: Get Started URL
+    type: url
+    default: "#"
+  getstartedexternal:
+    label: Get Started External Link
+    type: toggle
+    default: false
+  showsignin:
+    label: Show Sign In Button
+    type: toggle
+    default: true
+  showgetstarted:
+    label: Show Get Started Button
+    type: toggle
+    default: true
