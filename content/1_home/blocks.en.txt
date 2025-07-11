@@ -1,0 +1,9 @@
+Title: home
+
+----
+
+Blocks: [{"content":{"logo":[],"logotext":"Siter","shownavigation":"true","languages":[{"value":"ar","label":"Ar"}],"defaultlanguage":"en","showthemetoggle":"true","showlanguageselector":"true","showusermenu":"true"},"id":"263db43a-f213-4949-bebe-ede0779142aa","isHidden":false,"type":"comp582"},{"content":{"title":"Welcome","subtitle":"SITE","buttontext":"","buttonurl":"","buttonexternal":"false","style":"default"},"id":"45de3efd-13c1-4dab-8e19-b6b9502bc4a0","isHidden":false,"type":"hero"}]
+
+----
+
+Uuid: 3quumsqtnxulmniv

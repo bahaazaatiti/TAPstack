@@ -118,3 +118,102 @@
     @apply bg-background text-foreground;
   }
 }
+/* //FIXME: still doesnt work 
+not sure if implimentation here, or there isa better way with tailwind */ 
+
+/* RTL Language Support - Following Kirby's official guide */
+body.rtl {
+  direction: rtl;
+}
+
+/* Flex direction adjustments for RTL */
+body.rtl .flex {
+  flex-direction: row-reverse;
+}
+
+body.rtl .justify-between {
+  flex-direction: row-reverse;
+}
+
+/* Gap spacing adjustments for RTL */
+body.rtl .gap-2 > * + * {
+  margin-left: 0;
+  margin-right: 0.5rem;
+}
+
+body.rtl .gap-4 > * + * {
+  margin-left: 0;
+  margin-right: 1rem;
+}
+
+body.rtl .gap-6 > * + * {
+  margin-left: 0;
+  margin-right: 1.5rem;
+}
+
+/* Margin adjustments for RTL */
+body.rtl .ml-auto {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+body.rtl .mr-auto {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+/* Text alignment for RTL */
+body.rtl .text-left {
+  text-align: right;
+}
+
+body.rtl .text-right {
+  text-align: left;
+}
+
+/* Padding adjustments for RTL */
+body.rtl .pl-2 {
+  padding-left: 0;
+  padding-right: 0.5rem;
+}
+
+body.rtl .pr-2 {
+  padding-left: 0.5rem;
+  padding-right: 0;
+}
+
+body.rtl .pl-4 {
+  padding-left: 0;
+  padding-right: 1rem;
+}
+
+body.rtl .pr-4 {
+  padding-left: 1rem;
+  padding-right: 0;
+}
+
+/* Border adjustments for RTL */
+body.rtl .border-l {
+  border-left: 0;
+  border-right: 1px solid;
+}
+
+body.rtl .border-r {
+  border-right: 0;
+  border-left: 1px solid;
+}
+
+/* Border radius adjustments for RTL */
+body.rtl .rounded-l {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-right-radius: 0.375rem;
+  border-bottom-right-radius: 0.375rem;
+}
+
+body.rtl .rounded-r {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-top-left-radius: 0.375rem;
+  border-bottom-left-radius: 0.375rem;
+}

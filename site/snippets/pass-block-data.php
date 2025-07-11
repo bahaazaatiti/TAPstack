@@ -1,7 +1,7 @@
 <?php
 
 /**
- * TODO: remove debugging logs in production
+ * //TODO: remove debugging logs in production
  * Reusable snippet to pass block data to JavaScript with enhanced image support
  * 
  * @param Kirby\Cms\Block $block - The block object

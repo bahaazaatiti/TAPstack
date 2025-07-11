@@ -1,9 +1,0 @@
-Title: home
-
-----
-
-Blocks: [{"content":{"logo":["file://mxi9yysanotvatkt"],"logotext":"Logo","navigationitems":[],"signintext":"Sign In","signinurl":"http://localhost:8888/panel/pages/home","signinexternal":"false","getstartedtext":"Get Started","getstartedurl":"http://localhost:8888/panel/pages/home","getstartedexternal":"false","showsignin":"true","showgetstarted":"true"},"id":"9cf7fa0f-b505-4898-adae-5a0e8ef0f524","isHidden":false,"type":"navbar04"},{"content":{"title":"WELCOME TO SITE","subtitle":"subtitle","buttontext":"bottom text","buttonurl":"http://localhost:8888/panel/pages/home","buttonexternal":"false","style":"default"},"id":"a28268e7-e15f-4067-96c7-57316b42e3e7","isHidden":false,"type":"hero"}]
-
-----
-
-Uuid: lsgpwq3efueuctic

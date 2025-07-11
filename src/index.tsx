@@ -1,5 +1,5 @@
 import './index.css'
-import React from 'react'
+import './lib/theme-manager.js'
 import { createRoot } from 'react-dom/client'
 import BlockManager from './components/BlockManager'
 

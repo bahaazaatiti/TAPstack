@@ -1,0 +1,59 @@
+name: Comp 582 (Dynamic Navigation Header)
+icon: layout
+info: "Navigation automatically displays all published pages from your site content"
+fields:
+  logo:
+    label: Logo Image
+    type: files
+    multiple: false
+    accept:
+      - image/*
+    help: Upload a logo image (optional)
+  logotext:
+    label: Logo Text
+    type: text
+    placeholder: Your Brand
+    default: Logo
+    help: Text to display when no logo image is provided
+  shownavigation:
+    label: Show Navigation
+    type: toggle
+    default: true
+    help: Show/hide the main navigation menu
+  languages:
+    label: Language Options
+    type: structure
+    fields:
+      value:
+        label: Language Code
+        type: text
+        required: true
+        placeholder: "en"
+        help: Two-letter language code (e.g., en, es, fr)
+      label:
+        label: Language Label
+        type: text
+        required: true
+        placeholder: "En"
+        help: Display label for the language
+  defaultlanguage:
+    label: Default Language
+    type: text
+    default: "en"
+    placeholder: "en"
+    help: Default language code to show selected
+  showthemetoggle:
+    label: Show Theme Toggle
+    type: toggle
+    default: true
+    help: Show/hide the theme toggle button
+  showlanguageselector:
+    label: Show Language Selector
+    type: toggle
+    default: true
+    help: Show/hide the language selector
+  showusermenu:
+    label: Show User Menu
+    type: toggle
+    default: true
+    help: Show/hide the user menu
