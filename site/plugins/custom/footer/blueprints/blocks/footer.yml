@@ -1,0 +1,52 @@
+name: Footer
+icon: layout
+fields:
+  name:
+    label: Footer Name
+    type: text
+    default: "Launch UI"
+    help: The brand or site name to display
+  logo:
+    label: Logo Image
+    type: files
+    multiple: false
+    help: Upload a logo image (optional)
+  columns:
+    label: Columns
+    type: structure
+    fields:
+      title:
+        label: Column Title
+        type: text
+      links:
+        label: Links
+        type: structure
+        fields:
+          text:
+            label: Link Text
+            type: text
+          href:
+            label: Link URL
+            type: url
+    help: Add columns with links
+  copyright:
+    label: Copyright Text
+    type: text
+    default: "© 2025 Mikołaj Dobrucki. All rights reserved"
+    help: Text to display in the footer
+  policies:
+    label: Policy Links
+    type: structure
+    fields:
+      text:
+        label: Link Text
+        type: text
+      href:
+        label: Link URL
+        type: url
+    help: Add policy links (e.g. Privacy Policy, Terms)
+  showModeToggle:
+    label: Show Mode Toggle
+    type: toggle
+    default: true
+    help: Show/hide the theme mode toggle
