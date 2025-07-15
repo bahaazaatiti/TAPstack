@@ -130,3 +130,8 @@ BUT IF I REMOVE .RTL ALL BREAKS
 body.rtl {
   direction: rtl;
 }
+/* a fix for navigation menu, since it has a direction set to ltr by default by radix */
+.rtl [data-slot="navigation-menu"],
+.rtl [data-slot="navigation-menu-list"] {
+  direction: inherit !important;
+}
