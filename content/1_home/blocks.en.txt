@@ -2,7 +2,7 @@ Title: home
 
 ----
 
-Blocks: [{"content":{"logo":[],"logotext":"Siter","shownavigation":"true","languages":[{"value":"ar","label":"Ar"}],"defaultlanguage":"en","showthemetoggle":"true","showlanguageselector":"true","showusermenu":"true"},"id":"263db43a-f213-4949-bebe-ede0779142aa","isHidden":false,"type":"comp582"},{"content":{"title":"Welcome","subtitle":"SITE","buttontext":"","buttonurl":"","buttonexternal":"false","style":"default"},"id":"45de3efd-13c1-4dab-8e19-b6b9502bc4a0","isHidden":false,"type":"hero"},{"content":{"name":"","logo":[],"columns":[{"title":"","links":[]}],"copyright":"© 2025 TAP All rights reserved","policies":[{"text":"Twitter","href":"http://localhost:8888/panel/pages/home"},{"text":"Facebook","href":"http://localhost:8888/panel/pages/home"}],"showmodetoggle":"true"},"id":"be81787c-ffe9-4438-8198-70bfc1c33ce3","isHidden":false,"type":"footer"}]
+Blocks: [{"content":{"logo":[],"logotext":"Siter","shownavigation":"true","languages":[{"value":"ar","label":"Ar"},{"value":"en","label":"En"}],"defaultlanguage":"en","showthemetoggle":"true","showlanguageselector":"true","showusermenu":"true"},"id":"263db43a-f213-4949-bebe-ede0779142aa","isHidden":false,"type":"comp582"},{"content":{"title":"Welcome","subtitle":"SITE","buttontext":"","buttonurl":"","buttonexternal":"false","style":"default"},"id":"45de3efd-13c1-4dab-8e19-b6b9502bc4a0","isHidden":false,"type":"hero"},{"content":{"name":"","logo":[],"columns":[{"title":"","links":[]}],"copyright":"© 2025 TAP All rights reserved","policies":[{"text":"Twitter","href":"http://localhost:8888/panel/pages/home"},{"text":"Facebook","href":"http://localhost:8888/panel/pages/home"}],"showmodetoggle":"true"},"id":"be81787c-ffe9-4438-8198-70bfc1c33ce3","isHidden":false,"type":"footer"}]
 
 ----
 
