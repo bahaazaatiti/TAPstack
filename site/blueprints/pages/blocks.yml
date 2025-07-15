@@ -1,11 +1,26 @@
 title: Blocks Page
 
 fields:
-  blocks:
+  header:
+    type: blocks
+    fieldsets:
+      - comp582
+    default:
+      - type: comp582
+    max: 1
+    
+  content:
     type: blocks
     fieldsets:
       - navbar
       - hero
       - navbar04
-      - comp582
+    label: Content Blocks
+    
+  footer:
+    type: blocks
+    fieldsets:
       - footer
+    default:
+      - type: footer
+    max: 1

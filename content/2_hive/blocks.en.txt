@@ -1,9 +1,0 @@
-Title: Hive
-
-----
-
-Blocks: [{"content":{"logo":[],"logotext":"siter","shownavigation":"true","languages":[],"defaultlanguage":"en","showthemetoggle":"true","showlanguageselector":"true","showusermenu":"true"},"id":"05e8cb75-208b-491c-b8df-ae4cc603d6fa","isHidden":false,"type":"comp582"}]
-
-----
-
-Uuid: fcsszzuh87by5owu

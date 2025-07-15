@@ -2,8 +2,20 @@ Title: home
 
 ----
 
-Blocks: [{"content":{"logo":[],"logotext":"Siter","shownavigation":"true","languages":[{"value":"ar","label":"Ar"},{"value":"en","label":"En"}],"defaultlanguage":"en","showthemetoggle":"true","showlanguageselector":"true","showusermenu":"true"},"id":"263db43a-f213-4949-bebe-ede0779142aa","isHidden":false,"type":"comp582"},{"content":{"title":"Welcome","subtitle":"SITE","buttontext":"","buttonurl":"","buttonexternal":"false","style":"default"},"id":"45de3efd-13c1-4dab-8e19-b6b9502bc4a0","isHidden":false,"type":"hero"},{"content":{"name":"","logo":[],"columns":[{"title":"","links":[]}],"copyright":"© 2025 TAP All rights reserved","policies":[{"text":"Twitter","href":"http://localhost:8888/panel/pages/home"},{"text":"Facebook","href":"http://localhost:8888/panel/pages/home"}],"showmodetoggle":"true"},"id":"be81787c-ffe9-4438-8198-70bfc1c33ce3","isHidden":false,"type":"footer"}]
+Header: [{"content":{"logo":[],"logotext":"TAP","shownavigation":"true","languages":[{"value":"en","label":"En"},{"value":"ar","label":"Ar"}],"defaultlanguage":"en","showthemetoggle":"true","showlanguageselector":"true","showusermenu":"true"},"id":"c47c3f7c-5df8-43e3-9024-cd61646172ea","isHidden":false,"type":"comp582"}]
 
 ----
 
-Uuid: 3quumsqtnxulmniv
+Content: 
+
+----
+
+Footer: [{"content":{"name":"","logo":[],"columns":[],"copyright":"© 2025 TAP. All rights reserved","policies":[{"text":"Twitter","href":"http://localhost:8888/panel/pages/home"},{"text":"Facebook","href":"http://localhost:8888/panel/pages/home"}],"showmodetoggle":"true"},"id":"303b9e96-e66d-477f-8c0a-3e1edffe17aa","isHidden":false,"type":"footer"}]
+
+----
+
+Blocks: [{"content":{"logo":[],"logotext":"","shownavigation":"true","languages":[],"defaultlanguage":"","showthemetoggle":"true","showlanguageselector":"true","showusermenu":"true","body":""},"id":"bac4ac46-92e8-41e5-b358-f0e4c4383ab6","isHidden":false,"type":"comp582"},{"content":{"name":"","logo":[],"columns":[],"copyright":"","policies":[],"showmodetoggle":"true","body":""},"id":"5b0d93ce-de29-4e2f-9681-9c1e7aa7d76e","isHidden":false,"type":"footer"}]
+
+----
+
+Uuid: pm0gf97mnfnehh3f

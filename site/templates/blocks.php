@@ -1,7 +1,9 @@
 <?php snippet('header') ?>
 
 <main>
-  <?= $page->blocks()->toBlocks() ?>
+  <?= $page->header()->toBlocks() ?>
+  <?= $page->content()->toBlocks() ?>
+  <?= $page->footer()->toBlocks() ?>
 </main>
 
 <?php snippet('footer') ?>
