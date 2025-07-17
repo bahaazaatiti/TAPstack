@@ -1,0 +1,28 @@
+name: Latest Blog
+icon: newspaper
+fields:
+  title:
+    label: Section Title
+    type: text
+    default: Latest articles
+    help: Title displayed above the articles grid
+    
+  buttonText:
+    label: Button Text
+    type: text
+    default: View all articles
+    help: Text displayed on the "view more" button
+    
+  buttonUrl:
+    label: Button URL
+    type: url
+    default: /
+    help: URL the button links to (defaults to home page)
+    
+  maxArticles:
+    label: Maximum Articles
+    type: number
+    default: 8
+    min: 1
+    max: 12
+    help: Number of articles to display (maximum 8 recommended for layout)

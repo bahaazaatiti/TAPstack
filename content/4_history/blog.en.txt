@@ -1,0 +1,17 @@
+Title: History
+
+----
+
+Header: [{"content":{"logo":[],"logotext":"TAP","shownavigation":"true","languages":[{"value":"en","label":"English"},{"value":"ar","label":"العربية"}],"defaultlanguage":"en","showthemetoggle":"true","showlanguageselector":"true","showusermenu":"true"},"id":"f55cf490-4a59-49c2-9ab9-7968419bee43","isHidden":false,"type":"comp582"}]
+
+----
+
+Blocks: [{"content":{"title":"Latest articles","featuredarticles":["page://txbbw6veotkz07bz","page://xscv2sfgrfzvojq0"]},"id":"123f381f-163d-42a9-b817-ee88548023f3","isHidden":false,"type":"featuredblog"},{"content":{"title":"Latest articles","buttontext":"View all articles","buttonurl":"http://localhost:8888/panel/pages/history","maxarticles":8},"id":"8df809ca-c56b-462c-aa5c-fc1403242933","isHidden":false,"type":"latestblog"}]
+
+----
+
+Footer: [{"content":{"name":"","logo":[],"columns":[],"copyright":"© 2025 The Alawite Project. All rights reserved","policies":[],"showmodetoggle":"true"},"id":"b731163a-74dd-41af-a33d-96f3287e7110","isHidden":false,"type":"footer"}]
+
+----
+
+Uuid: 97bpxkowsm6aso86

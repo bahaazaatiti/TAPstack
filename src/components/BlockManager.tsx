@@ -7,6 +7,8 @@ import Navbar04 from './Navbar04'
 import Comp582 from './Comp582'
 import FooterSection from './default'
 import Blog from './Blog'
+import LatestBlog from './latestblog'
+import FeaturedBlog from './featuredblog'
 
 // Block registry - add new blocks here
 const blockComponents: Record<string, ComponentType<any>> = {
@@ -15,6 +17,8 @@ const blockComponents: Record<string, ComponentType<any>> = {
   navbar04: Navbar04,
   comp582: Comp582,
   blog: Blog,
+  latestblog: LatestBlog,
+  featuredblog: FeaturedBlog,
   footer: FooterSection,
   // Add more blocks here as you create them
   // TODO: Consider using dynamic imports for better performance

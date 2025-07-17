@@ -19,6 +19,8 @@ tabs:
               - navbar04
               - comp582
               - blog
+              - latestblog
+              - featuredblog
             label: Content Blocks
             
           footer:
