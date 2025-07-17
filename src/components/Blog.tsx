@@ -54,7 +54,7 @@ const Blog: React.FC<BlogProps> = (props) => {
   const {
     title = "Posts",
     showCategories = true,
-    postsPerPage = 8,
+    postsPerPage = 20,
     articles: articleData = [],
   } = props;
 

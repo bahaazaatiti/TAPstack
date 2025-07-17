@@ -47,7 +47,7 @@ foreach ($articlePages as $article) {
 $blockData = [
   'title' => $block->title()->isNotEmpty() ? $block->title()->value() : 'Posts',
   'showCategories' => $block->showCategories()->toBool(),
-  'postsPerPage' => $block->postsPerPage()->isNotEmpty() ? (int)$block->postsPerPage()->value() : 8,
+  'postsPerPage' => $block->postsPerPage()->isNotEmpty() ? (int)$block->postsPerPage()->value() : 20,
   'articles' => $articles
 ];
 ?>

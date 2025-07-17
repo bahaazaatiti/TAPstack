@@ -1,5 +1,11 @@
 title: Article
 
+num: date
+status:
+  draft: true
+  unlisted: true
+  listed: true
+
 tabs:
   content:
     label: Content

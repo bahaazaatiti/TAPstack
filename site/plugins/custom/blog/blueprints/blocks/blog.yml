@@ -12,9 +12,9 @@ fields:
   postsPerPage:
     label: Posts per Page
     type: number
-    default: 8
+    default: 20
     min: 1
-    max: 20
+    max: 50
   blogPage:
     label: Blog Page
     type: pages

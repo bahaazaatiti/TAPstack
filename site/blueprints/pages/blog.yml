@@ -36,4 +36,3 @@ tabs:
         template: article
         info: "{{ page.date.toDate('M j, Y') }} - {{ page.category }}"
         sortBy: date desc
-        limit: 20

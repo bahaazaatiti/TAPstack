@@ -47,7 +47,7 @@
 
     <!-- Back to blog link -->
     <div class="mt-12 pt-8 border-t">
-      <a href="<?= $site->find('blog')->url() ?>" class="inline-flex items-center text-primary hover:text-primary/80 transition-colors">
+      <a href="<?= $page->parent()->url() ?>" class="inline-flex items-center text-primary hover:text-primary/80 transition-colors">
         <svg class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
         </svg>

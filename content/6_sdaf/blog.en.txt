@@ -1,0 +1,17 @@
+Title: sdaf
+
+----
+
+Header: [{"content":{"logo":[],"logotext":"TAP","shownavigation":"true","languages":[{"value":"en","label":"English"},{"value":"ar","label":"العربية"}],"defaultlanguage":"en","showthemetoggle":"true","showlanguageselector":"true","showusermenu":"true"},"id":"d6de4568-ce97-45c1-994a-2db2666801ac","isHidden":false,"type":"comp582"}]
+
+----
+
+Blocks: [{"content":{"title":"Posts","showcategories":"true","postsperpage":20,"blogpage":[]},"id":"e8f2dfa4-eec6-4fa6-99d4-03631de0c328","isHidden":false,"type":"blog"}]
+
+----
+
+Footer: [{"content":{"name":"","logo":[],"columns":[],"copyright":"© 2025 The Alawite Project. All rights reserved","policies":[],"showmodetoggle":"true"},"id":"eded248a-2d5f-4470-858d-8f53fbf507db","isHidden":false,"type":"footer"}]
+
+----
+
+Uuid: h0jrt87jkn83xseq
