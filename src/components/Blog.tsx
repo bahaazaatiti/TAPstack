@@ -1,11 +1,13 @@
 import React from "react";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 import {
   BadgeDollarSign,
   Bike,
   BookHeart,
   BriefcaseBusiness,
   Calendar,
-  Clock,
+  ClockIcon,
   Cpu,
   FlaskRound,
   HeartPulse,
@@ -117,9 +119,9 @@ const Blog: React.FC<BlogProps> = (props) => {
               key={i}
               className="flex flex-col sm:flex-row sm:items-center shadow-none overflow-hidden rounded-md border-none"
             >
-              <div className="px-0 sm:p-0 flex-shrink-0">
+              <div className="px-0 sm:p-0 flex-shrink-0 pb-2">
                 {article.featuredImage ? (
-                  <div className="aspect-video sm:w-56 sm:aspect-square bg-muted rounded-lg overflow-hidden">
+                  <div className="aspect-video  sm:w-56 sm:aspect-square bg-muted rounded-lg overflow-hidden">
                     <img
                       src={article.featuredImage.url}
                       alt={article.featuredImage.alt}
@@ -132,9 +134,9 @@ const Blog: React.FC<BlogProps> = (props) => {
               </div>
               <div className="px-0 sm:px-6 py-0 flex flex-col">
                 <div className="flex items-center gap-6">
-                  <span className="bg-primary/10 text-primary px-2 py-1 rounded text-sm font-medium">
+                  <Badge className="bg-primary/5 text-primary hover:bg-primary/5 shadow-none">
                     {article.category}
-                  </span>
+                  </Badge>
                 </div>
 
                 <h3 className="mt-4 text-2xl font-semibold tracking-tight">
@@ -147,7 +149,7 @@ const Blog: React.FC<BlogProps> = (props) => {
                 </p>
                 <div className="mt-4 flex items-center gap-6 text-muted-foreground text-sm font-medium">
                   <div className="flex items-center gap-2">
-                    <Clock className="h-4 w-4" /> {article.readTime} min read
+                    <ClockIcon className="h-4 w-4" /> {article.readTime} min read
                   </div>
                   <div className="flex items-center gap-2">
                     <Calendar className="h-4 w-4" /> {formatDate(article.date)}
@@ -168,15 +170,18 @@ const Blog: React.FC<BlogProps> = (props) => {
               return (
                 <div
                   key={category.name}
-                  className={`flex items-center justify-between gap-2 bg-muted p-3 rounded-md bg-opacity-15 dark:bg-opacity-25 ${category.background}`}
+                  className={cn(
+                    "flex items-center justify-between gap-2 bg-muted p-3 rounded-md bg-opacity-15 dark:bg-opacity-25",
+                    category.background
+                  )}
                 >
                   <div className="flex items-center gap-3">
-                    <IconComponent className={`h-5 w-5 ${category.color}`} />
+                    <IconComponent className={cn("h-5 w-5", category.color)} />
                     <span className="font-medium">{category.name}</span>
                   </div>
-                  <span className="px-1.5 py-0.5 bg-muted-foreground/20 text-foreground text-xs rounded-full">
+                  <Badge className="px-1.5 rounded-full">
                     {category.totalPosts}
-                  </span>
+                  </Badge>
                 </div>
               );
             })}

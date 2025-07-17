@@ -1,0 +1,37 @@
+Title: asdfasd
+
+----
+
+Text: asdf
+
+----
+
+Date: 2025-07-17
+
+----
+
+Category: Finance
+
+----
+
+Author: dsa
+
+----
+
+Tags: 
+
+----
+
+Description: asdfasdfasdf
+
+----
+
+Readtime: 5
+
+----
+
+Featuredimage: 
+
+----
+
+Uuid: 5kfjmvezv899g2sd
