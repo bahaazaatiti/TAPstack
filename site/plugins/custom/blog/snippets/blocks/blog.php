@@ -1,11 +1,35 @@
 <?php 
 // Blog block snippet - fetches blog articles from current page's children and passes data to React
+//TODO: add this in passblockdata once values finalized
 
 // Get articles from the current page's children
 $articlePages = $page->children()->listed()->sortBy('date', 'desc');
 $articles = [];
 
 foreach ($articlePages as $article) {
+  // Get featured image if available
+  $featuredImage = null;
+  if ($article->featuredImage()->isNotEmpty()) {
+    $imageFile = $article->featuredImage()->toFile();
+    if ($imageFile) {
+      $featuredImage = [
+        'url' => $imageFile->url(),
+        'alt' => $imageFile->alt()->value() ?: $article->title()->value(),
+        'width' => $imageFile->width(),
+        'height' => $imageFile->height()
+      ];
+    }
+  } elseif ($article->images()->first()) {
+    // Fallback to first image if no featured image set
+    $imageFile = $article->images()->first();
+    $featuredImage = [
+      'url' => $imageFile->url(),
+      'alt' => $imageFile->alt()->value() ?: $article->title()->value(),
+      'width' => $imageFile->width(),
+      'height' => $imageFile->height()
+    ];
+  }
+
   $articles[] = [
     'title' => $article->title()->value(),
     'description' => $article->description()->isNotEmpty() ? $article->description()->value() : $article->text()->excerpt(200),
@@ -14,7 +38,8 @@ foreach ($articlePages as $article) {
     'readTime' => $article->readTime()->isNotEmpty() ? (int)$article->readTime()->value() : 5,
     'url' => $article->url(),
     'author' => $article->author()->value(),
-    'tags' => $article->tags()->split(',')
+    'tags' => $article->tags()->split(','),
+    'featuredImage' => $featuredImage
   ];
 }
 

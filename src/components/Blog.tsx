@@ -1,14 +1,11 @@
 import React from "react";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
 import {
   BadgeDollarSign,
   Bike,
   BookHeart,
   BriefcaseBusiness,
   Calendar,
-  ClockIcon,
+  Clock,
   Cpu,
   FlaskRound,
   HeartPulse,
@@ -32,6 +29,12 @@ interface Article {
   readTime: number;
   url: string;
   author: string;
+  featuredImage?: {
+    url: string;
+    alt: string;
+    width: number;
+    height: number;
+  } | null;
 }
 
 const categoryIcons = {
@@ -62,7 +65,8 @@ const Blog: React.FC<BlogProps> = (props) => {
       date: "Nov 20, 2024",
       readTime: 5,
       url: "/blog/blockchain-guide",
-      author: "John Doe"
+      author: "John Doe",
+      featuredImage: null
     },
     {
       title: "Top business trends for 2025",
@@ -71,7 +75,8 @@ const Blog: React.FC<BlogProps> = (props) => {
       date: "Nov 15, 2024",
       readTime: 3,
       url: "/blog/business-trends",
-      author: "Jane Smith"
+      author: "Jane Smith",
+      featuredImage: null
     },
     {
       title: "Essential health tips for remote workers",
@@ -80,7 +85,8 @@ const Blog: React.FC<BlogProps> = (props) => {
       date: "Nov 10, 2024",
       readTime: 4,
       url: "/blog/health-tips",
-      author: "Dr. Sarah Johnson"
+      author: "Dr. Sarah Johnson",
+      featuredImage: null
     }
   ];
 
@@ -107,18 +113,28 @@ const Blog: React.FC<BlogProps> = (props) => {
 
         <div className="mt-4 space-y-12">
           {articles.slice(0, postsPerPage).map((article: Article, i: number) => (
-            <Card
+            <div
               key={i}
               className="flex flex-col sm:flex-row sm:items-center shadow-none overflow-hidden rounded-md border-none"
             >
-              <CardHeader className="px-0 sm:p-0">
-                <div className="aspect-video sm:w-56 sm:aspect-square bg-muted rounded-lg" />
-              </CardHeader>
-              <CardContent className="px-0 sm:px-6 py-0 flex flex-col">
+              <div className="px-0 sm:p-0 flex-shrink-0">
+                {article.featuredImage ? (
+                  <div className="aspect-video sm:w-56 sm:aspect-square bg-muted rounded-lg overflow-hidden">
+                    <img
+                      src={article.featuredImage.url}
+                      alt={article.featuredImage.alt}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ) : (
+                  <div className="aspect-video sm:w-56 sm:aspect-square bg-muted rounded-lg" />
+                )}
+              </div>
+              <div className="px-0 sm:px-6 py-0 flex flex-col">
                 <div className="flex items-center gap-6">
-                  <Badge className="bg-primary/5 text-primary hover:bg-primary/5 shadow-none">
+                  <span className="bg-primary/10 text-primary px-2 py-1 rounded text-sm font-medium">
                     {article.category}
-                  </Badge>
+                  </span>
                 </div>
 
                 <h3 className="mt-4 text-2xl font-semibold tracking-tight">
@@ -131,14 +147,14 @@ const Blog: React.FC<BlogProps> = (props) => {
                 </p>
                 <div className="mt-4 flex items-center gap-6 text-muted-foreground text-sm font-medium">
                   <div className="flex items-center gap-2">
-                    <ClockIcon className="h-4 w-4" /> {article.readTime} min read
+                    <Clock className="h-4 w-4" /> {article.readTime} min read
                   </div>
                   <div className="flex items-center gap-2">
                     <Calendar className="h-4 w-4" /> {formatDate(article.date)}
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           ))}
         </div>
       </div>
@@ -152,18 +168,15 @@ const Blog: React.FC<BlogProps> = (props) => {
               return (
                 <div
                   key={category.name}
-                  className={cn(
-                    "flex items-center justify-between gap-2 bg-muted p-3 rounded-md bg-opacity-15 dark:bg-opacity-25",
-                    category.background
-                  )}
+                  className={`flex items-center justify-between gap-2 bg-muted p-3 rounded-md bg-opacity-15 dark:bg-opacity-25 ${category.background}`}
                 >
                   <div className="flex items-center gap-3">
-                    <IconComponent className={cn("h-5 w-5", category.color)} />
+                    <IconComponent className={`h-5 w-5 ${category.color}`} />
                     <span className="font-medium">{category.name}</span>
                   </div>
-                  <Badge className="px-1.5 rounded-full">
+                  <span className="px-1.5 py-0.5 bg-muted-foreground/20 text-foreground text-xs rounded-full">
                     {category.totalPosts}
-                  </Badge>
+                  </span>
                 </div>
               );
             })}

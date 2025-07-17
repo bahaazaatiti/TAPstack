@@ -58,3 +58,13 @@ tabs:
                 type: number
                 min: 1
                 default: 5
+              featuredImage:
+                label: Featured Image
+                type: files
+                multiple: false
+                accept:
+                  - image/jpeg
+                  - image/jpg
+                  - image/png
+                  - image/webp
+                help: Main image for this article (used in blog listings)

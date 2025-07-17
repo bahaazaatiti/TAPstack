@@ -30,4 +30,8 @@ Readtime: 5
 
 ----
 
+Featuredimage: - file://eazalgqfvz0gsgxz
+
+----
+
 Uuid: kuitqh81bvqaronz
