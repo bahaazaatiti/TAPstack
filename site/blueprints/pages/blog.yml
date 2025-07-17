@@ -21,6 +21,7 @@ tabs:
               - blog
               - latestblog
               - featuredblog
+              - blogglobe
             label: Content Blocks
             
           footer:

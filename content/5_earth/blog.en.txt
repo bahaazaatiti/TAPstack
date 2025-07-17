@@ -1,0 +1,17 @@
+Title: earth
+
+----
+
+Header: [{"content":{"logo":[],"logotext":"TAP","shownavigation":"true","languages":[{"value":"en","label":"English"},{"value":"ar","label":"العربية"}],"defaultlanguage":"en","showthemetoggle":"true","showlanguageselector":"true","showusermenu":"true"},"id":"e2223483-264f-4596-acbf-812adf04a8aa","isHidden":false,"type":"comp582"}]
+
+----
+
+Blocks: [{"content":{"title":"Stories Around the World","description":"Explore our articles from around the globe","globecolor":"#1d1d1d","autorotate":"true","rotatespeed":0.5},"id":"a2093b2f-d388-4155-b71a-d542cba5071c","isHidden":false,"type":"blogglobe"}]
+
+----
+
+Footer: [{"content":{"name":"","logo":[],"columns":[],"copyright":"© 2025 The Alawite Project. All rights reserved","policies":[],"showmodetoggle":"true"},"id":"4a98a569-d61d-4017-a497-2924105af9bf","isHidden":false,"type":"footer"}]
+
+----
+
+Uuid: cni3f4kryrojdqcr

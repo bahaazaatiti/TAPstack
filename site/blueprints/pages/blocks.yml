@@ -16,6 +16,9 @@ fields:
       - navbar04
       - comp582
       - blog
+      - latestblog
+      - featuredblog
+      - blogglobe
     label: Content Blocks
     
   footer:
