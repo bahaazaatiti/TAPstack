@@ -1,0 +1,39 @@
+title: Blog
+
+tabs:
+  content:
+    label: Content
+    columns:
+      main:
+        fields:
+          header:
+            type: blocks
+            fieldsets:
+              - comp582
+            max: 1
+          blocks:
+            type: blocks
+            fieldsets:
+              - navbar
+              - hero
+              - navbar04
+              - comp582
+              - blog
+            label: Content Blocks
+            
+          footer:
+            type: blocks
+            fieldsets:
+              - footer
+            max: 1
+
+  articles:
+    label: Articles
+    sections:
+      articles:
+        type: pages
+        headline: Articles
+        template: article
+        info: "{{ page.date.toDate('M j, Y') }} - {{ page.category }}"
+        sortBy: date desc
+        limit: 20

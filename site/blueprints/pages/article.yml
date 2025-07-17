@@ -1,0 +1,60 @@
+title: Article
+
+tabs:
+  content:
+    label: Content
+    columns:
+      main:
+        width: 2/3
+        sections:
+          content:
+            type: fields
+            fields:
+              title:
+                label: Title
+                type: text
+                required: true
+              text:
+                label: Content
+                type: textarea
+                size: large
+      sidebar:
+        width: 1/3
+        sections:
+          meta:
+            type: fields
+            fields:
+              date:
+                label: Date
+                type: date
+                required: true
+                default: today
+              category:
+                label: Category
+                type: select
+                options:
+                  Technology: Technology
+                  Business: Business
+                  Finance: Finance
+                  Health: Health
+                  Lifestyle: Lifestyle
+                  Politics: Politics
+                  Science: Science
+                  Sports: Sports
+                required: true
+              author:
+                label: Author
+                type: text
+                required: true
+              tags:
+                label: Tags
+                type: tags
+              description:
+                label: Description
+                type: textarea
+                help: Short description for blog listing
+              readTime:
+                label: Read Time (minutes)
+                type: number
+                min: 1
+                default: 5

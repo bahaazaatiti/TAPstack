@@ -15,6 +15,7 @@ fields:
       - hero
       - navbar04
       - comp582
+      - blog
     label: Content Blocks
     
   footer:
