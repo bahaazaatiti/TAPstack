@@ -82,7 +82,7 @@ const LatestBlog: React.FC<LatestBlogProps> = (props) => {
   const latestArticles = articles.slice(0, 8);
 
   return (
-    <div className="w-full py-20 lg:py-40">
+    <div className="w-full py-10 lg:py-16 px-6 xl:px-10">
       <div className="container mx-auto flex flex-col gap-14">
         <div className="flex w-full flex-col sm:flex-row sm:justify-between sm:items-center gap-8">
           <h4 className="text-3xl md:text-5xl tracking-tighter max-w-xl font-regular">
