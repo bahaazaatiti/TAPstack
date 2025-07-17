@@ -4,7 +4,7 @@ fields:
   name:
     label: Footer Name
     type: text
-    default: "Launch UI"
+    # default: "Launch UI"
     help: The brand or site name to display
   logo:
     label: Logo Image
@@ -32,7 +32,7 @@ fields:
   copyright:
     label: Copyright Text
     type: text
-    default: "© 2025 Mikołaj Dobrucki. All rights reserved"
+    default: "© 2025 The Alawite Project. All rights reserved"
     help: Text to display in the footer
   policies:
     label: Policy Links

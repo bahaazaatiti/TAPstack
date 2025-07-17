@@ -6,6 +6,7 @@
  * 
  * @param Kirby\Cms\Block $block - The block object
  * @param string $blockType - The block type (e.g., 'hero', 'navbar')
+ * @param array $additionalData - Optional additional data to merge with block data
  */
 
 if (!isset($block) || !isset($blockType)) {
@@ -146,6 +147,61 @@ foreach ($block->content()->fields() as $field) {
         $blockData[$key] = $field->toStructure()->toArray();
     }
     // Keep other fields as they are (already in the array)
+}
+
+// Add common site data that blocks might need
+$siteData = [
+    'sitepages' => [],
+    'currentPage' => [],
+    'site' => []
+];
+
+// Get site pages for navigation (commonly needed)
+foreach (site()->children()->listed() as $page) {
+    $siteData['sitepages'][] = [
+        'title' => $page->title()->toString(),
+        'url' => $page->url(),
+        'slug' => $page->slug(),
+        'isActive' => $page->isActive()
+    ];
+}
+
+// Get current page info
+if (isset($page)) {
+    $siteData['currentPage'] = [
+        'title' => $page->title()->toString(),
+        'url' => $page->url(),
+        'slug' => $page->slug(),
+        'isActive' => $page->isActive()
+    ];
+}
+
+// Get site info
+$siteData['site'] = [
+    'title' => site()->title()->toString(),
+    'url' => site()->url(),
+    'language' => kirby()->language() ? kirby()->language()->code() : 'en',
+    'languages' => []
+];
+
+// Get available languages
+if (kirby()->multilang()) {
+    foreach (kirby()->languages() as $language) {
+        $siteData['site']['languages'][] = [
+            'code' => $language->code(),
+            'name' => $language->name(),
+            'url' => $language->url(),
+            'isDefault' => $language->isDefault()
+        ];
+    }
+}
+
+// Merge site data with block data
+$blockData = array_merge($blockData, $siteData);
+
+// Merge any additional data passed to the snippet
+if (isset($additionalData) && is_array($additionalData)) {
+    $blockData = array_merge($blockData, $additionalData);
 }
 
 // Debug output (remove in production)

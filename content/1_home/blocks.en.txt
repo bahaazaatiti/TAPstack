@@ -2,20 +2,16 @@ Title: home
 
 ----
 
-Header: [{"content":{"logo":[],"logotext":"TAP","shownavigation":"true","languages":[{"value":"en","label":"En"},{"value":"ar","label":"Ar"}],"defaultlanguage":"en","showthemetoggle":"true","showlanguageselector":"true","showusermenu":"true"},"id":"c47c3f7c-5df8-43e3-9024-cd61646172ea","isHidden":false,"type":"comp582"}]
+Header: [{"content":{"logo":[],"logotext":"TAP","shownavigation":"true","languages":[{"value":"en","label":"English"},{"value":"ar","label":"العربية"}],"defaultlanguage":"en","showthemetoggle":"true","showlanguageselector":"true","showusermenu":"true"},"id":"5b3bdef2-ba38-46de-b6f1-530b370b636c","isHidden":false,"type":"comp582"}]
 
 ----
 
-Content: 
+Blocks: [{"content":{"title":"asdf","subtitle":"asdf","buttontext":"","buttonurl":"","buttonexternal":"false","style":"default"},"id":"f1542781-8521-4b0a-9577-a531d071c0b1","isHidden":false,"type":"hero"},{"content":{"title":"asdf","subtitle":"asdf","buttontext":"","buttonurl":"","buttonexternal":"false","style":"default"},"id":"d0fd4785-ecce-4041-a73c-59d3e0926d18","isHidden":false,"type":"hero"},{"content":{"title":"asdf","subtitle":"asdf","buttontext":"","buttonurl":"","buttonexternal":"false","style":"default"},"id":"79e0872d-fb0b-48a9-b365-d45bf2c55124","isHidden":false,"type":"hero"},{"content":{"title":"asdf","subtitle":"asdf","buttontext":"","buttonurl":"","buttonexternal":"false","style":"default"},"id":"cf4b959c-98ad-4d32-9e2d-bdd5f16d8cea","isHidden":false,"type":"hero"}]
 
 ----
 
-Footer: [{"content":{"name":"","logo":[],"columns":[],"copyright":"© 2025 TAP. All rights reserved","policies":[{"text":"Twitter","href":"http://localhost:8888/panel/pages/home"},{"text":"Facebook","href":"http://localhost:8888/panel/pages/home"}],"showmodetoggle":"true"},"id":"303b9e96-e66d-477f-8c0a-3e1edffe17aa","isHidden":false,"type":"footer"}]
+Footer: [{"content":{"name":"","logo":[],"columns":[],"copyright":"© 2025 The Alawite Project. All rights reserved","policies":[],"showmodetoggle":"true"},"id":"faeac603-8776-4582-9a24-372e766f201e","isHidden":false,"type":"footer"}]
 
 ----
 
-Blocks: [{"content":{"logo":[],"logotext":"","shownavigation":"true","languages":[],"defaultlanguage":"","showthemetoggle":"true","showlanguageselector":"true","showusermenu":"true","body":""},"id":"bac4ac46-92e8-41e5-b358-f0e4c4383ab6","isHidden":false,"type":"comp582"},{"content":{"name":"","logo":[],"columns":[],"copyright":"","policies":[],"showmodetoggle":"true","body":""},"id":"5b0d93ce-de29-4e2f-9681-9c1e7aa7d76e","isHidden":false,"type":"footer"}]
-
-----
-
-Uuid: pm0gf97mnfnehh3f
+Uuid: hdagvqctz3oeiddy

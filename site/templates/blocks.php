@@ -2,7 +2,7 @@
 
 <main>
   <?= $page->header()->toBlocks() ?>
-  <?= $page->content()->toBlocks() ?>
+  <?= $page->blocks()->toBlocks() ?>
   <?= $page->footer()->toBlocks() ?>
 </main>
 

@@ -13,7 +13,7 @@ fields:
     label: Logo Text
     type: text
     placeholder: Your Brand
-    default: Logo
+    default: TAP
     help: Text to display when no logo image is provided
   shownavigation:
     label: Show Navigation
@@ -23,6 +23,11 @@ fields:
   languages:
     label: Language Options
     type: structure
+    default:
+      - value: en
+        label: English
+      - value: ar
+        label: العربية
     fields:
       value:
         label: Language Code

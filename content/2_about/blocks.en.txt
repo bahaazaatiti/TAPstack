@@ -1,0 +1,17 @@
+Title: about
+
+----
+
+Header: [{"content":{"logo":[],"logotext":"TAP","shownavigation":"true","languages":[{"value":"en","label":"English"},{"value":"ar","label":"العربية"}],"defaultlanguage":"en","showthemetoggle":"true","showlanguageselector":"true","showusermenu":"true"},"id":"bcc96769-bdad-4e2d-bd7a-44329fbbc1ba","isHidden":false,"type":"comp582"}]
+
+----
+
+Blocks: 
+
+----
+
+Footer: [{"content":{"name":"","logo":[],"columns":[],"copyright":"© 2025 The Alawite Project. All rights reserved","policies":[],"showmodetoggle":"true"},"id":"ec5eb559-3edd-4c50-a548-0740771864a5","isHidden":false,"type":"footer"}]
+
+----
+
+Uuid: uzyhpqgxsqb7jp4a
