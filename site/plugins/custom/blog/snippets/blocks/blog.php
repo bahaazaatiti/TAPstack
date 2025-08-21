@@ -2,8 +2,31 @@
 // Blog block snippet - fetches blog articles from current page's children and passes data to React
 //TODO: add this in passblockdata once values finalized
 
-// Get articles from the current page's children
-$articlePages = $page->children()->listed()->sortBy('date', 'desc');
+// Check if this is a search page
+$isSearchPage = $page->intendedTemplate()->name() === 'search';
+$searchQuery = '';
+
+if ($isSearchPage) {
+  // Get search query from URL parameters
+  $searchQuery = get('q', '');
+  
+  // If there's a search query, search across all pages with article content
+  if ($searchQuery) {
+    $articlePages = site()->index()
+      ->filterBy('intendedTemplate', 'article')
+      ->search($searchQuery, ['fields' => ['title', 'text', 'description', 'author', 'category']])
+      ->sortBy('date', 'desc');
+  } else {
+    // No search query, show all articles
+    $articlePages = site()->index()
+      ->filterBy('intendedTemplate', 'article')
+      ->sortBy('date', 'desc');
+  }
+} else {
+  // Get articles from the current page's children (normal blog behavior)
+  $articlePages = $page->children()->listed()->sortBy('date', 'desc');
+}
+
 $articles = [];
 
 foreach ($articlePages as $article) {
@@ -48,8 +71,10 @@ $blockData = [
   'title' => $block->title()->isNotEmpty() ? $block->title()->value() : 'Posts',
   'showCategories' => $block->showCategories()->toBool(),
   'postsPerPage' => $block->postsPerPage()->isNotEmpty() ? (int)$block->postsPerPage()->value() : 20,
-  'articles' => $articles
+  'articles' => $articles,
+  'searchQuery' => $searchQuery // Pass search query to React component
 ];
+
 ?>
 
 <div id="blog-<?= $block->id() ?>" class="blog-container"></div>

@@ -6,6 +6,7 @@ import {
 } from "lucide-react"
 
 import ThemeToggle from "@/components/ui/theme-toggle"
+import SiteSearch from "@/components/ui/site-search"
 import { Button } from "@/components/ui/button"
 import {
   NavigationMenu,
@@ -196,6 +197,8 @@ const Comp582: React.FC<Comp582Props> = (props) => {
         </div>
         {/* Right side */}
         <div className="flex items-center gap-2">
+          {/* Search */}
+          <SiteSearch sitepages={sitepages} />
           {/* Theme toggle */}
           {(showthemetoggle === true || showthemetoggle === 'true') && (
             <ThemeToggle />

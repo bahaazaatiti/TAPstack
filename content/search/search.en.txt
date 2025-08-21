@@ -1,0 +1,17 @@
+Title: Search
+
+----
+
+Header: [{"content":{"logo":[],"logotext":"TAP","shownavigation":"true","languages":[{"value":"en","label":"English"},{"value":"ar","label":"العربية"}],"defaultlanguage":"en","showthemetoggle":"true","showlanguageselector":"true","showusermenu":"true"},"id":"913fa3ac-fb9b-441f-a74f-ea3ef8b6c64f","isHidden":false,"type":"comp582"}]
+
+----
+
+Blocks: [{"content":{"title":"Search","showcategories":"true","postsperpage":20,"blogpage":[]},"id":"67c01b8c-80a4-4553-bff3-4dad71496cb7","isHidden":false,"type":"blog"}]
+
+----
+
+Footer: [{"content":{"name":"","logo":[],"columns":[],"copyright":"© 2025 The Alawite Project. All rights reserved","policies":[],"showmodetoggle":"true"},"id":"d6ecda10-483f-436d-a5ee-5baae457ccdc","isHidden":false,"type":"footer"}]
+
+----
+
+Uuid: bo4i3m2qcmrji0sf
