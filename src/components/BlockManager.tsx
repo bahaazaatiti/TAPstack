@@ -10,6 +10,7 @@ import Blog from './Blog'
 import LatestBlog from './latestblog'
 import FeaturedBlog from './featuredblog'
 import BlogGlobe from './BlogGlobe'
+import TextBlock from './textblock'
 
 // Block registry - add new blocks here
 const blockComponents: Record<string, ComponentType<any>> = {
@@ -21,6 +22,7 @@ const blockComponents: Record<string, ComponentType<any>> = {
   latestblog: LatestBlog,
   featuredblog: FeaturedBlog,
   blogglobe: BlogGlobe,
+  textblock: TextBlock,
   footer: FooterSection,
   // Add more blocks here as you create them
   // TODO: Consider using dynamic imports for better performance

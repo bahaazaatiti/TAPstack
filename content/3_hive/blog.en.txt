@@ -6,7 +6,7 @@ Header: [{"content":{"logo":[],"logotext":"TAP","shownavigation":"true","languag
 
 ----
 
-Blocks: [{"content":{"title":"Hive","showcategories":"true","postsperpage":8,"blogpage":[]},"id":"67c01b8c-80a4-4553-bff3-4dad71496cb7","isHidden":false,"type":"blog"}]
+Blocks: [{"content":{"icon":["file://cmacvibiwougeqqn"],"title":"BAA: Blog of Alawite Academics","description":"BAA is not just a blog. It is an open collective space for critical thinking, born from a sustained engagement with public discourse until a clear and deep conviction emerged: understanding Alawite communities cannot be reduced to binaries of power or victimhood, loyalty or marginalization. Instead, it requires more sensitive tools, fairer narratives, and more nuanced approaches.\n\nIn the face of prevailing discourses that reduce Alawites either to \"ruling sect\" or to a \"powerless group,\" BAA seeks to reopen this silenced file—not to justify or condemn, but out of a genuine desire to understand. We dissect the complex relationship between the community and the state; between authority and fear; between identity and forced representation. We do not offer ready-made answers but rather keys, questions, and new frameworks to reshape the Alawite public sphere—or to find a public space and encourage Alawites to form it.","emoji":"🦊","backgroundimage":[],"foregroundimage":[]},"id":"66b73d0b-6b40-4ba0-abac-95daebaf79ae","isHidden":false,"type":"textblock"},{"content":{"title":"Hive","showcategories":"true","postsperpage":8,"blogpage":[]},"id":"67c01b8c-80a4-4553-bff3-4dad71496cb7","isHidden":false,"type":"blog"}]
 
 ----
 
