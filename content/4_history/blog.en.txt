@@ -6,7 +6,7 @@ Header: [{"content":{"logo":[],"logotext":"TAP","shownavigation":"true","languag
 
 ----
 
-Blocks: [{"content":{"title":"Latest articles","featuredarticles":["page://txbbw6veotkz07bz","page://xscv2sfgrfzvojq0"]},"id":"123f381f-163d-42a9-b817-ee88548023f3","isHidden":false,"type":"featuredblog"},{"content":{"title":"Latest articles","buttontext":"View all articles","buttonurl":"http://localhost:8888/panel/pages/history","maxarticles":8},"id":"8df809ca-c56b-462c-aa5c-fc1403242933","isHidden":false,"type":"latestblog"}]
+Blocks: [{"content":{"icon":[],"subtitle":"Archives","title":"Our History","description":"Find a curated library of studies, research, stories, and a plethora of historical documents! Feel free to browse, download, copy and spread the knowledge!"},"id":"3aca027a-de3f-4ca4-9978-b582829f1cc8","isHidden":false,"type":"textblock"},{"content":{"title":"Latest articles","featuredarticles":["page://txbbw6veotkz07bz","page://xscv2sfgrfzvojq0"]},"id":"123f381f-163d-42a9-b817-ee88548023f3","isHidden":false,"type":"featuredblog"},{"content":{"title":"Latest articles","buttontext":"View all articles","buttonurl":"http://localhost:8888/panel/pages/history","maxarticles":8},"id":"8df809ca-c56b-462c-aa5c-fc1403242933","isHidden":false,"type":"latestblog"}]
 
 ----
 

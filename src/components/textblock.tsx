@@ -8,6 +8,7 @@ interface TextBlockProps {
     width: number;
     height: number;
   } | null;
+  subtitle?: string;
   title?: string;
   description?: string;
   [key: string]: any;
@@ -16,8 +17,9 @@ interface TextBlockProps {
 const TextBlock: React.FC<TextBlockProps> = (props) => {
   const {
     icon = null,
-    title = 'Create Content with AI Assistance',
-    description = 'Our AI assistant helps you create better content faster. Generate ideas, improve your writing, and design layouts with simple prompts.'
+    subtitle = '',
+    title = '',
+    description = ''
   } = props;
 
   const [isExpanded, setIsExpanded] = useState(false);
@@ -35,28 +37,31 @@ const TextBlock: React.FC<TextBlockProps> = (props) => {
 
   return (
     <section>
-      <div className="py-24">
-        <div className="mx-auto w-full max-w-5xl px-6">
-          <div className="mx-auto max-w-2xl">
+      <div className="py-20">
+        <div className="mx-auto w-full max-w-7xl px-6">
+          <div className="mx-auto max-w-screen-xl">
             <div>
-              {icon && (
+              {icon && icon.url && (
                 <img
                   src={icon.url}
                   alt={icon.alt}
                   className="w-12 h-12 object-cover"
                 />
               )}
+              {subtitle && (
+                <span className="text-primary">{subtitle}</span>
+              )}
               <h2 className="text-foreground mt-4 text-4xl font-semibold">{title}</h2>
-              <div className="text-muted-foreground mt-4 text-xl">
+              <div className="text-muted-foreground mt-4 text-xl"> 
                 <p className="mb-4">
                   {isExpanded ? description : firstParagraph}
                 </p>
                 {hasMore && (
                   <Button
-                    variant="link"
-                    size="sm"
+                    variant="outline"
+                    size="lg"
                     onClick={() => setIsExpanded(!isExpanded)}
-                    className="p-0 h-auto text-primary hover:text-primary/80"
+                    className=" text-primary hover:text-primary/80"
                   >
                     {isExpanded ? 'Read less' : 'Read more'}
                   </Button>
