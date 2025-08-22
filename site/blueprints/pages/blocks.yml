@@ -19,6 +19,7 @@ fields:
       - latestblog
       - featuredblog
       - blogglobe
+      - features03
     label: Content Blocks
     
   footer:

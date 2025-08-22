@@ -196,6 +196,18 @@ const Hero: React.FC<HeroProps> = ({
 - Dynamic statistics display
 - Auto-rotating globe with user controls
 
+#### textblock - Simple Text Content
+- Icon, subtitle, title, and description fields
+- Read more/less functionality for long content
+- Primary color accent styling
+
+#### features03 - Design & Engage Features
+- Two-column responsive feature cards layout
+- Configurable icons from Lucide icon library
+- Dynamic feature lists with icon + text pairs
+- Call-to-action buttons with external link support
+- Mobile-responsive with placeholder media areas
+
 ## Creating Custom Blocks
 
 ### 1. Directory Structure
