@@ -23,6 +23,7 @@ tabs:
               - featuredblog
               - blogglobe
               - textblock
+              - bentogrid
             label: Content Blocks
             
           footer:

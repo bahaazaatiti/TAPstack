@@ -10,6 +10,7 @@ import FooterSection from './default'
 import Blog from './Blog'
 import LatestBlog from './latestblog'
 import FeaturedBlog from './featuredblog'
+import BentoGridBlock from './BentoGridBlock'
 import BlogGlobe from './BlogGlobe'
 import TextBlock from './textblock'
 import Features03 from './Features03'
@@ -24,6 +25,7 @@ const blockComponents: Record<string, ComponentType<any>> = {
   blog: Blog,
   latestblog: LatestBlog,
   featuredblog: FeaturedBlog,
+  bentogrid: BentoGridBlock,
   blogglobe: BlogGlobe,
   textblock: TextBlock,
   features03: Features03,
