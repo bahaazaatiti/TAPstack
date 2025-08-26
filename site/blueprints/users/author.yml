@@ -12,7 +12,7 @@ permissions:
   site:
     update: false
     
-  # Page permissions - restrict to only blog pages and articles dashboard
+  # Page permissions - allow access to articles only
   pages:
     list: true
     read: true
@@ -34,6 +34,7 @@ permissions:
     update: true
     delete: true
     replace: true
+    changeStatus: false
     
   # User permissions - very limited
   users:
@@ -47,18 +48,16 @@ permissions:
     changePassword: false
     changeRole: false
 
-# Limit access to specific page templates
+# Limit access to specific templates
 blueprints:
   - article
 
-# Hide other panel areas for authors
+# Hide other panel areas for authors - only show site with restrictions
 options:
   panel:
     menu:
-      - pages: false
-      - site: false
-      - users: false
-      - system: false
+      users: false
+      system: false
 
 fields:
   bio:
