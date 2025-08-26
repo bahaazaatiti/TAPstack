@@ -14,6 +14,7 @@ import BentoGridBlock from './BentoGridBlock'
 import BlogGlobe from './BlogGlobe'
 import TextBlock from './textblock'
 import Features03 from './Features03'
+import AppleCarousel from './AppleCarousel'
 
 // Block registry - add new blocks here
 const blockComponents: Record<string, ComponentType<any>> = {
@@ -26,6 +27,7 @@ const blockComponents: Record<string, ComponentType<any>> = {
   latestblog: LatestBlog,
   featuredblog: FeaturedBlog,
   bentogrid: BentoGridBlock,
+  applecarousel: AppleCarousel,
   blogglobe: BlogGlobe,
   textblock: TextBlock,
   features03: Features03,

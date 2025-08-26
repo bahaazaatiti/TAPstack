@@ -22,6 +22,7 @@ fields:
       - features03
       - wavyhero
       - bentogrid
+      - applecarousel
     label: Content Blocks
     
   footer:
