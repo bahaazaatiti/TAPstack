@@ -6,7 +6,6 @@ sections:
     headline: Pages
     layout: pages
     sortBy: num asc
-
     columns:
       title:
         label: Title

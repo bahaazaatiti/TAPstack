@@ -1,5 +1,14 @@
 title: Blocks Page
 
+
+options:
+  access:
+    admin: true
+    author: false
+  create:
+    admin: true
+    author: false
+    
 fields:
   header:
     type: blocks

@@ -1,0 +1,10 @@
+title: search
+
+
+options:
+  access:
+    admin: true
+    author: false
+  create:
+    admin: true
+    author: false

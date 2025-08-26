@@ -16,7 +16,6 @@ permissions:
   pages:
     list: true
     read: true
-    create: true
     update: true
     delete: false
     sort: false
@@ -53,12 +52,8 @@ blueprints:
   - article
 
 # Hide other panel areas for authors - only show site with restrictions
-options:
-  panel:
-    menu:
-      users: false
-      system: false
-      
+
+
 
 fields:
   bio:

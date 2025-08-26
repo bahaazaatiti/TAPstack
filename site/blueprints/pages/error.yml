@@ -1,0 +1,10 @@
+title: error
+
+
+options:
+  access:
+    admin: true
+    author: false
+  create:
+    admin: true
+    author: false
