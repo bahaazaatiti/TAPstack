@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 // TODO: change this to a dynamic import if needed
 import Navbar from './Navbar'
 import Hero from './Hero'
+import WavyHero from './WavyHero'
 import Navbar04 from './Navbar04'
 import Comp582 from './Comp582'
 import FooterSection from './default'
@@ -17,6 +18,7 @@ import Features03 from './Features03'
 const blockComponents: Record<string, ComponentType<any>> = {
   navbar: Navbar,
   hero: Hero,
+  wavyhero: WavyHero,
   navbar04: Navbar04,
   comp582: Comp582,
   blog: Blog,
