@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "motion/react";
 import Image, { ImageProps } from "next/image";
 import { useOutsideClick } from "@/hooks/use-outside-click";
+import { Button } from "./button";
 
 interface CarouselProps {
   items: JSX.Element[];
@@ -59,20 +60,20 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
 
   const scrollLeft = () => {
     if (carouselRef.current) {
-      carouselRef.current.scrollBy({ left: -300, behavior: "smooth" });
+      carouselRef.current.scrollBy({ left: -400, behavior: "smooth" });
     }
   };
 
   const scrollRight = () => {
     if (carouselRef.current) {
-      carouselRef.current.scrollBy({ left: 300, behavior: "smooth" });
+      carouselRef.current.scrollBy({ left: 400, behavior: "smooth" });
     }
   };
 
   const handleCardClose = (index: number) => {
     if (carouselRef.current) {
-      const cardWidth = isMobile() ? 230 : 384; // (md:w-96)
-      const gap = isMobile() ? 4 : 8;
+      const cardWidth = isMobile() ? 320 : 512; // Updated to match new card widths
+      const gap = isMobile() ? 6 : 10;
       const scrollPosition = (cardWidth + gap) * (index + 1);
       carouselRef.current.scrollTo({
         left: scrollPosition,
@@ -104,8 +105,8 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
 
           <div
             className={cn(
-              "flex flex-row justify-start gap-4 pl-4",
-              "mx-auto max-w-7xl", // remove max-w-4xl if you want the carousel to span the full width of its container
+              "flex flex-row justify-start gap-6 pl-6",
+              // Remove max-width constraint for full-width carousel
             )}
           >
             {items.map((item, index) => (
@@ -125,7 +126,7 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
                   },
                 }}
                 key={"card" + index}
-                className="rounded-5xl last:pr-[5%] md:last:pr-[33%]"
+                className="rounded-5xl last:pr-[10%] md:last:pr-[20%]"
               >
                 {item}
               </motion.div>
@@ -133,20 +134,24 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
           </div>
         </div>
         <div className="mr-10 flex justify-end gap-2">
-          <button
-            className="relative z-40 flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 disabled:opacity-50"
+          <Button
+            variant="outline"
+            size="icon"
+            className="relative z-40"
             onClick={scrollLeft}
             disabled={!canScrollLeft}
           >
-            <IconArrowNarrowLeft className="h-6 w-6 text-gray-500" />
-          </button>
-          <button
-            className="relative z-40 flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 disabled:opacity-50"
+            <IconArrowNarrowLeft className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="relative z-40"
             onClick={scrollRight}
             disabled={!canScrollRight}
           >
-            <IconArrowNarrowRight className="h-6 w-6 text-gray-500" />
-          </button>
+            <IconArrowNarrowRight className="h-4 w-4" />
+          </Button>
         </div>
       </div>
     </CarouselContext.Provider>
@@ -203,7 +208,7 @@ export const Card = ({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 h-full w-full bg-black/80 backdrop-blur-lg"
+              className="fixed inset-0 h-full w-full bg-background/80 backdrop-blur-sm"
             />
             <motion.div
               initial={{ opacity: 0 }}
@@ -211,26 +216,32 @@ export const Card = ({
               exit={{ opacity: 0 }}
               ref={containerRef}
               layoutId={layout ? `card-${card.title}` : undefined}
-              className="relative z-[60] mx-auto my-10 h-fit max-w-5xl rounded-3xl bg-white p-4 font-sans md:p-10 dark:bg-neutral-900"
+              className="relative z-50 mx-auto my-10 h-fit max-w-5xl rounded-lg bg-card p-4 font-sans md:p-10 border shadow-lg"
             >
-              <button
-                className="sticky top-4 right-0 ml-auto flex h-8 w-8 items-center justify-center rounded-full bg-black dark:bg-white"
-                onClick={handleClose}
-              >
-                <IconX className="h-6 w-6 text-neutral-100 dark:text-neutral-900" />
-              </button>
-              <motion.p
-                layoutId={layout ? `category-${card.title}` : undefined}
-                className="text-base font-medium text-black dark:text-white"
-              >
-                {card.category}
-              </motion.p>
-              <motion.p
-                layoutId={layout ? `title-${card.title}` : undefined}
-                className="mt-4 text-2xl font-semibold text-neutral-700 md:text-5xl dark:text-white"
-              >
-                {card.title}
-              </motion.p>
+              <div className="flex justify-between items-start mb-4">
+                <div className="flex-1">
+                  <motion.p
+                    layoutId={layout ? `category-${card.title}` : undefined}
+                    className="text-base font-medium text-muted-foreground"
+                  >
+                    {card.category}
+                  </motion.p>
+                  <motion.p
+                    layoutId={layout ? `title-${card.title}` : undefined}
+                    className="mt-4 text-2xl font-semibold text-foreground md:text-5xl"
+                  >
+                    {card.title}
+                  </motion.p>
+                </div>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="ml-4 flex-shrink-0"
+                  onClick={handleClose}
+                >
+                  <IconX className="h-4 w-4" />
+                </Button>
+              </div>
               <div className="py-10">{card.content}</div>
             </motion.div>
           </div>
@@ -239,7 +250,7 @@ export const Card = ({
       <motion.button
         layoutId={layout ? `card-${card.title}` : undefined}
         onClick={handleOpen}
-        className="relative z-10 flex h-80 w-56 flex-col items-start justify-start overflow-hidden rounded-3xl bg-gray-100 md:h-[40rem] md:w-96 dark:bg-neutral-900"
+        className="relative z-10 flex h-80 w-80 flex-col items-start justify-start overflow-hidden rounded-lg bg-muted md:h-[40rem] md:w-[32rem] border shadow-sm hover:shadow-md transition-shadow"
       >
         <div className="pointer-events-none absolute inset-x-0 top-0 z-30 h-full bg-gradient-to-b from-black/50 via-transparent to-transparent" />
         <div className="relative z-40 p-8">

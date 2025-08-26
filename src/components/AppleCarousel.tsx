@@ -77,7 +77,7 @@ const AppleCarousel: React.FC<AppleCarouselProps> = (props) => {
     title: article.title,
     category: article.category,
     content: (
-      <div className="bg-white rounded-3xl overflow-hidden dark:bg-neutral-900">
+      <div className="bg-card rounded-lg overflow-hidden border">
         {/* Blog Category and Title Header */}
 
 
@@ -98,10 +98,10 @@ const AppleCarousel: React.FC<AppleCarouselProps> = (props) => {
   if (cards.length === 0) {
     return (
       <div className="w-full py-20 px-6 text-center">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+        <h2 className="text-2xl font-bold text-foreground mb-4">
           {title}
         </h2>
-        <p className="text-gray-600 dark:text-gray-400">
+        <p className="text-muted-foreground">
           No articles with featured images found.
         </p>
       </div>
@@ -110,14 +110,14 @@ const AppleCarousel: React.FC<AppleCarouselProps> = (props) => {
 
   return (
     <div className="w-full py-10 lg:py-16">
-      <div className="max-w-7xl mx-auto px-6 xl:px-10">
-        <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-gray-900 dark:text-white mb-8 max-w-xl">
+      <div className="px-6 xl:px-10">
+        <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-foreground mb-8 max-w-xl">
           {title}
         </h2>
-        <Carousel items={cards.map((card, index) => (
-          <Card key={index} card={card} index={index} />
-        ))} initialScroll={initialScroll} />
       </div>
+      <Carousel items={cards.map((card, index) => (
+        <Card key={index} card={card} index={index} />
+      ))} initialScroll={initialScroll} />
     </div>
   );
 };

@@ -46,7 +46,7 @@ const FooterSection: React.FC<FooterSectionProps> = (props) => {
   }
 
   return (
-    <footer className={cn("bg-background w-full px-4 fixed bottom-0 left-0 z-50", className)}>
+    <footer className={cn("bg-background w-full px-4 fixed bottom-0 left-0 z-40", className)}>
       <div className="max-w-container mx-auto">
         <Footer>
           <FooterContent>
