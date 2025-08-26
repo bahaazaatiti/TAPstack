@@ -71,12 +71,12 @@
           <span><?= $page->readTime() ?> min read</span>
         </div>
         
-        <?php if($page->author()->isNotEmpty()): ?>
+        <?php if($page->author()->isNotEmpty() && $author = $page->author()->toUser()): ?>
         <div class="flex items-center gap-1">
           <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
           </svg>
-          <span>By <?= $page->author() ?></span>
+          <span>By <?= $author->name() ?></span>
         </div>
         <?php endif ?>
       </div>
@@ -119,6 +119,131 @@
           <?= $tag ?>
         </span>
         <?php endforeach ?>
+      </div>
+    </div>
+    <?php endif ?>
+
+    <!-- Author Details -->
+    <?php if($page->author()->isNotEmpty() && $author = $page->author()->toUser()): ?>
+    <div class="mt-8 pt-6 border-t">
+      <div class="bg-card border rounded-lg p-6">
+        <div class="flex items-start gap-4">
+          <!-- Author Avatar -->
+          <?php if ($avatar = $author->avatar()): ?>
+          <div class="flex-shrink-0">
+            <img
+              src="<?= $avatar->crop(80, 80)->url() ?>"
+              alt="<?= $author->name() ?>"
+              class="w-20 h-20 rounded-full object-cover"
+            />
+          </div>
+          <?php else: ?>
+          <div class="flex-shrink-0">
+            <div class="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center">
+              <svg class="w-8 h-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+            </div>
+          </div>
+          <?php endif ?>
+          
+          <!-- Author Info -->
+          <div class="flex-1 min-w-0">
+            <h3 class="text-lg font-semibold text-foreground"><?= $author->name() ?></h3>
+            
+            <?php if($author->position()->isNotEmpty() || $author->affiliation()->isNotEmpty()): ?>
+            <p class="text-sm text-muted-foreground mt-1">
+              <?php if($author->position()->isNotEmpty()): ?>
+                <?= $author->position() ?>
+              <?php endif ?>
+              <?php if($author->position()->isNotEmpty() && $author->affiliation()->isNotEmpty()): ?>
+                at 
+              <?php endif ?>
+              <?php if($author->affiliation()->isNotEmpty()): ?>
+                <?= $author->affiliation() ?>
+              <?php endif ?>
+            </p>
+            <?php endif ?>
+
+            <?php if($author->bio()->isNotEmpty()): ?>
+            <p class="text-sm text-muted-foreground mt-2">
+              <?= $author->bio() ?>
+            </p>
+            <?php endif ?>
+
+            <?php if($author->expertise()->isNotEmpty()): ?>
+            <div class="mt-3">
+              <span class="text-xs font-medium text-muted-foreground">Expertise:</span>
+              <div class="flex flex-wrap gap-1 mt-1">
+                <?php foreach($author->expertise()->split() as $skill): ?>
+                <span class="inline-flex items-center rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
+                  <?= $skill ?>
+                </span>
+                <?php endforeach ?>
+              </div>
+            </div>
+            <?php endif ?>
+
+            <!-- Social Links -->
+            <div class="flex items-center gap-3 mt-3">
+              <?php if($author->website()->isNotEmpty()): ?>
+              <a 
+                href="<?= $author->website() ?>" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                class="text-muted-foreground hover:text-foreground transition-colors"
+                title="Website"
+              >
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+              </a>
+              <?php endif ?>
+
+              <?php if($author->twitter()->isNotEmpty()): ?>
+              <a 
+                href="https://twitter.com/<?= $author->twitter() ?>" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                class="text-muted-foreground hover:text-foreground transition-colors"
+                title="Twitter/X"
+              >
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                </svg>
+              </a>
+              <?php endif ?>
+
+              <?php if($author->linkedin()->isNotEmpty()): ?>
+              <a 
+                href="<?= $author->linkedin() ?>" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                class="text-muted-foreground hover:text-foreground transition-colors"
+                title="LinkedIn"
+              >
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                </svg>
+              </a>
+              <?php endif ?>
+
+              <?php if($author->mastodon()->isNotEmpty()): ?>
+              <a 
+                href="<?= $author->mastodon() ?>" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                class="text-muted-foreground hover:text-foreground transition-colors"
+                title="Mastodon"
+              >
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M23.268 5.313c-.35-2.578-2.617-4.61-5.304-5.004C17.51.242 15.792 0 11.813 0h-.03c-3.98 0-4.835.242-5.288.309C3.882.692 1.496 2.518.917 5.127.64 6.412.61 7.837.661 9.143c.074 1.874.088 3.745.26 5.611.118 1.24.325 2.47.62 3.68.55 2.237 2.777 4.098 4.96 4.857 2.336.792 4.849.923 7.256.38.265-.061.527-.132.786-.213.585-.184 1.27-.39 1.774-.753a.057.057 0 0 0 .023-.043v-1.809a.052.052 0 0 0-.02-.041.053.053 0 0 0-.046-.01 20.282 20.282 0 0 1-4.709.545c-2.73 0-3.463-1.284-3.674-1.818a5.593 5.593 0 0 1-.319-1.433.053.053 0 0 1 .066-.054c1.517.363 3.072.546 4.632.546.376 0 .75 0 1.125-.01 1.57-.044 3.224-.124 4.768-.422.038-.008.077-.015.11-.024 2.435-.464 4.753-1.92 4.989-5.604.008-.145.03-1.52.03-1.67.002-.512.167-3.63-.024-5.545zm-3.748 9.195h-2.561V8.29c0-1.309-.55-1.976-1.67-1.976-1.23 0-1.846.79-1.846 2.35v3.403h-2.546V8.663c0-1.56-.617-2.35-1.848-2.35-1.112 0-1.668.668-1.67 1.977v6.218H4.822V8.102c0-1.31.337-2.35 1.011-3.12.696-.77 1.608-1.164 2.74-1.164 1.311 0 2.302.5 2.962 1.498l.638 1.06.638-1.06c.66-.999 1.65-1.498 2.96-1.498 1.13 0 2.043.395 2.74 1.164.675.77 1.012 1.81 1.012 3.12z"/>
+                </svg>
+              </a>
+              <?php endif ?>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <?php endif ?>
