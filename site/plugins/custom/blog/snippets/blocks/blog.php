@@ -54,32 +54,26 @@ foreach ($articlePages as $article) {
   }
 
   $articles[] = [
-    'title' => $article->title()->value(),
-    'description' => $article->description()->isNotEmpty() ? $article->description()->value() : $article->text()->excerpt(200),
-    'category' => $article->category()->value(),
+    'title' => (string)$article->title()->value(),
+    'description' => $article->description()->isNotEmpty() ? (string)$article->description()->value() : (string)$article->text()->excerpt(200),
+    'category' => (string)$article->category()->value(),
     'date' => $article->date()->toDate('M j, Y'),
     'readTime' => $article->readTime()->isNotEmpty() ? (int)$article->readTime()->value() : 5,
-    'url' => $article->url(),
-    'author' => $article->author()->value(),
+    'url' => (string)$article->url(),
+    'author' => (string)$article->author()->value(),
     'tags' => $article->tags()->split(','),
     'featuredImage' => $featuredImage
   ];
 }
 
-// Prepare block data for React
-$blockData = [
-  'title' => $block->title()->isNotEmpty() ? $block->title()->value() : 'Posts',
-  'showCategories' => $block->showCategories()->toBool(),
-  'postsPerPage' => $block->postsPerPage()->isNotEmpty() ? (int)$block->postsPerPage()->value() : 20,
-  'articles' => $articles,
-  'searchQuery' => $searchQuery // Pass search query to React component
-];
-
 ?>
 
 <div id="blog-<?= $block->id() ?>" class="blog-container"></div>
 
-<script>
-window.blockData = window.blockData || {};
-window.blockData['blog-<?= $block->id() ?>'] = <?= json_encode($blockData) ?>;
-</script>
+<?php snippet('pass-block-data', ['block' => $block, 'blockType' => 'blog', 'additionalData' => [
+  'title' => $block->title()->isNotEmpty() ? $block->title()->value() : 'Posts',
+  'showCategories' => $block->showCategories()->toBool(),
+  'postsPerPage' => $block->postsPerPage()->isNotEmpty() ? (int)$block->postsPerPage()->value() : 20,
+  'articles' => $articles,
+  'searchQuery' => $searchQuery
+]]) ?>
