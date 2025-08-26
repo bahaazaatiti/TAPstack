@@ -53,6 +53,10 @@ foreach ($articlePages as $article) {
     ];
   }
 
+  // Get author information from user relationship
+  $author = $article->author()->toUser();
+  $authorName = $author ? $author->name()->value() : 'Unknown Author';
+  
   $articles[] = [
     'title' => (string)$article->title()->value(),
     'description' => $article->description()->isNotEmpty() ? (string)$article->description()->value() : (string)$article->text()->excerpt(200),
@@ -60,7 +64,7 @@ foreach ($articlePages as $article) {
     'date' => $article->date()->toDate('M j, Y'),
     'readTime' => $article->readTime()->isNotEmpty() ? (int)$article->readTime()->value() : 5,
     'url' => (string)$article->url(),
-    'author' => (string)$article->author()->value(),
+    'author' => $authorName,
     'tags' => $article->tags()->split(','),
     'featuredImage' => $featuredImage
   ];

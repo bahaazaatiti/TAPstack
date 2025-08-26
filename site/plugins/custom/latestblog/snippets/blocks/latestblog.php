@@ -30,6 +30,10 @@ foreach ($articlePages->limit($maxArticles) as $article) {
     ];
   }
 
+  // Get author information from user relationship
+  $author = $article->author()->toUser();
+  $authorName = $author ? $author->name()->value() : 'Unknown Author';
+
   $articles[] = [
     'title' => $article->title()->value(),
     'description' => $article->description()->isNotEmpty() ? $article->description()->value() : $article->text()->excerpt(150),
@@ -37,7 +41,7 @@ foreach ($articlePages->limit($maxArticles) as $article) {
     'date' => $article->date()->toDate('M j, Y'),
     'readTime' => $article->readTime()->isNotEmpty() ? (int)$article->readTime()->value() : 5,
     'url' => $article->url(),
-    'author' => $article->author()->value(),
+    'author' => $authorName,
     'tags' => $article->tags()->split(','),
     'featuredImage' => $featuredImage
   ];
