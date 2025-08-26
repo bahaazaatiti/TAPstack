@@ -40,5 +40,36 @@ tabs:
         type: pages
         headline: Articles
         template: article
-        info: "{{ page.date.toDate('M j, Y') }} - {{ page.category }}"
+        layout: table
+        columns:
+          title:
+            label: Title
+            width: 3/6
+          author:
+            label: Author
+            type: users
+            query: page.author
+            text: "{{ user.name }}"
+            width: 1/6
+          category:
+            label: Category
+            text: "{{ page.category }}"
+            width: 1/6
+          created:
+            label: Created
+            type: date
+            value: "{{ page.date }}"
+            width: 1/6
+          status:
+            label: Status
+            text: "{{ page.status }}"
+            width: 1/6
         sortBy: date desc
+        create:
+          template: article
+        info: false
+        empty: "No articles yet. Create your first article!"
+        search: true
+        filters:
+          - status
+          - category
