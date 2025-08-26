@@ -24,6 +24,7 @@ tabs:
               - blogglobe
               - textblock
               - bentogrid
+              - applecarousel
             label: Content Blocks
             
           footer:

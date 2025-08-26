@@ -1,12 +1,35 @@
 <?php 
 // Apple Cards Carousel block snippet - processes selected articles with featured images
 
+$selectionMode = $block->selectionMode()->value() ?: 'manual';
 $selectedArticles = $block->articles()->toPages();
 $onlyWithImages = $block->onlyWithImages()->toBool();
+$latestCount = (int)($block->latestCount()->value() ?: 10);
 
-// If no articles are manually selected, auto-select from site
-if ($selectedArticles->count() === 0) {
-  // Get all site articles
+// Determine articles based on selection mode
+if ($selectionMode === 'latest') {
+  // Get latest articles from parent section
+  $parentPage = $block->parent();
+  
+  if ($parentPage && $parentPage->hasChildren()) {
+    // Get articles from the parent page (current section)
+    $parentArticles = $parentPage->children()->filterBy('template', 'article')->listed()->sortBy('date', 'desc');
+  } else {
+    // Fallback to all site articles if no parent or no children
+    $parentArticles = site()->index()->filterBy('template', 'article')->listed()->sortBy('date', 'desc');
+  }
+  
+  if ($onlyWithImages) {
+    // Filter to only articles with featured images
+    $articlesWithImages = $parentArticles->filter(function($article) {
+      return $article->featuredImage()->isNotEmpty() || $article->images()->count() > 0;
+    });
+    $selectedArticles = $articlesWithImages->limit($latestCount);
+  } else {
+    $selectedArticles = $parentArticles->limit($latestCount);
+  }
+} elseif ($selectionMode === 'manual' && $selectedArticles->count() === 0) {
+  // Manual mode but no articles selected - auto-select from site as fallback
   $siteArticles = site()->index()->filterBy('template', 'article')->listed()->sortBy('date', 'desc');
   
   if ($onlyWithImages) {

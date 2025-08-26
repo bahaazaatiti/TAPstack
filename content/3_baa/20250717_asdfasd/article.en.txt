@@ -30,7 +30,15 @@ Readtime: 5
 
 ----
 
-Featuredimage: 
+Featuredimage: - file://i5x6xypns4bzngxa
+
+----
+
+Latitude: 
+
+----
+
+Longitude: 
 
 ----
 
