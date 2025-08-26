@@ -7,15 +7,11 @@ tabs:
       main:
         fields:
           header:
-            when:
-              user.role: admin
             type: blocks
             fieldsets:
               - comp582
             max: 1
           blocks:
-            when:
-              user.role: admin
             type: blocks
             fieldsets:
               - navbar
@@ -32,8 +28,6 @@ tabs:
             label: Content Blocks
             
           footer:
-            when:
-              user.role: admin
             type: blocks
             fieldsets:
               - footer

@@ -58,6 +58,7 @@ options:
     menu:
       users: false
       system: false
+      
 
 fields:
   bio:

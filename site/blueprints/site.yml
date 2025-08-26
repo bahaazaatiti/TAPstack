@@ -6,8 +6,7 @@ sections:
     headline: Pages
     layout: pages
     sortBy: num asc
-    when:
-      user.role: admin
+
     columns:
       title:
         label: Title
