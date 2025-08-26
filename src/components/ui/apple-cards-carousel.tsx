@@ -46,45 +46,96 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
   useEffect(() => {
     if (carouselRef.current) {
       carouselRef.current.scrollLeft = initialScroll;
-      checkScrollability();
+      // Add a small delay to ensure DOM is ready
+      setTimeout(() => checkScrollability(), 100);
     }
   }, [initialScroll]);
 
   const checkScrollability = () => {
     if (carouselRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = carouselRef.current;
-      setCanScrollLeft(scrollLeft > 0);
-      setCanScrollRight(scrollLeft < scrollWidth - clientWidth);
-    }
-  };
-
-  const scrollLeft = () => {
-    if (carouselRef.current) {
-      carouselRef.current.scrollBy({ left: -400, behavior: "smooth" });
-    }
-  };
-
-  const scrollRight = () => {
-    if (carouselRef.current) {
-      carouselRef.current.scrollBy({ left: 400, behavior: "smooth" });
-    }
-  };
-
-  const handleCardClose = (index: number) => {
-    if (carouselRef.current) {
-      const cardWidth = isMobile() ? 320 : 512; // Updated to match new card widths
-      const gap = isMobile() ? 6 : 10;
-      const scrollPosition = (cardWidth + gap) * (index + 1);
-      carouselRef.current.scrollTo({
-        left: scrollPosition,
-        behavior: "smooth",
-      });
-      setCurrentIndex(index);
+      const maxScrollLeft = scrollWidth - clientWidth;
+      
+      if (isRTL()) {
+        // In RTL, we need to normalize scroll position across browsers
+        let normalizedScrollLeft = scrollLeft;
+        
+        // Firefox uses negative values, Chrome uses positive values starting from max
+        if (scrollLeft < 0) {
+          // Firefox: convert negative to positive
+          normalizedScrollLeft = Math.abs(scrollLeft);
+        } else if (scrollLeft > 0 && maxScrollLeft > 0) {
+          // Chrome: scrollLeft starts at maxScrollLeft and goes down
+          normalizedScrollLeft = maxScrollLeft - scrollLeft;
+        }
+        
+        setCanScrollLeft(normalizedScrollLeft > 1);
+        setCanScrollRight(normalizedScrollLeft < maxScrollLeft - 1);
+      } else {
+        // LTR: Standard behavior
+        setCanScrollLeft(scrollLeft > 1);
+        setCanScrollRight(scrollLeft < maxScrollLeft - 1);
+      }
     }
   };
 
   const isMobile = () => {
     return window && window.innerWidth < 768;
+  };
+
+  const isRTL = () => {
+    return document.documentElement.dir === 'rtl' || document.body.classList.contains('rtl');
+  };
+
+  const scrollLeft = () => {
+    if (carouselRef.current) {
+      if (isRTL()) {
+        // In RTL, scrolling "left" means showing next items (scroll positive)
+        carouselRef.current.scrollBy({ left: 400, behavior: "smooth" });
+      } else {
+        // In LTR, scrolling left means showing previous items (scroll negative)
+        carouselRef.current.scrollBy({ left: -400, behavior: "smooth" });
+      }
+    }
+  };
+
+  const scrollRight = () => {
+    if (carouselRef.current) {
+      if (isRTL()) {
+        // In RTL, scrolling "right" means showing previous items (scroll negative)
+        carouselRef.current.scrollBy({ left: -400, behavior: "smooth" });
+      } else {
+        // In LTR, scrolling right means showing next items (scroll positive)
+        carouselRef.current.scrollBy({ left: 400, behavior: "smooth" });
+      }
+    }
+  };
+
+  const handleCardClose = (index: number) => {
+    if (carouselRef.current) {
+      const cardWidth = isMobile() ? 288 : 512; 
+      const gap = isMobile() ? 6 : 10;
+      
+      let targetPosition = (cardWidth + gap) * index;
+      
+      if (isRTL()) {
+        // In RTL, we scroll from right to left, but the positioning calculation
+        // should account for the total scrollable width
+        const { scrollWidth, clientWidth } = carouselRef.current;
+        const maxScrollLeft = scrollWidth - clientWidth;
+        
+        // For RTL, we want to scroll to show the card at the specified index
+        // The first card (index 0) should be at the rightmost position
+        targetPosition = Math.max(0, maxScrollLeft - targetPosition);
+      }
+      
+      carouselRef.current.scrollTo({
+        left: targetPosition,
+        behavior: "smooth",
+      });
+      
+      setCurrentIndex(index);
+    }
   };
 
   return (
@@ -93,19 +144,22 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
     >
       <div className="relative w-full">
         <div
-          className="flex w-full overflow-x-scroll overscroll-x-auto scroll-smooth py-10 [scrollbar-width:none] md:py-20"
+          className={cn(
+            "flex w-full overflow-x-scroll overscroll-x-auto scroll-smooth py-10 [scrollbar-width:none] md:py-20"
+          )}
+          dir={isRTL() ? "rtl" : "ltr"}
           ref={carouselRef}
           onScroll={checkScrollability}
         >
           <div
             className={cn(
-              "absolute right-0 z-[1000] h-auto w-[5%] overflow-hidden bg-gradient-to-l",
+              "absolute end-0 z-[1000] h-auto w-[5%] overflow-hidden bg-gradient-to-s",
             )}
           ></div>
 
           <div
             className={cn(
-              "flex flex-row justify-start gap-6 pl-6",
+              "flex flex-row gap-6 ps-6 justify-start",
               // Remove max-width constraint for full-width carousel
             )}
           >
@@ -126,14 +180,14 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
                   },
                 }}
                 key={"card" + index}
-                className="rounded-5xl last:pr-[10%] md:last:pr-[20%]"
+                className="rounded-5xl last:pe-[10%] md:last:pe-[20%]"
               >
                 {item}
               </motion.div>
             ))}
           </div>
         </div>
-        <div className="mr-10 flex justify-end gap-2">
+        <div className="me-10 flex justify-end gap-2">
           <Button
             variant="outline"
             size="icon"
@@ -141,7 +195,7 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
             onClick={scrollLeft}
             disabled={!canScrollLeft}
           >
-            <IconArrowNarrowLeft className="h-4 w-4" />
+            {isRTL() ? <IconArrowNarrowRight className="h-4 w-4" /> : <IconArrowNarrowLeft className="h-4 w-4" />}
           </Button>
           <Button
             variant="outline"
@@ -150,7 +204,7 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
             onClick={scrollRight}
             disabled={!canScrollRight}
           >
-            <IconArrowNarrowRight className="h-4 w-4" />
+            {isRTL() ? <IconArrowNarrowLeft className="h-4 w-4" /> : <IconArrowNarrowRight className="h-4 w-4" />}
           </Button>
         </div>
       </div>
@@ -236,7 +290,7 @@ export const Card = ({
                 <Button
                   variant="outline"
                   size="icon"
-                  className="ml-4 flex-shrink-0"
+                  className="ms-4 flex-shrink-0"
                   onClick={handleClose}
                 >
                   <IconX className="h-4 w-4" />
@@ -250,7 +304,7 @@ export const Card = ({
       <motion.button
         layoutId={layout ? `card-${card.title}` : undefined}
         onClick={handleOpen}
-        className="relative z-10 flex h-80 w-80 flex-col items-start justify-start overflow-hidden rounded-lg bg-muted md:h-[40rem] md:w-[32rem] border shadow-sm hover:shadow-md transition-shadow"
+        className="relative z-10 flex h-96 w-72 flex-col items-start justify-start overflow-hidden rounded-lg bg-muted md:h-[40rem] md:w-[32rem] border shadow-sm hover:shadow-md transition-shadow"
       >
         <div className="pointer-events-none absolute inset-x-0 top-0 z-30 h-full bg-gradient-to-b from-black/50 via-transparent to-transparent" />
         <div className="relative z-40 p-8">
