@@ -17,7 +17,7 @@ interface Article {
   date: string;
   readTime: number;
   url: string;
-  author: string;
+  author?: string; // Make author optional
   featuredImage?: {
     url: string;
     alt: string;
@@ -27,15 +27,36 @@ interface Article {
 }
 
 const LatestBlog: React.FC<LatestBlogProps> = (props) => {
+  // Debug: Log the props to see what data we're getting
+  console.log('LatestBlog props:', props);
+  
+  // Helper function to safely extract string values
+  const safeString = (value: any): string => {
+    if (!value) return '';
+    if (typeof value === 'string') return value;
+    if (typeof value === 'object' && value.value) return String(value.value);
+    if (typeof value === 'object' && value.toString) return value.toString();
+    return String(value);
+  };
+  
   const {
     title = "Latest articles",
-    buttonText = "View all articles",
+    buttonText = "View all articles", 
     buttonUrl = "/",
     articles: articleData = [],
   } = props;
 
   // Use articles from props if available, otherwise fall back to mock data
-  const articles: Article[] = articleData.length > 0 ? articleData : [
+  const processedArticles: Article[] = articleData.length > 0 ? articleData.map((article: any) => ({
+    title: safeString(article.title) || 'Untitled',
+    description: safeString(article.description) || 'No description available',
+    category: safeString(article.category) || '',
+    date: safeString(article.date) || '',
+    readTime: typeof article.readTime === 'number' ? article.readTime : (parseInt(safeString(article.readTime)) || 5),
+    url: safeString(article.url) || '#',
+    author: safeString(article.author) || undefined,
+    featuredImage: article.featuredImage || null
+  })) : [
     {
       title: "A beginner's guide to blockchain for engineers",
       description: "Our goal is to streamline SMB trade, making it easier and faster than ever.",
@@ -79,7 +100,7 @@ const LatestBlog: React.FC<LatestBlogProps> = (props) => {
   ];
 
   // Show only the latest 8 articles
-  const latestArticles = articles.slice(0, 8);
+  const latestArticles = processedArticles.slice(0, 8);
 
   return (
     <div className="w-full py-10 lg:py-16 px-6 xl:px-10">
@@ -95,27 +116,40 @@ const LatestBlog: React.FC<LatestBlogProps> = (props) => {
           </Button>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {latestArticles.map((article, index) => (
-            <a
-              key={index}
-              href={article.url}
-              className="flex flex-col gap-2 hover:opacity-75 cursor-pointer"
-            >
-              <div className="bg-muted rounded-md aspect-video mb-4 overflow-hidden">
-                {article.featuredImage ? (
-                  <img
-                    src={article.featuredImage.url}
-                    alt={article.featuredImage.alt}
-                    className="w-full h-full object-cover"
-                  />
-                ) : null}
-              </div>
-              <h3 className="text-xl tracking-tight">{article.title}</h3>
-              <p className="text-muted-foreground text-base">
-                {article.description}
-              </p>
-            </a>
-          ))}
+          {latestArticles.map((article, index) => {
+            // Add defensive checks for article data
+            if (!article || typeof article !== 'object') {
+              console.warn('Invalid article data at index', index, article);
+              return null;
+            }
+
+            return (
+              <a
+                key={index}
+                href={article.url || '#'}
+                className="flex flex-col gap-2 hover:opacity-75 cursor-pointer"
+              >
+                <div className="bg-muted rounded-md aspect-video mb-4 overflow-hidden">
+                  {article.featuredImage ? (
+                    <img
+                      src={article.featuredImage.url}
+                      alt={article.featuredImage.alt || article.title || 'Article image'}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : null}
+                </div>
+                <h3 className="text-xl tracking-tight">{article.title || 'Untitled'}</h3>
+                <p className="text-muted-foreground text-base">
+                  {article.description || 'No description available'}
+                </p>
+                <div className="text-sm text-muted-foreground">
+                  {article.author && <span>By {article.author}</span>}
+                  {article.author && article.date && <span> • </span>}
+                  {article.date && <span>{article.date}</span>}
+                </div>
+              </a>
+            );
+          })}
         </div>
       </div>
     </div>
