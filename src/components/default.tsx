@@ -1,16 +1,24 @@
-import React from "react"
+import React, { useState } from "react"
 import { cn } from "../lib/utils"
 import LaunchUI from "./logos/launch-ui"
 import ThemeToggle from "@/components/ui/theme-toggle"
 import { Separator } from "./ui/separator"
 import { Button } from "./ui/button"
-import { ArrowUp } from "lucide-react"
+import { ArrowUp, Github, LogIn } from "lucide-react"
 import {
   Footer,
   FooterBottom,
   FooterColumn,
   FooterContent,
 } from "./ui/footer"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "./ui/dialog"
 
 
 interface FooterSectionProps {
@@ -18,6 +26,8 @@ interface FooterSectionProps {
 }
 
 const FooterSection: React.FC<FooterSectionProps> = (props) => {
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  
   const {
     logo = <LaunchUI />,
     name = "Launch UI",
@@ -72,7 +82,54 @@ const FooterSection: React.FC<FooterSectionProps> = (props) => {
             ))}
           </FooterContent>
           <FooterBottom>
-            <div>{copyright}</div>
+            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+              <DialogTrigger asChild>
+                <button className="text-start hover:text-primary transition-colors cursor-pointer">
+                  {copyright}
+                </button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                  <DialogTitle>Quick Actions</DialogTitle>
+                  <DialogDescription>
+                    Choose an action below
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="flex flex-col gap-4 py-4">
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="w-full h-auto py-4 px-6 flex items-center justify-start gap-4"
+                    onClick={() => {
+                      window.open('https://github.com/bahaazaatiti/TAPstack', '_blank')
+                      setIsDialogOpen(false)
+                    }}
+                  >
+                    <Github className="size-6 shrink-0" />
+                    <div className="flex flex-col items-start text-start">
+                      <span className="font-medium text-base">GitHub</span>
+                      <span className="text-sm text-muted-foreground">Report bugs here!</span>
+                    </div>
+                  </Button>
+                  
+                  <Button
+                    variant="default"
+                    size="lg"
+                    className="w-full h-auto py-4 px-6 flex items-center justify-start gap-4"
+                    onClick={() => {
+                      window.location.href = '/panel'
+                      setIsDialogOpen(false)
+                    }}
+                  >
+                    <LogIn className="size-6 shrink-0" />
+                    <div className="flex flex-col items-start text-start">
+                      <span className="font-medium text-base">Login</span>
+                      <span className="text-sm opacity-75">Access admin panel</span>
+                    </div>
+                  </Button>
+                </div>
+              </DialogContent>
+            </Dialog>
             <div className="flex items-center gap-4">
               {Array.isArray(policies) && policies.map((policy: any, index: number) => (
                 <a key={index} href={policy.href}>
