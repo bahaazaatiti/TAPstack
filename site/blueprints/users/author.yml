@@ -1,0 +1,89 @@
+title: Author
+description: Content authors who can write and edit blog articles
+
+permissions:
+  # Panel access
+  access:
+    panel: true
+    users: false
+    system: false
+    
+  # Site permissions        TODO: REVIEW THIS
+  site:
+    update: false
+    
+  # Page permissions - general access
+  pages:
+    # Can list and read all pages (needed to navigate)
+    list: true
+    read: true
+    preview: true
+    # Basic permissions - specific template restrictions are in page blueprints
+    create: true
+    update: true
+    delete: false
+    sort: true
+    changeStatus: false
+    changeSlug: true
+    changeTemplate: false
+    changeTitle: true
+    
+  # File permissions
+  files:
+    create: true
+    read: true
+    update: true
+    delete: true
+    replace: true
+    changeStatus: false
+    
+  # User permissions - very limited
+  users:
+    create: false
+    read: false
+    update: false
+    delete: false
+    changeEmail: false
+    changeLanguage: false
+    changeName: false
+    changePassword: false
+    changeRole: false
+
+# Limit access to specific blueprints - only articles can be created
+blueprints:
+  - article
+
+fields:
+  bio:
+    label: Bio
+    type: textarea
+    help: Short biography that will appear in articles
+  website:
+    label: Website
+    type: url
+    help: Personal or professional website
+  twitter:
+    label: Twitter/X Handle
+    type: text
+    help: Without the @ symbol
+    placeholder: username
+  linkedin:
+    label: LinkedIn Profile
+    type: url
+    help: Full LinkedIn profile URL
+  mastodon:
+    label: Mastodon Account
+    type: text
+    help: Full mastodon handle (e.g., @username@instance.com)
+  expertise:
+    label: Areas of Expertise
+    type: tags
+    help: Academic or professional areas of expertise
+  affiliation:
+    label: Institution/Affiliation
+    type: text
+    help: University, organization, or institution
+  position:
+    label: Position/Title
+    type: text
+    help: Academic title or professional position

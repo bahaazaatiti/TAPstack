@@ -50,8 +50,11 @@ tabs:
                 required: true
               author:
                 label: Author
-                type: text
+                type: users
+                multiple: false
                 required: true
+                query: kirby.users.filterBy("role", "author")
+                help: Select the author from the user list
               tags:
                 label: Tags
                 type: tags

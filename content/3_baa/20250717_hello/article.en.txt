@@ -14,7 +14,7 @@ Category: Lifestyle
 
 ----
 
-Author: asdf
+Author: - user://dGwqLXO8
 
 ----
 
@@ -31,6 +31,14 @@ Readtime: 5
 ----
 
 Featuredimage: - file://eazalgqfvz0gsgxz
+
+----
+
+Latitude: 
+
+----
+
+Longitude: 
 
 ----
 

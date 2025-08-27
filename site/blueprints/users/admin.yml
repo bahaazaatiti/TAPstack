@@ -1,0 +1,85 @@
+title: Admin
+description: Full access administrators with all permissions
+
+permissions:
+  # Panel access - full access
+  access:
+    panel: true
+    users: true
+    system: true
+    
+  # Site permissions - full access
+  site:
+    update: true
+    
+  # Page permissions - full access to everything
+  pages:
+    read: true
+    create: true
+    update: true
+    delete: true
+    sort: true
+    changeStatus: true
+    changeSlug: true
+    changeTemplate: true
+    changeTitle: true
+    preview: true
+      
+  # File permissions - full access
+  files:
+    create: true
+    read: true
+    update: true
+    delete: true
+    replace: true
+    changeName: true
+      
+  # User permissions - full access
+  users:
+    create: true
+    read: true
+    update: true
+    delete: true
+    changeEmail: true
+    changeLanguage: true
+    changeName: true
+    changePassword: true
+    changeRole: true
+
+# Allow access to all blueprints
+blueprints: true
+
+# Show all panel areas
+options:
+  panel:
+    menu:
+      pages: true
+      users: true
+      system: true
+
+fields:
+  bio:
+    label: Bio
+    type: textarea
+    help: Administrator biography
+  website:
+    label: Website
+    type: url
+    help: Personal or professional website
+  twitter:
+    label: Twitter/X Handle
+    type: text
+    help: Without the @ symbol
+    placeholder: username
+  linkedin:
+    label: LinkedIn Profile
+    type: url
+    help: Full LinkedIn profile URL
+  phone:
+    label: Phone
+    type: tel
+    help: Contact phone number
+  department:
+    label: Department
+    type: text
+    help: Administrative department or area of responsibility

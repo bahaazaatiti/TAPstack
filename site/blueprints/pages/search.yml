@@ -1,0 +1,12 @@
+title: Search
+
+# Authors cannot access search pages at all
+options:
+  create:
+    author: false
+  read:
+    author: false
+  update:
+    author: false
+  delete:
+    author: false

@@ -1,5 +1,16 @@
 title: Blocks Page
 
+# Authors cannot access block pages at all
+options:
+  create:
+    author: false
+  read:
+    author: false
+  update:
+    author: false
+  delete:
+    author: false
+  
 fields:
   header:
     type: blocks

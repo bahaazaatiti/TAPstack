@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   Pagination,
   PaginationContent,
@@ -41,6 +43,10 @@ interface Article {
   readTime: number;
   url: string;
   author: string;
+  authorImage?: {
+    url: string;
+    alt: string;
+  } | null;
   featuredImage?: {
     url: string;
     alt: string;
@@ -215,6 +221,22 @@ const Blog: React.FC<BlogProps> = (props) => {
                     {article.description}
                   </p>
                   <div className="mt-4 flex items-center gap-6 text-muted-foreground text-sm font-medium">
+                    <div className="flex items-center gap-2">
+                      {article.authorImage?.url ? (
+                        <Avatar className="h-5 w-5">
+                          <AvatarImage 
+                            src={article.authorImage.url} 
+                            alt={article.authorImage.alt || article.author}
+                          />
+                          <AvatarFallback>
+                            {article.author.split(' ').map(n => n[0]).join('').toUpperCase()}
+                          </AvatarFallback>
+                        </Avatar>
+                      ) : (
+                        <Skeleton className="h-5 w-5 rounded-full" />
+                      )}
+                      <span>By {article.author}</span>
+                    </div>
                     <div className="flex items-center gap-2">
                       <ClockIcon className="h-4 w-4" /> {article.readTime} min read
                     </div>
