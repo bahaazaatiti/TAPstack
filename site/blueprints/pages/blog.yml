@@ -1,8 +1,22 @@
 title: Blog
+
+# Authors cannot modify blog pages - read-only access for navigation
 options:
   create:
-    admin: true
     author: false
+  update:
+    author: false
+  delete:
+    author: false
+  changeSlug:
+    author: false
+  changeStatus:
+    author: false
+  changeTemplate:
+    author: false
+  changeTitle:
+    author: false
+
 tabs:
 
   articles:

@@ -1,10 +1,12 @@
-title: error
+title: Error
 
-
+# Authors cannot access error pages at all
 options:
-  access:
-    admin: true
-    author: false
   create:
-    admin: true
+    author: false
+  read:
+    author: false
+  update:
+    author: false
+  delete:
     author: false

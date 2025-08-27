@@ -1,14 +1,16 @@
 title: Blocks Page
 
-
+# Authors cannot access block pages at all
 options:
-  access:
-    admin: true
-    author: false
   create:
-    admin: true
     author: false
-    
+  read:
+    author: false
+  update:
+    author: false
+  delete:
+    author: false
+  
 fields:
   header:
     type: blocks

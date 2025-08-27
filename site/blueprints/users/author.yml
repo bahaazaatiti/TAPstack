@@ -8,23 +8,25 @@ permissions:
     users: false
     system: false
     
-  # Site permissions
+  # Site permissions        TODO: REVIEW THIS
   site:
     update: false
     
-  # Page permissions - allow access to articles only
+  # Page permissions - general access
   pages:
+    # Can list and read all pages (needed to navigate)
     list: true
     read: true
+    preview: true
+    # Basic permissions - specific template restrictions are in page blueprints
+    create: true
     update: true
     delete: false
-    sort: false
-    # Only allow draft status, not published
+    sort: true
     changeStatus: false
-    changeSlug: false
+    changeSlug: true
     changeTemplate: false
     changeTitle: true
-    preview: true
     
   # File permissions
   files:
@@ -47,13 +49,9 @@ permissions:
     changePassword: false
     changeRole: false
 
-# Limit access to specific templates
+# Limit access to specific blueprints - only articles can be created
 blueprints:
   - article
-
-# Hide other panel areas for authors - only show site with restrictions
-
-
 
 fields:
   bio:
