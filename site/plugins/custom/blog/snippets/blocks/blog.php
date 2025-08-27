@@ -57,6 +57,18 @@ foreach ($articlePages as $article) {
   $author = $article->author()->toUser();
   $authorName = $author ? $author->name()->value() : 'Unknown Author';
   
+  // Get author image if available
+  $authorImage = null;
+  if ($author && $author->avatar()) {
+    $avatarFile = $author->avatar();
+    if ($avatarFile) {
+      $authorImage = [
+        'url' => $avatarFile->url(),
+        'alt' => $author->name()->value()
+      ];
+    }
+  }
+  
   $articles[] = [
     'title' => (string)$article->title()->value(),
     'description' => $article->description()->isNotEmpty() ? (string)$article->description()->value() : (string)$article->text()->excerpt(200),
@@ -65,6 +77,7 @@ foreach ($articlePages as $article) {
     'readTime' => $article->readTime()->isNotEmpty() ? (int)$article->readTime()->value() : 5,
     'url' => (string)$article->url(),
     'author' => $authorName,
+    'authorImage' => $authorImage,
     'tags' => $article->tags()->split(','),
     'featuredImage' => $featuredImage
   ];

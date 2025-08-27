@@ -33,6 +33,18 @@ foreach ($articlePages->limit($maxArticles) as $article) {
   // Get author information from user relationship
   $author = $article->author()->toUser();
   $authorName = $author ? $author->name()->value() : 'Unknown Author';
+  
+  // Get author image if available
+  $authorImage = null;
+  if ($author && $author->avatar()) {
+    $avatarFile = $author->avatar();
+    if ($avatarFile) {
+      $authorImage = [
+        'url' => $avatarFile->url(),
+        'alt' => $author->name()->value()
+      ];
+    }
+  }
 
   $articles[] = [
     'title' => $article->title()->value(),
@@ -42,6 +54,7 @@ foreach ($articlePages->limit($maxArticles) as $article) {
     'readTime' => $article->readTime()->isNotEmpty() ? (int)$article->readTime()->value() : 5,
     'url' => $article->url(),
     'author' => $authorName,
+    'authorImage' => $authorImage,
     'tags' => $article->tags()->split(','),
     'featuredImage' => $featuredImage
   ];

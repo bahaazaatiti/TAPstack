@@ -1,6 +1,8 @@
 import React from "react";
 import { MoveRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface LatestBlogProps {
   title?: string;
@@ -18,6 +20,10 @@ interface Article {
   readTime: number;
   url: string;
   author?: string; // Make author optional
+  authorImage?: {
+    url: string;
+    alt: string;
+  } | null;
   featuredImage?: {
     url: string;
     alt: string;
@@ -55,6 +61,7 @@ const LatestBlog: React.FC<LatestBlogProps> = (props) => {
     readTime: typeof article.readTime === 'number' ? article.readTime : (parseInt(safeString(article.readTime)) || 5),
     url: safeString(article.url) || '#',
     author: safeString(article.author) || undefined,
+    authorImage: article.authorImage || null,
     featuredImage: article.featuredImage || null
   })) : [
     {
@@ -143,9 +150,27 @@ const LatestBlog: React.FC<LatestBlogProps> = (props) => {
                   {article.description || 'No description available'}
                 </p>
                 <div className="text-sm text-muted-foreground">
-                  {article.author && <span>By {article.author}</span>}
-                  {article.author && article.date && <span> • </span>}
-                  {article.date && <span>{article.date}</span>}
+                  {article.author && (
+                    <div className="flex items-center gap-2">
+                      <span>By</span>
+                      {article.authorImage?.url ? (
+                        <Avatar className="h-4 w-4">
+                          <AvatarImage 
+                            src={article.authorImage.url} 
+                            alt={article.authorImage.alt || article.author}
+                          />
+                          <AvatarFallback>
+                            {article.author.split(' ').map(n => n[0]).join('').toUpperCase()}
+                          </AvatarFallback>
+                        </Avatar>
+                      ) : (
+                        <Skeleton className="h-4 w-4 rounded-full" />
+                      )}
+                      <span>{article.author}</span>
+                      {article.date && <span> • {article.date}</span>}
+                    </div>
+                  )}
+                  {!article.author && article.date && <span>{article.date}</span>}
                 </div>
               </a>
             );

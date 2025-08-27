@@ -1,4 +1,6 @@
 import React from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface BentoGridBlockProps {
   title?: string;
@@ -15,6 +17,10 @@ interface Article {
   readTime: number;
   url: string;
   author: string;
+  authorImage?: {
+    url: string;
+    alt: string;
+  } | null;
   featuredImage?: {
     url: string;
     alt: string;
@@ -128,8 +134,23 @@ const BentoGridBlock: React.FC<BentoGridBlockProps> = (props) => {
                   <div className="group/bento shadow-input row-span-1 flex flex-col justify-between space-y-4 rounded-xl border border-neutral-200 bg-white p-4 transition duration-200 hover:shadow-xl dark:border-white/[0.2] dark:bg-black dark:shadow-none h-full">
                     <HeaderComponent article={article} />
                     <div className="transition duration-200 group-hover/bento:translate-x-2">
-                      <div className="mt-2 mb-2 font-sans font-bold text-neutral-600 dark:text-neutral-200">
-                        {article.title}
+                      <div className="mt-2 mb-2">
+                        {article.authorImage?.url ? (
+                          <Avatar className="h-6 w-6 mb-2">
+                            <AvatarImage 
+                              src={article.authorImage.url} 
+                              alt={article.authorImage.alt || article.author}
+                            />
+                            <AvatarFallback>
+                              {article.author.split(' ').map(n => n[0]).join('').toUpperCase()}
+                            </AvatarFallback>
+                          </Avatar>
+                        ) : (
+                          <Skeleton className="h-6 w-6 rounded-full mb-2" />
+                        )}
+                        <div className="font-sans font-bold text-neutral-600 dark:text-neutral-200">
+                          {article.title}
+                        </div>
                       </div>
                       <div className="font-sans text-xs font-normal text-neutral-600 dark:text-neutral-300">
                         {article.description}

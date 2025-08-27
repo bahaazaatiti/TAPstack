@@ -1,6 +1,7 @@
 import React from "react";
-// import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface FeaturedBlogProps {
   title?: string;
@@ -16,6 +17,10 @@ interface Article {
   readTime: number;
   url: string;
   author: string;
+  authorImage?: {
+    url: string;
+    alt: string;
+  } | null;
   featuredImage?: {
     url: string;
     alt: string;
@@ -97,10 +102,19 @@ const FeaturedBlog: React.FC<FeaturedBlogProps> = (props) => {
                 <Badge>{article.category}</Badge>
                 <p className="flex flex-row gap-2 text-sm items-center">
                   <span className="text-muted-foreground">By</span>
-                  {/* <Avatar className="h-6 w-6">
-                    <AvatarImage src="https://github.com/shadcn.png" />
-                    <AvatarFallback>CN</AvatarFallback>
-                  </Avatar> */}
+                  {article.authorImage?.url ? (
+                    <Avatar className="h-6 w-6">
+                      <AvatarImage 
+                        src={article.authorImage.url} 
+                        alt={article.authorImage.alt || article.author}
+                      />
+                      <AvatarFallback>
+                        {article.author.split(' ').map(n => n[0]).join('').toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
+                  ) : (
+                    <Skeleton className="h-6 w-6 rounded-full" />
+                  )}
                   <span>{article.author}</span>
                 </p>
               </div>
