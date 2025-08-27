@@ -164,9 +164,6 @@ tabs:
         headline: Pages
         layout: pages
         sortBy: num asc
-        templates:
-          - blog
-          - blocks
         create:
           - blog
           - blocks
