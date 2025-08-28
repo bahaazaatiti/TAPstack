@@ -39,35 +39,39 @@
     };
   </script>
 
-  <!-- Hero Section with Featured Image Background -->
-  <?php if($page->featuredImage()->isNotEmpty()): ?>
-  <?php $featuredImg = $page->featuredImage()->toFile(); ?>
-  <?php if($featuredImg): ?>
+  <!-- Hero Section -->
   <div class="relative h-[80vh] min-h-[600px] w-full overflow-hidden">
-    <!-- Background Image -->
+    <!-- Background Image or Fallback -->
     <div class="absolute inset-0">
+      <?php if($page->featuredImage()->isNotEmpty() && $featuredImg = $page->featuredImage()->toFile()): ?>
       <img
         src="<?= $featuredImg->url() ?>"
         alt="<?= $featuredImg->alt()->value() ?: $page->title() ?>"
         class="h-full w-full object-cover"
       />
-      <!-- Gradient Overlay -->
+      <!-- Gradient Overlay for Image -->
       <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20"></div>
+      <?php else: ?>
+      <!-- Fallback Background when no featured image -->
+      <div class="h-full w-full bg-gradient-to-br from-primary/20 via-primary/10 to-background"></div>
+      <!-- Overlay for Text Readability -->
+      <div class="absolute inset-0 bg-gradient-to-t from-background/80 via-background/40 to-background/20"></div>
+      <?php endif ?>
     </div>
     
     <!-- Hero Content -->
     <div class="relative flex h-full items-center justify-center py-8 md:py-16 lg:py-20">
       <div class="container mx-auto max-w-6xl px-4 md:px-6 lg:px-8">
-        <div class="max-w-4xl mx-auto space-y-3 md:space-y-4 lg:space-y-6 text-primary-foreground text-center drop-shadow-lg">
+        <div class="max-w-4xl mx-auto space-y-3 md:space-y-4 lg:space-y-6 <?= $page->featuredImage()->isNotEmpty() ? 'text-primary-foreground' : 'text-foreground' ?> text-center drop-shadow-lg">
           <!-- Breadcrumb - Parent Blog -->
-          <nav class="flex items-center justify-center gap-2 text-sm text-primary-foreground/80">
-            <a href="<?= $page->parent()->url() ?>" class="hover:text-primary-foreground transition-colors">
+          <nav class="flex items-center justify-center gap-2 text-sm <?= $page->featuredImage()->isNotEmpty() ? 'text-primary-foreground/80' : 'text-muted-foreground' ?>">
+            <a href="<?= $page->parent()->url() ?>" class="<?= $page->featuredImage()->isNotEmpty() ? 'hover:text-primary-foreground' : 'hover:text-foreground' ?> transition-colors">
               <?= $page->parent()->title() ?>
             </a>
           </nav>
           
           <!-- Meta Information -->
-          <div class="flex flex-wrap items-center justify-center gap-3 md:gap-4 text-sm text-primary-foreground/90">
+          <div class="flex flex-wrap items-center justify-center gap-3 md:gap-4 text-sm <?= $page->featuredImage()->isNotEmpty() ? 'text-primary-foreground/90' : 'text-muted-foreground' ?>">
             <div class="flex items-center gap-2">
               <svg class="h-4 w-4 drop-shadow-md" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -75,7 +79,7 @@
               <span><?= $page->readTime() ?> min read</span>
             </div>
             
-            <div class="text-primary-foreground/60">•</div>
+            <div class="<?= $page->featuredImage()->isNotEmpty() ? 'text-primary-foreground/60' : 'text-muted-foreground/60' ?>">•</div>
             
             <div class="flex items-center gap-2">
               <svg class="h-4 w-4 drop-shadow-md" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -86,14 +90,14 @@
           </div>
           
           <!-- Title -->
-          <h1 class="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold tracking-tight leading-tight text-primary-foreground drop-shadow-xl px-4">
+          <h1 class="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold tracking-tight leading-tight <?= $page->featuredImage()->isNotEmpty() ? 'text-primary-foreground' : 'text-foreground' ?> drop-shadow-xl px-4">
             <?= $page->title() ?>
           </h1>
           
           <!-- Description -->
           <?php if($page->description()->isNotEmpty()): ?>
           <div class="pt-4 md:pt-6">
-            <p class="text-base md:text-lg lg:text-xl text-primary-foreground/90 leading-relaxed max-w-3xl mx-auto px-4">
+            <p class="text-base md:text-lg lg:text-xl <?= $page->featuredImage()->isNotEmpty() ? 'text-primary-foreground/90' : 'text-muted-foreground' ?> leading-relaxed max-w-3xl mx-auto px-4">
               <?= $page->description() ?>
             </p>
           </div>
@@ -102,16 +106,28 @@
           <!-- Category and Tags -->
           <div class="flex flex-wrap items-center justify-center gap-2 md:gap-3 pt-4">
             <!-- Category Badge -->
+            <?php if($page->featuredImage()->isNotEmpty()): ?>
             <span class="inline-flex items-center rounded-full bg-primary-foreground/20 backdrop-blur-sm px-3 py-1 text-sm font-medium text-primary-foreground border border-primary-foreground/30">
               <?= $page->category() ?>
             </span>
+            <?php else: ?>
+            <span class="inline-flex items-center rounded-full bg-primary/20 backdrop-blur-sm px-3 py-1 text-sm font-medium text-primary border border-primary/30">
+              <?= $page->category() ?>
+            </span>
+            <?php endif ?>
             
             <!-- Tags -->
             <?php if($page->tags()->isNotEmpty()): ?>
             <?php foreach($page->tags()->split() as $tag): ?>
+            <?php if($page->featuredImage()->isNotEmpty()): ?>
             <span class="inline-flex items-center rounded-full bg-primary-foreground/10 backdrop-blur-sm px-2.5 py-0.5 text-xs font-medium text-primary-foreground/90 border border-primary-foreground/20">
               <?= $tag ?>
             </span>
+            <?php else: ?>
+            <span class="inline-flex items-center rounded-full bg-primary/10 backdrop-blur-sm px-2.5 py-0.5 text-xs font-medium text-primary/90 border border-primary/20">
+              <?= $tag ?>
+            </span>
+            <?php endif ?>
             <?php endforeach ?>
             <?php endif ?>
           </div>
@@ -119,8 +135,6 @@
       </div>
     </div>
   </div>
-  <?php endif ?>
-  <?php endif ?>
 
   <!-- Main Content Area -->
   <div class="container pt-20 px-4 md:px-6 lg:px-8">
@@ -372,10 +386,14 @@
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       const tocContainer = document.getElementById('toc');
+      const tocSidebar = tocContainer.closest('.hidden.xl\\:block');
       const headings = document.querySelectorAll('article h1, article h2, article h3');
       
       if (headings.length === 0) {
-        tocContainer.innerHTML = '<p class="text-xs text-muted-foreground">No headings found</p>';
+        // Hide the entire TOC sidebar when no headings are found
+        if (tocSidebar) {
+          tocSidebar.style.display = 'none';
+        }
         return;
       }
       

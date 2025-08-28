@@ -14,31 +14,35 @@
 export const ArticleTemplateClasses = () => {
   return (
     <div className="hidden">
-      {/* Hero Section Classes */}
+      {/* Hero Section Classes - Always Shows */}
       <div className="relative h-[80vh] min-h-[600px] w-full overflow-hidden">
         <div className="absolute inset-0">
           <img className="h-full w-full object-cover" src="" alt="" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20"></div>
+          
+          {/* Fallback Background when no featured image */}
+          <div className="h-full w-full bg-gradient-to-br from-primary/20 via-primary/10 to-background"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/40 to-background/20"></div>
         </div>
         <div className="relative flex h-full items-center justify-center py-20 md:py-20">
           <div className="container mx-auto max-w-4xl px-4 md:px-6">
-            <div className="max-w-3xl mx-auto space-y-3 md:space-y-4 text-primary-foreground text-center drop-shadow-lg">
+            <div className="max-w-3xl mx-auto space-y-3 md:space-y-4 text-primary-foreground text-foreground text-center drop-shadow-lg">
               {/* Breadcrumb */}
-              <nav className="flex items-center justify-center gap-2 text-sm text-primary-foreground/80">
-                <a href="#" className="hover:text-primary-foreground transition-colors">
+              <nav className="flex items-center justify-center gap-2 text-sm text-primary-foreground/80 text-muted-foreground">
+                <a href="#" className="hover:text-primary-foreground hover:text-foreground transition-colors">
                   Blog
                 </a>
               </nav>
               
               {/* Meta Information */}
-              <div className="flex flex-wrap items-center justify-center gap-3 md:gap-4 text-sm text-primary-foreground/90">
+              <div className="flex flex-wrap items-center justify-center gap-3 md:gap-4 text-sm text-primary-foreground/90 text-muted-foreground">
                 <div className="flex items-center gap-2">
                   <svg className="h-4 w-4 drop-shadow-md" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                   <span>5 min read</span>
                 </div>
-                <div className="text-primary-foreground/60">•</div>
+                <div className="text-primary-foreground/60 text-muted-foreground/60">•</div>
                 <div className="flex items-center gap-2">
                   <svg className="h-4 w-4 drop-shadow-md" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -48,23 +52,32 @@ export const ArticleTemplateClasses = () => {
               </div>
               
               {/* Title */}
-              <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight leading-tight text-primary-foreground drop-shadow-xl">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight leading-tight text-primary-foreground text-foreground drop-shadow-xl">
                 Article Title
               </h1>
               
               {/* Description */}
               <div className="pt-4 md:pt-6">
-                <p className="text-base md:text-lg text-primary-foreground/90 leading-relaxed max-w-2xl mx-auto">
+                <p className="text-base md:text-lg text-primary-foreground/90 text-muted-foreground leading-relaxed max-w-2xl mx-auto">
                   Article description text here
                 </p>
               </div>
               
               {/* Category and Tags */}
               <div className="flex flex-wrap items-center justify-center gap-2 md:gap-3 pt-4">
+                {/* With Featured Image */}
                 <span className="inline-flex items-center rounded-full bg-primary-foreground/20 backdrop-blur-sm px-3 py-1 text-sm font-medium text-primary-foreground border border-primary-foreground/30">
                   Politics
                 </span>
                 <span className="inline-flex items-center rounded-full bg-primary-foreground/10 backdrop-blur-sm px-2.5 py-0.5 text-xs font-medium text-primary-foreground/90 border border-primary-foreground/20">
+                  Russia
+                </span>
+                
+                {/* Without Featured Image */}
+                <span className="inline-flex items-center rounded-full bg-primary/20 backdrop-blur-sm px-3 py-1 text-sm font-medium text-primary border border-primary/30">
+                  Politics
+                </span>
+                <span className="inline-flex items-center rounded-full bg-primary/10 backdrop-blur-sm px-2.5 py-0.5 text-xs font-medium text-primary/90 border border-primary/20">
                   Russia
                 </span>
               </div>
