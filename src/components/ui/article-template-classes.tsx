@@ -107,15 +107,45 @@ export const ArticleTemplateClasses = () => {
             </div>
             
             {/* Article Content */}
-            <article className="prose dark:prose-invert prose-headings:scroll-mt-24">
-              <h2>Article Heading</h2>
-              <p>Article content goes here...</p>
+                        {/* Article Content */}
+            <article className="prose prose-lg dark:prose-invert max-w-none prose-headings:scroll-mt-24 prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-h1:text-3xl prose-h1:font-bold prose-h1:mb-6 prose-h1:mt-8 prose-h1:first:mt-0 prose-h2:text-2xl prose-h2:font-semibold prose-h2:mb-4 prose-h2:mt-8 prose-h2:first:mt-0 prose-h3:text-xl prose-h3:font-medium prose-h3:mb-3 prose-h3:mt-6 prose-h3:first:mt-0 prose-p:mb-6 prose-p:leading-relaxed prose-p:last:mb-0 prose-strong:font-semibold prose-em:italic prose-code:bg-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm prose-img:rounded-lg prose-img:my-6">
+              <h1>Sample Article Title</h1>
+              <p>Sample paragraph with proper spacing and <a href="#">styled links</a>.</p>
+              <h2>Sample Section Header</h2>
+              <p>Another paragraph to test the spacing.</p>
             </article>
+
+            {/* PDF Files Section - Single Instance */}
+            <div className="space-y-6">
+              <h3 className="text-xl font-semibold">Documents</h3>
+              <div className="border rounded-lg p-4 bg-muted/50">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <svg className="w-8 h-8 text-red-600" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M7.07,18.28C7.5,17.38 8.12,16.5 8.91,15.69C9.7,14.88 10.58,14.26 11.5,13.82C11.2,13.38 10.91,12.94 10.65,12.5C9.91,13.05 9.19,13.65 8.5,14.32C7.81,15 7.19,15.72 6.66,16.47C6.66,16.47 6.66,16.47 6.66,16.47C6.66,16.47 6.66,16.47 6.66,16.47C6.66,16.47 6.66,16.47 6.66,16.47C6.66,16.47 6.66,16.47 6.66,16.47M18.85,16.47C18.32,15.72 17.7,15 17,14.32C16.31,13.65 15.6,13.05 14.85,12.5C14.6,12.94 14.31,13.38 14,13.82C14.92,14.26 15.8,14.88 16.59,15.69C17.38,16.5 18,17.38 18.43,18.28M12,10.5C12.83,10.5 13.5,9.83 13.5,9C13.5,8.17 12.83,7.5 12,7.5C11.17,7.5 10.5,8.17 10.5,9C10.5,9.83 11.17,10.5 12,10.5Z"/>
+                    </svg>
+                    <div>
+                      <h4 className="font-medium">document.pdf</h4>
+                      <p className="text-sm text-muted-foreground">Document description</p>
+                    </div>
+                  </div>
+                  <a className="inline-flex items-center gap-2 rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90">
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Download
+                  </a>
+                </div>
+                <div className="w-full h-96 border rounded bg-white">
+                  <embed className="rounded" />
+                </div>
+              </div>
+            </div>
 
             {/* Author Details Box at Bottom */}
             <div className="bg-muted flex flex-col gap-4 rounded-lg p-5">
               <div className="flex items-center gap-2.5">
-                <span className="relative flex shrink-0 overflow-hidden rounded-full size-12 border bg-primary/10 flex items-center justify-center">
+                <span className="relative flex shrink-0 overflow-hidden rounded-full size-12 border bg-primary/10 items-center justify-center">
                   <svg className="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                   </svg>
