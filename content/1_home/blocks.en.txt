@@ -2,7 +2,7 @@ Title: Home
 
 ----
 
-Header: [{"content":{"logo":["file://pn0tebstfpgwsgst"],"logotext":"TAP","shownavigation":"true","languages":[{"value":"en","label":"English"},{"value":"ar","label":"العربية"}],"defaultlanguage":"en","showthemetoggle":"true","showlanguageselector":"true","showusermenu":"true"},"id":"5b3bdef2-ba38-46de-b6f1-530b370b636c","isHidden":false,"type":"comp582"}]
+Header: [{"content":{"logolight":["file://pn0tebstfpgwsgst"],"logodark":["file://rwd248yniblhoqzf"],"logotext":"TAP","shownavigation":"true","languages":[{"value":"en","label":"English"},{"value":"ar","label":"العربية"}],"defaultlanguage":"en","showthemetoggle":"true","showlanguageselector":"true","showusermenu":"true","logo":["file://pn0tebstfpgwsgst"]},"id":"5b3bdef2-ba38-46de-b6f1-530b370b636c","isHidden":false,"type":"comp582"}]
 
 ----
 

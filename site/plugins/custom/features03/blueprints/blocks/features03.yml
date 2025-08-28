@@ -1,6 +1,6 @@
 name: Features 03 (Design & Engage)
 icon: blocks
-info: "Two-column feature cards with icons, descriptions, and call-to-action buttons"
+info: "Multi-column feature cards with images, icons, descriptions, and call-to-action buttons"
 fields:
   title:
     label: Main Title
@@ -12,107 +12,81 @@ fields:
     type: text
     placeholder: "Build Smarter Spaces and Strategies"
     help: Secondary heading text
-  card1title:
-    label: Card 1 Title
-    type: text
-    placeholder: "Plan Smarter"
-    default: "Plan Smarter"
-    help: Title for the first feature card
-  card1features:
-    label: Card 1 Features
+  cards:
+    label: Feature Cards
     type: structure
     fields:
-      icon:
-        label: Icon
-        type: select
-        options:
-          settings2: Settings2
-          blocks: Blocks
-          arrowright: ArrowRight
-          home: Home
-          user: User
-          star: Star
-          heart: Heart
-          check: Check
-          plus: Plus
-          minus: Minus
-        default: settings2
-        help: Lucide icon for this feature
-      text:
-        label: Feature Text
-        type: textarea
-        placeholder: "Description of this feature..."
-        help: Description text for this feature
+      title:
+        label: Card Title
+        type: text
+        placeholder: "Card Title"
+        required: true
+        help: Title for this feature card
+      image:
+        label: Card Image
+        type: files
+        multiple: false
+        accept:
+          - image/*
+        help: Upload an image for this card (optional)
+      features:
+        label: Features
+        type: structure
+        fields:
+          icon:
+            label: Icon
+            type: select
+            options:
+              settings2: Settings2
+              blocks: Blocks
+              arrowright: ArrowRight
+              home: Home
+              user: User
+              star: Star
+              heart: Heart
+              check: Check
+              plus: Plus
+              minus: Minus
+            default: settings2
+            help: Lucide icon for this feature
+          text:
+            label: Feature Text
+            type: textarea
+            placeholder: "Description of this feature..."
+            help: Description text for this feature
+        help: List of features for this card
+      buttontext:
+        label: Button Text
+        type: text
+        placeholder: "Learn more"
+        help: Text for the call-to-action button
+      buttonurl:
+        label: Button URL
+        type: text
+        placeholder: "#"
+        help: URL for the button link
+      buttonexternal:
+        label: Button External
+        type: toggle
+        default: false
+        help: Open link in new window
     default:
-      - icon: settings2
-        text: "Design your space with drag-and-drop simplicity—create grids, lists, or galleries in seconds."
-      - icon: blocks
-        text: "Embed polls, quizzes, or forms to keep your audience engaged."
-  card1buttontext:
-    label: Card 1 Button Text
-    type: text
-    placeholder: "Build your strategy"
-    default: "Build your strategy"
-    help: Text for the call-to-action button
-  card1buttonurl:
-    label: Card 1 Button URL
-    type: url
-    placeholder: "#"
-    help: URL for the button link
-  card1buttonexternal:
-    label: Card 1 Button External
-    type: toggle
-    default: false
-    help: Open link in new window
-  card2title:
-    label: Card 2 Title
-    type: text
-    placeholder: "Engage Better"
-    default: "Engage Better"
-    help: Title for the second feature card
-  card2features:
-    label: Card 2 Features
-    type: structure
-    fields:
-      icon:
-        label: Icon
-        type: select
-        options:
-          settings2: Settings2
-          blocks: Blocks
-          arrowright: ArrowRight
-          home: Home
-          user: User
-          star: Star
-          heart: Heart
-          check: Check
-          plus: Plus
-          minus: Minus
-        default: blocks
-        help: Lucide icon for this feature
-      text:
-        label: Feature Text
-        type: textarea
-        placeholder: "Description of this feature..."
-        help: Description text for this feature
-    default:
-      - icon: star
-        text: "Track engagement with real-time analytics and insights."
-      - icon: heart
-        text: "Build stronger connections with your audience through interactive content."
-  card2buttontext:
-    label: Card 2 Button Text
-    type: text
-    placeholder: "Start engaging"
-    default: "Start engaging"
-    help: Text for the call-to-action button
-  card2buttonurl:
-    label: Card 2 Button URL
-    type: url
-    placeholder: "#"
-    help: URL for the button link
-  card2buttonexternal:
-    label: Card 2 Button External
-    type: toggle
-    default: false
-    help: Open link in new window
+      - title: "Plan Smarter"
+        features:
+          - icon: settings2
+            text: "Design your space with drag-and-drop simplicity—create grids, lists, or galleries in seconds."
+          - icon: blocks
+            text: "Embed polls, quizzes, or forms to keep your audience engaged."
+        buttontext: "Build your strategy"
+        buttonurl: "#"
+        buttonexternal: false
+      - title: "Engage Better"
+        features:
+          - icon: star
+            text: "Track engagement with real-time analytics and insights."
+          - icon: heart
+            text: "Build stronger connections with your audience through interactive content."
+        buttontext: "Start engaging"
+        buttonurl: "#"
+        buttonexternal: false
+    help: Add multiple feature cards - desktop layout will alternate left/right automatically

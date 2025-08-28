@@ -33,7 +33,8 @@ interface Comp582Props {
 
 const Comp582: React.FC<Comp582Props> = (props) => {
   const {
-    logo = null,
+    logolight = null,
+    logodark = null,
     logotext = 'Logo',
     sitepages = [],
     languages = [],
@@ -86,25 +87,72 @@ const Comp582: React.FC<Comp582Props> = (props) => {
   }
 
   // Handle logo data structure (single object or array)
-  const logoData = Array.isArray(logo) ? logo[0] : logo
+  const logolightData = Array.isArray(logolight) ? logolight[0] : logolight
+  const logodarkData = Array.isArray(logodark) ? logodark[0] : logodark
 
   // Debug logo data
-  console.log('Logo debug:', { logo, logoData, logotext })
+  console.log('Logo debug:', { logolight, logodark, logolightData, logodarkData, logotext })
+
+  // Get home URL - use site data if available, otherwise default to '/'
+  const getHomeUrl = () => {
+    // Try to get home URL from site data
+    if (props.site?.url) {
+      return props.site.url
+    }
+    
+    // Fallback: construct home URL based on current language
+    if (currentLanguage !== defaultlanguage) {
+      return `/${currentLanguage}`
+    }
+    
+    return '/'
+  }
 
   const LogoComponent = () => {
-    // Handle logo data structure (single object or array)
-    const logoData = Array.isArray(logo) ? logo[0] : logo
+    const hasLightLogo = logolightData?.url
+    const hasDarkLogo = logodarkData?.url
+    const hasAnyLogo = hasLightLogo || hasDarkLogo
     
     return (
       <div className="flex items-center gap-2">
-        {logoData?.url && (
-          <img 
-            src={logoData.url} 
-            alt={logoData.alt || logotext}
-            className="h-8 w-auto"
-          />
+        {hasAnyLogo && (
+          <div className="relative h-8 w-auto">
+            {/* Light mode logo */}
+            {hasLightLogo && (
+              <img 
+                src={logolightData.url} 
+                alt={logolightData.alt || logotext}
+                className="h-8 w-auto dark:hidden"
+              />
+            )}
+            {/* Dark mode logo */}
+            {hasDarkLogo && (
+              <img 
+                src={logodarkData.url} 
+                alt={logodarkData.alt || logotext}
+                className="h-8 w-auto hidden dark:block"
+              />
+            )}
+            {/* Fallback: if only one logo is provided, show it in both modes */}
+            {hasLightLogo && !hasDarkLogo && (
+              <img 
+                src={logolightData.url} 
+                alt={logolightData.alt || logotext}
+                className="h-8 w-auto hidden dark:block"
+              />
+            )}
+            {!hasLightLogo && hasDarkLogo && (
+              <img 
+                src={logodarkData.url} 
+                alt={logodarkData.alt || logotext}
+                className="h-8 w-auto dark:hidden"
+              />
+            )}
+          </div>
         )}
-        <span className="text-xl font-bold">{logotext}</span>
+        {logotext && (
+          <span className="text-xl font-bold">{logotext}</span>
+        )}
       </div>
     )
   }
@@ -173,7 +221,11 @@ const Comp582: React.FC<Comp582Props> = (props) => {
           </Popover>
           <div className="flex items-center gap-6">
             {/* Logo */}
-            <a href="#" className="text-primary hover:text-primary/90">
+            <a 
+              href={getHomeUrl()} 
+              className="text-primary hover:text-primary/90 transition-colors"
+              aria-label="Go to home page"
+            >
               <LogoComponent />
             </a>
             {/* Desktop navigation - text labels */}
