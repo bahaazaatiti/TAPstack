@@ -164,9 +164,31 @@ tabs:
         headline: Pages
         layout: pages
         sortBy: num asc
+        template:
+          - blog
+          - blocks
         create:
           - blog
           - blocks
+        columns:
+          title:
+            label: Title
+            width: 2/3
+          template:
+            label: Template
+            text: "{{ page.intendedTemplate }}"
+            width: 1/3
+
+
+      tech:
+        type: pages
+        headline: Tech Pages
+        layout: pages
+        sortBy: num asc
+        templatesIgnore:
+          - blog
+          - blocks
+          - article
         columns:
           title:
             label: Title
