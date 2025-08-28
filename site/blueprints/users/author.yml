@@ -71,10 +71,10 @@ fields:
     label: LinkedIn Profile
     type: url
     help: Full LinkedIn profile URL
-  mastodon:
-    label: Mastodon Account
+  Facebook:
+    label: Facebook Account
     type: text
-    help: Full mastodon handle (e.g., @username@instance.com)
+    help: Full Facebook handle
   expertise:
     label: Areas of Expertise
     type: tags
