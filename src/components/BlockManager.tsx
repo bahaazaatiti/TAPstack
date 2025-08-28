@@ -16,6 +16,7 @@ import TextBlock from './textblock'
 import Features03 from './Features03'
 import AppleCarousel from './AppleCarousel'
 import Article from './Article'
+import AuthorBox from './AuthorBox'
 
 // Block registry - add new blocks here
 const blockComponents: Record<string, ComponentType<any>> = {
@@ -34,6 +35,7 @@ const blockComponents: Record<string, ComponentType<any>> = {
   features03: Features03,
   footer: FooterSection,
   article: Article,
+  authorbox: AuthorBox,
   // Add more blocks here as you create them
   // TODO: Consider using dynamic imports for better performance
 }
