@@ -73,17 +73,16 @@ tabs:
           blocks:
             type: blocks
             fieldsets:
-              - navbar
-              - hero
-              - navbar04
-              - comp582
               - blog
               - latestblog
               - featuredblog
               - blogglobe
-              - textblock
+              - features03
+              - wavyhero
               - bentogrid
               - applecarousel
+              - authorbox
+              - textblock
             label: Content Blocks
             
           footer:

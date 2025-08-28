@@ -22,10 +22,6 @@ fields:
   blocks:
     type: blocks
     fieldsets:
-      - navbar
-      - hero
-      - navbar04
-      - comp582
       - blog
       - latestblog
       - featuredblog
@@ -35,6 +31,7 @@ fields:
       - bentogrid
       - applecarousel
       - authorbox
+      - textblock
     label: Content Blocks
     
   footer:
