@@ -2,6 +2,15 @@ import React, { useState, useEffect, useMemo } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Card, CardContent } from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import {
   Pagination,
   PaginationContent,
@@ -23,6 +32,9 @@ import {
   HeartPulse,
   Scale,
   SearchIcon,
+  SlidersHorizontal,
+  X,
+  Check,
 } from "lucide-react";
 
 interface BlogProps {
@@ -66,6 +78,15 @@ const categoryIcons = {
   Sports: { icon: Bike, background: "bg-cyan-500", color: "text-cyan-500" },
 };
 
+const sortOptions = [
+  { value: "date-desc", label: "Newest First", key: "date", order: "desc" },
+  { value: "date-asc", label: "Oldest First", key: "date", order: "asc" },
+  { value: "readtime-asc", label: "Quick Reads", key: "readTime", order: "asc" },
+  { value: "readtime-desc", label: "Long Reads", key: "readTime", order: "desc" },
+  { value: "title-asc", label: "A to Z", key: "title", order: "asc" },
+  { value: "title-desc", label: "Z to A", key: "title", order: "desc" },
+];
+
 const Blog: React.FC<BlogProps> = (props) => {
   const {
     title = "Posts",
@@ -78,7 +99,10 @@ const Blog: React.FC<BlogProps> = (props) => {
   // State for search and pagination
   const [searchQuery, setSearchQuery] = useState(initialSearchQuery);
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [sortOption, setSortOption] = useState("date-desc");
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchSuggestions, setSearchSuggestions] = useState<string[]>([]);
 
   // Update search query from URL params
   useEffect(() => {
@@ -90,7 +114,23 @@ const Blog: React.FC<BlogProps> = (props) => {
   // Use articles from props, no fallback data
   const allArticles: Article[] = articleData;
 
-  // Filter articles based on search query and selected category
+  // Generate search suggestions from article titles
+  useEffect(() => {
+    if (searchQuery.length > 1) {
+      const suggestions = allArticles
+        .filter(article => 
+          article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          article.author.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+        .map(article => article.title)
+        .slice(0, 5);
+      setSearchSuggestions(suggestions);
+    } else {
+      setSearchSuggestions([]);
+    }
+  }, [searchQuery, allArticles]);
+
+  // Filter and sort articles
   const filteredArticles = useMemo(() => {
     let filtered = allArticles;
 
@@ -105,13 +145,40 @@ const Blog: React.FC<BlogProps> = (props) => {
       );
     }
 
-    // Filter by category
-    if (selectedCategory) {
-      filtered = filtered.filter(article => article.category === selectedCategory);
+    // Filter by selected categories
+    if (selectedCategories.length > 0) {
+      filtered = filtered.filter(article => selectedCategories.includes(article.category));
+    }
+
+    // Sort articles
+    const sortConfig = sortOptions.find(opt => opt.value === sortOption);
+    if (sortConfig) {
+      filtered.sort((a, b) => {
+        let aValue: any, bValue: any;
+        
+        if (sortConfig.key === "date") {
+          aValue = new Date(a.date).getTime();
+          bValue = new Date(b.date).getTime();
+        } else if (sortConfig.key === "readTime") {
+          aValue = a.readTime;
+          bValue = b.readTime;
+        } else if (sortConfig.key === "title") {
+          aValue = a.title.toLowerCase();
+          bValue = b.title.toLowerCase();
+        }
+        
+        if (aValue === undefined || bValue === undefined) return 0;
+        
+        if (sortConfig.order === "desc") {
+          return bValue > aValue ? 1 : -1;
+        } else {
+          return aValue > bValue ? 1 : -1;
+        }
+      });
     }
 
     return filtered;
-  }, [allArticles, searchQuery, selectedCategory]);
+  }, [allArticles, searchQuery, selectedCategories, sortOption]);
 
   // Calculate pagination
   const totalPages = Math.ceil(filteredArticles.length / postsPerPage);
@@ -122,7 +189,7 @@ const Blog: React.FC<BlogProps> = (props) => {
   // Reset to page 1 when search or category changes
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchQuery, selectedCategory]);
+  }, [searchQuery, selectedCategories, sortOption]);
 
   // Calculate category counts from all articles
   const categoryCounts = allArticles.reduce((acc: Record<string, number>, article: Article) => {
@@ -136,9 +203,21 @@ const Blog: React.FC<BlogProps> = (props) => {
     ...categoryIcons[name as keyof typeof categoryIcons]
   })).filter(category => category.icon); // Only include categories with icons
 
-  const handleCategoryChange = (category: string | null) => {
-    setSelectedCategory(category);
+  const handleCategoryToggle = (category: string) => {
+    setSelectedCategories(prev => 
+      prev.includes(category) 
+        ? prev.filter(c => c !== category)
+        : [...prev, category]
+    );
   };
+
+  const handleClearAllFilters = () => {
+    setSearchQuery("");
+    setSelectedCategories([]);
+    setSortOption("date-desc");
+  };
+
+  const hasActiveFilters = searchQuery || selectedCategories.length > 0 || sortOption !== "date-desc";
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -151,33 +230,173 @@ const Blog: React.FC<BlogProps> = (props) => {
   return (
     <div className="max-w-screen-xl mx-auto py-10 lg:py-16 px-6 xl:px-10 flex flex-col lg:flex-row items-start gap-12">
       <div className="flex-1">
-        {/* Title and Search on same row */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <h2 className="text-3xl font-bold tracking-tight">{title}</h2>
-          
-          {/* Search Input */}
-          <div className="relative sm:max-w-xs w-full">
-            <SearchIcon className="absolute start-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <input
-              type="text"
-              placeholder="Search articles..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full ps-10 pe-4 py-2 border border-input rounded-md bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
-            />
+        {/* Header with Title and Advanced Search */}
+        <div className="flex flex-col gap-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <h2 className="text-3xl font-bold tracking-tight">{title}</h2>
+            
+            {/* Enhanced Search with Command */}
+            <div className="flex items-center gap-2">
+              <Popover open={isSearchOpen} onOpenChange={setIsSearchOpen}>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    role="combobox"
+                    aria-expanded={isSearchOpen}
+                    className="w-full sm:w-80 justify-between"
+                  >
+                    {searchQuery || "Search articles..."}
+                    <SearchIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-80 p-0" align="end">
+                  <Command>
+                    <CommandInput 
+                      placeholder="Search articles..." 
+                      value={searchQuery}
+                      onValueChange={setSearchQuery}
+                    />
+                    <CommandList>
+                      <CommandEmpty>No articles found.</CommandEmpty>
+                      {searchSuggestions.length > 0 && (
+                        <CommandGroup heading="Suggestions">
+                          {searchSuggestions.map((suggestion) => (
+                            <CommandItem
+                              key={suggestion}
+                              onSelect={() => {
+                                setSearchQuery(suggestion);
+                                setIsSearchOpen(false);
+                              }}
+                            >
+                              <Check
+                                className={cn(
+                                  "mr-2 h-4 w-4",
+                                  searchQuery === suggestion ? "opacity-100" : "opacity-0"
+                                )}
+                              />
+                              {suggestion}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      )}
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
+              
+              {/* Advanced Filters Button */}
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button variant="outline" size="icon">
+                    <SlidersHorizontal className="h-4 w-4" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-80" align="end">
+                  <div className="space-y-4">
+                    <div>
+                      <h4 className="font-medium mb-3">Categories</h4>
+                      <div className="grid grid-cols-2 gap-2">
+                        {categories.map((category) => (
+                          <div key={category.name} className="flex items-center space-x-2">
+                            <Checkbox
+                              id={category.name}
+                              checked={selectedCategories.includes(category.name)}
+                              onCheckedChange={() => handleCategoryToggle(category.name)}
+                            />
+                            <Label 
+                              htmlFor={category.name} 
+                              className="text-sm flex items-center gap-1.5 cursor-pointer"
+                            >
+                              <category.icon className="h-3 w-3" />
+                              {category.name}
+                              <span className="text-muted-foreground">({category.totalPosts})</span>
+                            </Label>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    <Separator />
+                    
+                    <div>
+                      <h4 className="font-medium mb-3">Sort By</h4>
+                      <RadioGroup value={sortOption} onValueChange={setSortOption}>
+                        {sortOptions.map((option) => (
+                          <div key={option.value} className="flex items-center space-x-2">
+                            <RadioGroupItem value={option.value} id={option.value} />
+                            <Label htmlFor={option.value} className="text-sm cursor-pointer">
+                              {option.label}
+                            </Label>
+                          </div>
+                        ))}
+                      </RadioGroup>
+                    </div>
+                    
+                    {hasActiveFilters && (
+                      <>
+                        <Separator />
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          onClick={handleClearAllFilters}
+                          className="w-full"
+                        >
+                          <X className="h-4 w-4 mr-2" />
+                          Clear All Filters
+                        </Button>
+                      </>
+                    )}
+                  </div>
+                </PopoverContent>
+              </Popover>
+            </div>
           </div>
+
+          {/* Active Filters Display */}
+          {hasActiveFilters && (
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-sm text-muted-foreground">Active filters:</span>
+              {searchQuery && (
+                <Badge variant="secondary" className="gap-1">
+                  Search: "{searchQuery}"
+                  <X 
+                    className="h-3 w-3 cursor-pointer" 
+                    onClick={() => setSearchQuery("")}
+                  />
+                </Badge>
+              )}
+              {selectedCategories.map((category) => (
+                <Badge key={category} variant="secondary" className="gap-1">
+                  {category}
+                  <X 
+                    className="h-3 w-3 cursor-pointer" 
+                    onClick={() => handleCategoryToggle(category)}
+                  />
+                </Badge>
+              ))}
+              {sortOption !== "date-desc" && (
+                <Badge variant="secondary" className="gap-1">
+                  Sort: {sortOptions.find(opt => opt.value === sortOption)?.label}
+                  <X 
+                    className="h-3 w-3 cursor-pointer" 
+                    onClick={() => setSortOption("date-desc")}
+                  />
+                </Badge>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Results counter */}
-        <div className="mt-4 text-sm text-muted-foreground">
-          {searchQuery || selectedCategory ? (
+        <div className="mt-6 text-sm text-muted-foreground">
+          {hasActiveFilters ? (
             <>
               Showing {filteredArticles.length} of {allArticles.length} articles
               {searchQuery && (
                 <span> for "{searchQuery}"</span>
               )}
-              {selectedCategory && (
-                <span> in {selectedCategory}</span>
+              {selectedCategories.length > 0 && (
+                <span> in {selectedCategories.join(", ")}</span>
               )}
             </>
           ) : (
@@ -185,81 +404,89 @@ const Blog: React.FC<BlogProps> = (props) => {
           )}
         </div>
 
-        <div className="mt-4 space-y-12">
+        <div className="mt-4 space-y-6">
           {paginatedArticles.length > 0 ? (
             paginatedArticles.map((article: Article, i: number) => (
-              <div
-                key={i}
-                className="flex flex-col sm:flex-row sm:items-center shadow-none overflow-hidden rounded-md border-none"
-              >
-                <div className="px-0 sm:p-0 flex-shrink-0 pb-2">
-                  {article.featuredImage ? (
-                    <div className="aspect-video  sm:w-56 sm:aspect-square bg-muted rounded-lg overflow-hidden">
-                      <img
-                        src={article.featuredImage.url}
-                        alt={article.featuredImage.alt}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  ) : (
-                    <div className="aspect-video sm:w-56 sm:aspect-square bg-muted rounded-lg" />
-                  )}
-                </div>
-                <div className="px-0 sm:px-6 py-0 flex flex-col">
-                  <div className="flex items-center gap-6">
-                    <Badge className="bg-primary/5 text-primary hover:bg-primary/5 shadow-none">
-                      {article.category}
-                    </Badge>
-                  </div>
+              <div key={i}>
+                <Card className="shadow-none border-none">
+                  <CardContent className="p-0">
+                    <div className="flex flex-col sm:flex-row sm:items-center overflow-hidden">
+                      <div className="px-0 sm:p-0 flex-shrink-0 pb-2">
+                        {article.featuredImage ? (
+                          <div className="aspect-video  sm:w-56 sm:aspect-square bg-muted rounded-lg overflow-hidden">
+                            <img
+                              src={article.featuredImage.url}
+                              alt={article.featuredImage.alt}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                        ) : (
+                          <div className="aspect-video sm:w-56 sm:aspect-square bg-muted rounded-lg" />
+                        )}
+                      </div>
+                      <div className="px-0 sm:px-6 py-0 flex flex-col">
+                        <div className="flex items-center gap-6">
+                          <Badge className="bg-primary/5 text-primary hover:bg-primary/5 shadow-none">
+                            {article.category}
+                          </Badge>
+                        </div>
 
-                  <h3 className="mt-4 text-2xl font-semibold tracking-tight">
-                    <a href={article.url} className="hover:text-primary transition-colors">
-                      {article.title}
-                    </a>
-                  </h3>
-                  <p className="mt-2 text-muted-foreground line-clamp-3 text-ellipsis">
-                    {article.description}
-                  </p>
-                  <div className="mt-4 flex items-center gap-6 text-muted-foreground text-sm font-medium">
-                    <div className="flex items-center gap-2">
-                      {article.authorImage?.url ? (
-                        <Avatar className="h-5 w-5">
-                          <AvatarImage 
-                            src={article.authorImage.url} 
-                            alt={article.authorImage.alt || article.author}
-                          />
-                          <AvatarFallback>
-                            {article.author.split(' ').map(n => n[0]).join('').toUpperCase()}
-                          </AvatarFallback>
-                        </Avatar>
-                      ) : (
-                        <Skeleton className="h-5 w-5 rounded-full" />
-                      )}
-                      <span>By {article.author}</span>
+                        <h3 className="mt-4 text-2xl font-semibold tracking-tight">
+                          <a href={article.url} className="hover:text-primary transition-colors">
+                            {article.title}
+                          </a>
+                        </h3>
+                        <p className="mt-2 text-muted-foreground line-clamp-3 text-ellipsis">
+                          {article.description}
+                        </p>
+                        <div className="mt-4 flex items-center gap-6 text-muted-foreground text-sm font-medium">
+                          <div className="flex items-center gap-2">
+                            {article.authorImage?.url ? (
+                              <Avatar className="h-5 w-5">
+                                <AvatarImage 
+                                  src={article.authorImage.url} 
+                                  alt={article.authorImage.alt || article.author}
+                                />
+                                <AvatarFallback>
+                                  {article.author.split(' ').map(n => n[0]).join('').toUpperCase()}
+                                </AvatarFallback>
+                              </Avatar>
+                            ) : (
+                              <Skeleton className="h-5 w-5 rounded-full" />
+                            )}
+                            <span>By {article.author}</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <ClockIcon className="h-4 w-4" /> {article.readTime} min read
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Calendar className="h-4 w-4" /> {formatDate(article.date)}
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <ClockIcon className="h-4 w-4" /> {article.readTime} min read
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Calendar className="h-4 w-4" /> {formatDate(article.date)}
-                    </div>
-                  </div>
-                </div>
+                  </CardContent>
+                </Card>
+                {i < paginatedArticles.length - 1 && (
+                  <Separator className="mt-6" />
+                )}
               </div>
             ))
           ) : (
-            <div className="text-center py-12">
-              <div className="mb-4">
-                <SearchIcon className="mx-auto h-12 w-12 text-muted-foreground" />
+            <Alert className="text-center py-12">
+              <div className="mb-4 flex justify-center">
+                <SearchIcon className="h-12 w-12 text-muted-foreground" />
               </div>
-              <h3 className="text-lg font-medium text-foreground mb-2">No results found</h3>
-              <p className="text-muted-foreground">
-                {searchQuery || selectedCategory 
-                  ? "Try adjusting your search or filter criteria."
-                  : "No articles are available at the moment."
-                }
-              </p>
-            </div>
+              <AlertDescription className="space-y-2">
+                <h3 className="text-lg font-medium text-foreground">No results found</h3>
+                <p className="text-muted-foreground">
+                  {hasActiveFilters 
+                    ? "Try adjusting your search or filter criteria."
+                    : "No articles are available at the moment."
+                  }
+                </p>
+              </AlertDescription>
+            </Alert>
           )}
         </div>
         
@@ -301,48 +528,45 @@ const Blog: React.FC<BlogProps> = (props) => {
       
       {showCategories && categories.length > 0 && (
         <aside className="sticky top-8 shrink-0 lg:max-w-sm w-full">
-          <h3 className="text-3xl font-bold tracking-tight">Categories</h3>
-          <div className="mt-4 grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-1 gap-2">
-            {/* All Categories option */}
-            <div
-              onClick={() => handleCategoryChange(null)}
-              className={cn(
-                "flex items-center justify-between gap-2 bg-muted p-3 rounded-md bg-opacity-15 dark:bg-opacity-25 cursor-pointer hover:bg-opacity-25 transition-colors",
-                selectedCategory === null ? "ring-2 ring-primary" : ""
-              )}
-            >
-              <div className="flex items-center gap-3">
-                <div className="h-5 w-5 rounded-full bg-primary" />
-                <span className="font-medium">All Categories</span>
-              </div>
-              <Badge className="px-1.5 rounded-full">
-                {allArticles.length}
-              </Badge>
-            </div>
-            
+          <h3 className="text-xl font-semibold tracking-tight mb-4">Browse by Category</h3>
+          <div className="space-y-2">
             {categories.map((category) => {
               const IconComponent = category.icon;
+              const isSelected = selectedCategories.includes(category.name);
               return (
                 <div
                   key={category.name}
-                  onClick={() => handleCategoryChange(category.name)}
                   className={cn(
-                    "flex items-center justify-between gap-2 bg-muted p-3 rounded-md bg-opacity-15 dark:bg-opacity-25 cursor-pointer hover:bg-opacity-25 transition-colors",
-                    category.background,
-                    selectedCategory === category.name ? "ring-2 ring-primary" : ""
+                    "flex items-center justify-between gap-2 p-3 rounded-lg transition-colors",
+                    "bg-muted/50 hover:bg-muted",
+                    isSelected && "bg-primary/10 border border-primary/20"
                   )}
                 >
                   <div className="flex items-center gap-3">
-                    <IconComponent className={cn("h-5 w-5", category.color)} />
-                    <span className="font-medium">{category.name}</span>
+                    <IconComponent className={cn("h-4 w-4", category.color)} />
+                    <span className="font-medium text-sm">{category.name}</span>
                   </div>
-                  <Badge className="px-1.5 rounded-full">
+                  <Badge variant="secondary" className="px-2 py-0.5 text-xs">
                     {category.totalPosts}
                   </Badge>
                 </div>
               );
             })}
           </div>
+          
+          {hasActiveFilters && (
+            <div className="mt-6 pt-4 border-t">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={handleClearAllFilters}
+                className="w-full"
+              >
+                <X className="h-4 w-4 mr-2" />
+                Clear All Filters
+              </Button>
+            </div>
+          )}
         </aside>
       )}
     </div>

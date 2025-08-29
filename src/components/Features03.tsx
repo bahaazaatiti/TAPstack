@@ -1,5 +1,7 @@
 import React from 'react'
 import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
+import { Alert, AlertDescription } from "@/components/ui/alert"
 import { 
   ArrowRight, 
   Blocks, 
@@ -126,46 +128,50 @@ const Features03: React.FC<Features03Props> = (props) => {
               return (
                 <React.Fragment key={cardIndex}>
                   {/* Content Card */}
-                  <div className="bg-muted rounded-xl pt-6 md:pt-8 pb-6 px-6 col-span-1 md:col-span-2 lg:col-span-1">
-                    {/* Mobile Image */}
-                    <div className="md:hidden mb-6 aspect-video w-full bg-background border rounded-xl overflow-hidden">
-                      {card.image?.url ? (
-                        <img
-                          src={card.image.url}
-                          alt={card.image.alt || card.title}
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <div className="w-full h-full bg-muted flex items-center justify-center text-muted-foreground">
-                          No Image
-                        </div>
-                      )}
-                    </div>
+                  <Card className="pt-6 md:pt-8 pb-6 px-6 col-span-1 md:col-span-2 lg:col-span-1">
+                    <CardContent className="p-0">
+                      {/* Mobile Image */}
+                      <div className="md:hidden mb-6 aspect-video w-full bg-background border rounded-xl overflow-hidden">
+                        {card.image?.url ? (
+                          <img
+                            src={card.image.url}
+                            alt={card.image.alt || card.title}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <Alert>
+                            <AlertDescription className="text-center">
+                              No Image
+                            </AlertDescription>
+                          </Alert>
+                        )}
+                      </div>
 
-                    <span className="text-2xl font-semibold tracking-tight">
-                      {card.title}
-                    </span>
+                      <span className="text-2xl font-semibold tracking-tight">
+                        {card.title}
+                      </span>
 
-                    <ul className="mt-6 space-y-4">
-                      {card.features.map((feature, index) => (
-                        <li key={index}>
-                          <div className="flex items-start gap-3">
-                            {getIcon(feature.icon)}
-                            <p className="-mt-0.5">
-                              {feature.text}
-                            </p>
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
+                      <ul className="mt-6 space-y-4">
+                        {card.features.map((feature, index) => (
+                          <li key={index}>
+                            <div className="flex items-start gap-3">
+                              {getIcon(feature.icon)}
+                              <p className="-mt-0.5">
+                                {feature.text}
+                              </p>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
 
-                    <Button 
-                      className="mt-12 w-full"
-                      onClick={() => handleButtonClick(card.buttonurl, card.buttonexternal)}
-                    >
-                      {card.buttontext} <ArrowRight />
-                    </Button>
-                  </div>
+                      <Button 
+                        className="mt-12 w-full"
+                        onClick={() => handleButtonClick(card.buttonurl, card.buttonexternal)}
+                      >
+                        {card.buttontext} <ArrowRight />
+                      </Button>
+                    </CardContent>
+                  </Card>
                   
                   {/* Image Card - Desktop */}
                   <div className="hidden md:block border border-border/80 bg-muted rounded-xl col-span-1 md:col-span-3 lg:col-span-2 overflow-hidden">
@@ -196,14 +202,17 @@ const Features03: React.FC<Features03Props> = (props) => {
                         className="w-full h-full object-cover"
                       />
                     ) : (
-                      <div className="w-full h-full bg-muted flex items-center justify-center text-muted-foreground">
-                        No Image
-                      </div>
+                      <Alert className="m-4">
+                        <AlertDescription className="text-center">
+                          No Image
+                        </AlertDescription>
+                      </Alert>
                     )}
                   </div>
                   
                   {/* Content Card */}
-                  <div className="bg-muted rounded-xl pt-6 md:pt-8 pb-6 px-6 col-span-1 md:col-span-2 lg:col-span-1">
+                  <Card className="pt-6 md:pt-8 pb-6 px-6 col-span-1 md:col-span-2 lg:col-span-1">
+                    <CardContent className="p-0">
                     {/* Mobile Image */}
                     <div className="md:hidden mb-6 aspect-video w-full bg-background border rounded-xl overflow-hidden">
                       {card.image?.url ? (
@@ -213,9 +222,11 @@ const Features03: React.FC<Features03Props> = (props) => {
                           className="w-full h-full object-cover"
                         />
                       ) : (
-                        <div className="w-full h-full bg-muted flex items-center justify-center text-muted-foreground">
-                          No Image
-                        </div>
+                        <Alert className="m-4">
+                          <AlertDescription className="text-center">
+                            No Image
+                          </AlertDescription>
+                        </Alert>
                       )}
                     </div>
 
@@ -242,7 +253,8 @@ const Features03: React.FC<Features03Props> = (props) => {
                     >
                       {card.buttontext} <ArrowRight />
                     </Button>
-                  </div>
+                    </CardContent>
+                  </Card>
                 </React.Fragment>
               );
             }

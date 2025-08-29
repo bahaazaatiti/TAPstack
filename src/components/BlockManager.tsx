@@ -1,5 +1,6 @@
 import React, { useEffect, ComponentType } from 'react'
 import { createRoot } from 'react-dom/client'
+import { Toaster } from '@/components/ui/sonner'
 // TODO: change this to a dynamic import if needed
 import WavyHero from './WavyHero'
 import Comp582 from './Comp582'
@@ -8,7 +9,6 @@ import Blog from './Blog'
 import LatestBlog from './latestblog'
 import FeaturedBlog from './featuredblog'
 import BentoGridBlock from './BentoGridBlock'
-import BlogGlobe from './BlogGlobe'
 import TextBlock from './textblock'
 import Features03 from './Features03'
 import AppleCarousel from './AppleCarousel'
@@ -24,7 +24,6 @@ const blockComponents: Record<string, ComponentType<any>> = {
   featuredblog: FeaturedBlog,
   bentogrid: BentoGridBlock,
   applecarousel: AppleCarousel,
-  blogglobe: BlogGlobe,
   textblock: TextBlock,
   features03: Features03,
   footer: FooterSection,
@@ -79,7 +78,11 @@ const BlockManager: React.FC = () => {
     })
   }
 
-  return null // This component doesn't render anything itself
+  return (
+    <>
+      <Toaster />
+    </>
+  ) // Add the Toaster for sonner notifications
 }
 
 export default BlockManager

@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
 
 interface TextBlockProps {
   icon?: {
@@ -40,34 +42,38 @@ const TextBlock: React.FC<TextBlockProps> = (props) => {
       <div className="py-20">
         <div className="mx-auto w-full max-w-7xl px-6">
           <div className="mx-auto max-w-screen-xl">
-            <div>
-              {icon && icon.url && (
-                <img
-                  src={icon.url}
-                  alt={icon.alt}
-                  className="w-12 h-12 object-cover"
-                />
-              )}
-              {subtitle && (
-                <span className="text-primary">{subtitle}</span>
-              )}
-              <h2 className="text-foreground mt-4 text-4xl font-semibold">{title}</h2>
-              <div className="text-muted-foreground mt-4 text-xl"> 
-                <p className="mb-4">
-                  {isExpanded ? description : firstParagraph}
-                </p>
-                {hasMore && (
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    onClick={() => setIsExpanded(!isExpanded)}
-                    className=" text-primary hover:text-primary/80"
-                  >
-                    {isExpanded ? 'Read less' : 'Read more'}
-                  </Button>
+            <Card className="border-none shadow-none">
+              <CardContent className="p-0">
+                {icon && icon.url && (
+                  <img
+                    src={icon.url}
+                    alt={icon.alt}
+                    className="w-12 h-12 object-cover mb-4"
+                  />
                 )}
-              </div>
-            </div>
+                {subtitle && (
+                  <Badge variant="secondary" className="mb-4">
+                    {subtitle}
+                  </Badge>
+                )}
+                <h2 className="text-foreground mt-4 text-4xl font-semibold">{title}</h2>
+                <div className="text-muted-foreground mt-4 text-xl"> 
+                  <p className="mb-4">
+                    {isExpanded ? description : firstParagraph}
+                  </p>
+                  {hasMore && (
+                    <Button
+                      variant="outline"
+                      size="lg"
+                      onClick={() => setIsExpanded(!isExpanded)}
+                      className=" text-primary hover:text-primary/80"
+                    >
+                      {isExpanded ? 'Read less' : 'Read more'}
+                    </Button>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>

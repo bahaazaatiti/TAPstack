@@ -3,6 +3,7 @@ import { MoveRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 interface LatestBlogProps {
   title?: string;
@@ -134,44 +135,50 @@ const LatestBlog: React.FC<LatestBlogProps> = (props) => {
               <a
                 key={index}
                 href={article.url || '#'}
-                className="flex flex-col gap-2 hover:opacity-75 cursor-pointer"
+                className="hover:opacity-75 cursor-pointer"
               >
-                <div className="bg-muted rounded-md aspect-video mb-4 overflow-hidden">
-                  {article.featuredImage ? (
-                    <img
-                      src={article.featuredImage.url}
-                      alt={article.featuredImage.alt || article.title || 'Article image'}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : null}
-                </div>
-                <h3 className="text-xl tracking-tight">{article.title || 'Untitled'}</h3>
-                <p className="text-muted-foreground text-base">
-                  {article.description || 'No description available'}
-                </p>
-                <div className="text-sm text-muted-foreground">
-                  {article.author && (
-                    <div className="flex items-center gap-2">
-                      <span>By</span>
-                      {article.authorImage?.url ? (
-                        <Avatar className="h-4 w-4">
-                          <AvatarImage 
-                            src={article.authorImage.url} 
-                            alt={article.authorImage.alt || article.author}
-                          />
-                          <AvatarFallback>
-                            {article.author.split(' ').map(n => n[0]).join('').toUpperCase()}
-                          </AvatarFallback>
-                        </Avatar>
-                      ) : (
-                        <Skeleton className="h-4 w-4 rounded-full" />
-                      )}
-                      <span>{article.author}</span>
-                      {article.date && <span> • {article.date}</span>}
+                <Card className="border-none shadow-none hover:shadow-md transition-shadow h-full">
+                  <CardHeader className="p-0">
+                    <div className="bg-muted rounded-md aspect-video mb-4 overflow-hidden">
+                      {article.featuredImage ? (
+                        <img
+                          src={article.featuredImage.url}
+                          alt={article.featuredImage.alt || article.title || 'Article image'}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : null}
                     </div>
-                  )}
-                  {!article.author && article.date && <span>{article.date}</span>}
-                </div>
+                  </CardHeader>
+                  <CardContent className="flex flex-col gap-2 p-6 pt-0">
+                    <h3 className="text-xl tracking-tight">{article.title || 'Untitled'}</h3>
+                    <p className="text-muted-foreground text-base">
+                      {article.description || 'No description available'}
+                    </p>
+                    <div className="text-sm text-muted-foreground">
+                      {article.author && (
+                        <div className="flex items-center gap-2">
+                          <span>By</span>
+                          {article.authorImage?.url ? (
+                            <Avatar className="h-4 w-4">
+                              <AvatarImage 
+                                src={article.authorImage.url} 
+                                alt={article.authorImage.alt || article.author}
+                              />
+                              <AvatarFallback>
+                                {article.author.split(' ').map(n => n[0]).join('').toUpperCase()}
+                              </AvatarFallback>
+                            </Avatar>
+                          ) : (
+                            <Skeleton className="h-4 w-4 rounded-full" />
+                          )}
+                          <span>{article.author}</span>
+                          {article.date && <span> • {article.date}</span>}
+                        </div>
+                      )}
+                      {!article.author && article.date && <span>{article.date}</span>}
+                    </div>
+                  </CardContent>
+                </Card>
               </a>
             );
           })}

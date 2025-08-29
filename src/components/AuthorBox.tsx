@@ -1,5 +1,8 @@
 import React from 'react'
 import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Separator } from '@/components/ui/separator'
 import { 
   User, 
   ExternalLink, 
@@ -50,44 +53,46 @@ const AuthorBox: React.FC<AuthorBoxProps> = ({
       )}
       
       {/* Author Details Box */}
-      <div className="bg-muted rounded-lg p-5">
-        <div className="flex items-center gap-2.5 mb-4">
-          {/* Author Avatar */}
-          {author.avatar ? (
-            <span className="relative flex shrink-0 overflow-hidden rounded-full size-12 border">
-              <img
-                src={author.avatar.url}
-                alt={author.avatar.alt}
-                className="aspect-square size-full"
-              />
-            </span>
-          ) : (
-            <span className="relative flex shrink-0 overflow-hidden rounded-full size-12 border bg-primary/10 items-center justify-center">
-              <User className="w-5 h-5 text-primary" />
-            </span>
-          )}
-          
-          {/* Author Info */}
-          <div>
-            <div className="text-sm font-medium leading-normal">{author.name}</div>
-            {(author.position || author.affiliation) && (
-              <div className="text-muted-foreground text-sm font-normal leading-normal">
-                {author.position}
-                {author.position && author.affiliation && ' & '}
-                {author.affiliation}
-              </div>
-            )}
+      <Card className="bg-muted">
+        <CardContent className="pt-6">
+          <div className="flex items-center gap-2.5 mb-4">
+            {/* Author Avatar */}
+            <Avatar className="size-12 border">
+              {author.avatar ? (
+                <AvatarImage 
+                  src={author.avatar.url} 
+                  alt={author.avatar.alt} 
+                />
+              ) : null}
+              <AvatarFallback>
+                <User className="w-5 h-5" />
+              </AvatarFallback>
+            </Avatar>
+            
+            {/* Author Info */}
+            <div>
+              <div className="text-sm font-medium leading-normal">{author.name}</div>
+              {(author.position || author.affiliation) && (
+                <div className="text-muted-foreground text-sm font-normal leading-normal">
+                  {author.position}
+                  {author.position && author.affiliation && ' & '}
+                  {author.affiliation}
+                </div>
+              )}
+            </div>
           </div>
-        </div>
 
-        {/* Biography */}
-        {showbio && author.bio && (
-          <p className="mb-4">{author.bio}</p>
-        )}
+          {/* Biography */}
+          {showbio && author.bio && (
+            <>
+              <Separator className="mb-4" />
+              <p className="mb-4">{author.bio}</p>
+            </>
+          )}
 
-        {/* Social Links */}
-        {showsocial && (author.website || author.twitter || author.linkedin || author.facebook) && (
-          <div className="flex items-center gap-2.5">
+          {/* Social Links */}
+          {showsocial && (author.website || author.twitter || author.linkedin || author.facebook) && (
+            <div className="flex items-center gap-2.5">
             {author.website && (
               <Button asChild size="icon">
                 <a 
@@ -141,7 +146,8 @@ const AuthorBox: React.FC<AuthorBoxProps> = ({
             )}
           </div>
         )}
-      </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }

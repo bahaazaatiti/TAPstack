@@ -1,5 +1,8 @@
 import React from "react";
 import { Carousel, Card } from "./ui/apple-cards-carousel";
+import { Card as UICard, CardContent } from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { AlertCircle } from "lucide-react";
 
 interface AppleCarouselProps {
   title?: string;
@@ -77,21 +80,20 @@ const AppleCarousel: React.FC<AppleCarouselProps> = (props) => {
     title: article.title,
     category: article.category,
     content: (
-      <div className="bg-card rounded-lg overflow-hidden border">
-        {/* Blog Category and Title Header */}
-
-
-        {/* Featured Image - Full Size */}
-        {article.featuredImage && (
-          <div className="w-full">
-            <img
-              src={article.featuredImage.url}
-              alt={article.featuredImage.alt}
-              className="w-full h-auto object-cover"
-            />
-          </div>
-        )}
-      </div>
+      <UICard className="overflow-hidden border">
+        <CardContent className="p-0">
+          {/* Featured Image - Full Size */}
+          {article.featuredImage && (
+            <div className="w-full">
+              <img
+                src={article.featuredImage.url}
+                alt={article.featuredImage.alt}
+                className="w-full h-auto object-cover"
+              />
+            </div>
+          )}
+        </CardContent>
+      </UICard>
     ),
   }));
 
@@ -101,9 +103,12 @@ const AppleCarousel: React.FC<AppleCarouselProps> = (props) => {
         <h2 className="text-2xl font-bold text-foreground mb-4">
           {title}
         </h2>
-        <p className="text-muted-foreground">
-          No articles with featured images found.
-        </p>
+        <Alert>
+          <AlertCircle className="h-4 w-4" />
+          <AlertDescription>
+            No articles with featured images found.
+          </AlertDescription>
+        </Alert>
       </div>
     );
   }

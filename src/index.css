@@ -208,6 +208,28 @@ BUT IF I REMOVE .RTL ALL BREAKS
 body.rtl {
   direction: rtl !important;
 }
+
+
+
+/* tabs alignment */
+body.rtl {
+  --tabs-direction: row-reverse;
+}
+body.rtl [data-slot="tabs-content"] {
+  direction: rtl;
+}
+
+body.rtl [data-slot="tabs-content"] table {
+  direction: rtl;
+}
+
+body.rtl [data-slot="tabs-content"] .flex {
+  direction: rtl;
+}
+
+body.rtl [data-slot="table-cell"] {
+  text-align: right;
+}
 /* a fix for navigation menu, since it has a direction set to ltr by default by radix */
 .rtl [type="button"],
 .rtl [data-slot="navigation-menu"],

@@ -2,6 +2,7 @@ import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 interface FeaturedBlogProps {
   title?: string;
@@ -85,49 +86,55 @@ const FeaturedBlog: React.FC<FeaturedBlogProps> = (props) => {
             <a
               key={index}
               href={article.url}
-              className={`flex flex-col gap-4 hover:opacity-75 cursor-pointer ${
+              className={`hover:opacity-75 cursor-pointer ${
                 index === 0 ? 'md:col-span-2' : ''
               }`}
             >
-              <div className="bg-muted rounded-md aspect-video overflow-hidden">
-                {article.featuredImage ? (
-                  <img
-                    src={article.featuredImage.url}
-                    alt={article.featuredImage.alt}
-                    className="w-full h-full object-cover"
-                  />
-                ) : null}
-              </div>
-              <div className="flex flex-row gap-4 items-center">
-                <Badge>{article.category}</Badge>
-                <p className="flex flex-row gap-2 text-sm items-center">
-                  <span className="text-muted-foreground">By</span>
-                  {article.authorImage?.url ? (
-                    <Avatar className="h-6 w-6">
-                      <AvatarImage 
-                        src={article.authorImage.url} 
-                        alt={article.authorImage.alt || article.author}
+              <Card className="border-none shadow-none hover:shadow-md transition-shadow">
+                <CardHeader className="p-0">
+                  <div className="bg-muted rounded-md aspect-video overflow-hidden">
+                    {article.featuredImage ? (
+                      <img
+                        src={article.featuredImage.url}
+                        alt={article.featuredImage.alt}
+                        className="w-full h-full object-cover"
                       />
-                      <AvatarFallback>
-                        {article.author.split(' ').map(n => n[0]).join('').toUpperCase()}
-                      </AvatarFallback>
-                    </Avatar>
-                  ) : (
-                    <Skeleton className="h-6 w-6 rounded-full" />
-                  )}
-                  <span>{article.author}</span>
-                </p>
-              </div>
-              <div className="flex flex-col gap-2">
-                <h3 className={`max-w-3xl tracking-tight ${
-                  index === 0 ? 'text-4xl' : 'text-2xl'
-                }`}>
-                  {article.title}
-                </h3>
-                <p className="max-w-3xl text-muted-foreground text-base">
-                  {article.description}
-                </p>
-              </div>
+                    ) : null}
+                  </div>
+                </CardHeader>
+                <CardContent className="flex flex-col gap-4 p-6">
+                  <div className="flex flex-row gap-4 items-center">
+                    <Badge>{article.category}</Badge>
+                    <p className="flex flex-row gap-2 text-sm items-center">
+                      <span className="text-muted-foreground">By</span>
+                      {article.authorImage?.url ? (
+                        <Avatar className="h-6 w-6">
+                          <AvatarImage 
+                            src={article.authorImage.url} 
+                            alt={article.authorImage.alt || article.author}
+                          />
+                          <AvatarFallback>
+                            {article.author.split(' ').map(n => n[0]).join('').toUpperCase()}
+                          </AvatarFallback>
+                        </Avatar>
+                      ) : (
+                        <Skeleton className="h-6 w-6 rounded-full" />
+                      )}
+                      <span>{article.author}</span>
+                    </p>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <h3 className={`max-w-3xl tracking-tight ${
+                      index === 0 ? 'text-4xl' : 'text-2xl'
+                    }`}>
+                      {article.title}
+                    </h3>
+                    <p className="max-w-3xl text-muted-foreground text-base">
+                      {article.description}
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
             </a>
           ))}
         </div>

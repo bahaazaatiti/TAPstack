@@ -1,6 +1,8 @@
 import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
 interface BentoGridBlockProps {
   title?: string;
@@ -131,32 +133,39 @@ const BentoGridBlock: React.FC<BentoGridBlockProps> = (props) => {
                   href={article.url}
                   className={`block transition-transform hover:scale-[1.02] ${colSpanClass}`}
                 >
-                  <div className="group/bento shadow-input row-span-1 flex flex-col justify-between space-y-4 rounded-xl border border-neutral-200 bg-white p-4 transition duration-200 hover:shadow-xl dark:border-white/[0.2] dark:bg-black dark:shadow-none h-full">
+                <Card className="group/bento transition-transform hover:scale-[1.02] h-full">
+                  <CardContent className="flex flex-col justify-between space-y-4 p-4 h-full">
                     <HeaderComponent article={article} />
                     <div className="transition duration-200 group-hover/bento:translate-x-2">
-                      <div className="mt-2 mb-2">
-                        {article.authorImage?.url ? (
-                          <Avatar className="h-6 w-6 mb-2">
-                            <AvatarImage 
-                              src={article.authorImage.url} 
-                              alt={article.authorImage.alt || article.author}
-                            />
-                            <AvatarFallback>
-                              {article.author.split(' ').map(n => n[0]).join('').toUpperCase()}
-                            </AvatarFallback>
-                          </Avatar>
-                        ) : (
-                          <Skeleton className="h-6 w-6 rounded-full mb-2" />
-                        )}
-                        <div className="font-sans font-bold text-neutral-600 dark:text-neutral-200 truncate">
-                          {article.title}
+                      <div className="mt-2 mb-2 flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          {article.authorImage?.url ? (
+                            <Avatar className="h-6 w-6">
+                              <AvatarImage 
+                                src={article.authorImage.url} 
+                                alt={article.authorImage.alt || article.author}
+                              />
+                              <AvatarFallback>
+                                {article.author.split(' ').map(n => n[0]).join('').toUpperCase()}
+                              </AvatarFallback>
+                            </Avatar>
+                          ) : (
+                            <Skeleton className="h-6 w-6 rounded-full" />
+                          )}
                         </div>
+                        <Badge variant="secondary" className="text-xs">
+                          {article.category}
+                        </Badge>
+                      </div>
+                      <div className="font-sans font-bold text-neutral-600 dark:text-neutral-200 truncate mb-2">
+                        {article.title}
                       </div>
                       <div className="font-sans text-xs font-normal text-neutral-600 dark:text-neutral-300 line-clamp-2">
                         {article.description}
                       </div>
                     </div>
-                  </div>
+                  </CardContent>
+                </Card>
                 </a>
               );
             })}
