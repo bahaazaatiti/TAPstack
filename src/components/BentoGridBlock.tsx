@@ -3,6 +3,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "@/components/ui/context-menu";
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { toast } from "@/components/ui/sonner";
+import { Share2, Bookmark, Copy, Eye, Calendar, Clock } from "lucide-react";
 
 interface BentoGridBlockProps {
   title?: string;
@@ -79,6 +86,26 @@ const BentoGridBlock: React.FC<BentoGridBlockProps> = (props) => {
       url: "/blog/css-layout",
       author: "Sarah Wilson",
       featuredImage: null
+    },
+    {
+      title: "React Performance Tips",
+      description: "Optimize your React applications for better performance and user experience.",
+      category: "React",
+      date: "Nov 1, 2024",
+      readTime: 8,
+      url: "/blog/react-performance",
+      author: "Mike Chen",
+      featuredImage: null
+    },
+    {
+      title: "TypeScript Fundamentals",
+      description: "Learn the basics of TypeScript and how it can improve your development workflow.",
+      category: "TypeScript",
+      date: "Oct 28, 2024",
+      readTime: 6,
+      url: "/blog/typescript-basics",
+      author: "Emma Davis",
+      featuredImage: null
     }
   ];
 
@@ -102,6 +129,40 @@ const BentoGridBlock: React.FC<BentoGridBlockProps> = (props) => {
     </>
   );
 
+  // Copy article URL to clipboard
+  const handleCopyUrl = async (url: string) => {
+    try {
+      await navigator.clipboard.writeText(window.location.origin + url)
+      toast.success('Article URL copied to clipboard!')
+    } catch (err) {
+      toast.error('Failed to copy URL')
+    }
+  }
+
+  // Share article
+  const handleShare = async (article: Article) => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: article.title,
+          text: article.description,
+          url: window.location.origin + article.url,
+        })
+        toast.success('Article shared successfully!')
+      } catch (err) {
+        // User cancelled the share
+      }
+    } else {
+      await handleCopyUrl(article.url)
+    }
+  }
+
+  // Bookmark article (placeholder - you'd implement this with your backend)
+  const handleBookmark = (article: Article) => {
+    toast.success(`"${article.title}" bookmarked!`)
+    // Implementation would save to user's bookmarks
+  }
+
   return (
     <div className="w-full py-10 lg:py-16 px-6 xl:px-10">
       <div className="container mx-auto flex flex-col gap-14">
@@ -110,65 +171,215 @@ const BentoGridBlock: React.FC<BentoGridBlockProps> = (props) => {
             {title}
           </h4>
         </div>
-        
         <div className="max-w-6xl w-full mx-auto">
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-3 md:auto-rows-[18rem]">
-            {displayArticles.map((article, index) => {
-              // Group items in pairs for the 2-per-row layout
-              const isFirstInPair = index % 2 === 0;
-              const rowIndex = Math.floor(index / 2);
-              
-              let colSpanClass = "";
-              if (rowIndex % 2 === 0) {
-                // Even rows: narrow first, then wide
-                colSpanClass = isFirstInPair ? "md:col-span-1" : "md:col-span-2";
-              } else {
-                // Odd rows: wide first, then narrow  
-                colSpanClass = isFirstInPair ? "md:col-span-2" : "md:col-span-1";
-              }
-              
-              return (
-                <a
-                  key={index}
-                  href={article.url}
-                  className={`block transition-transform hover:scale-[1.02] ${colSpanClass}`}
-                >
-                <Card className="group/bento transition-transform hover:scale-[1.02] h-full">
-                  <CardContent className="flex flex-col justify-between space-y-4 p-4 h-full">
-                    <HeaderComponent article={article} />
-                    <div className="transition duration-200 group-hover/bento:translate-x-2">
-                      <div className="mt-2 mb-2 flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          {article.authorImage?.url ? (
-                            <Avatar className="h-6 w-6">
-                              <AvatarImage 
-                                src={article.authorImage.url} 
-                                alt={article.authorImage.alt || article.author}
-                              />
-                              <AvatarFallback>
-                                {article.author.split(' ').map(n => n[0]).join('').toUpperCase()}
-                              </AvatarFallback>
+          {/* Desktop Grid View */}
+          <div className="hidden md:block">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-3 md:auto-rows-[18rem]">
+              {displayArticles.map((article, index) => {
+                // Group items in pairs for the 2-per-row layout
+                const isFirstInPair = index % 2 === 0;
+                const rowIndex = Math.floor(index / 2);
+                
+                let colSpanClass = "";
+                if (rowIndex % 2 === 0) {
+                  // Even rows: narrow first, then wide
+                  colSpanClass = isFirstInPair ? "md:col-span-1" : "md:col-span-2";
+                } else {
+                  // Odd rows: wide first, then narrow  
+                  colSpanClass = isFirstInPair ? "md:col-span-2" : "md:col-span-1";
+                }
+                
+                return (
+                  <ContextMenu key={index}>
+                    <ContextMenuTrigger>
+                      <HoverCard>
+                        <HoverCardTrigger asChild>
+                          <a
+                            href={article.url}
+                            className={`block transition-transform hover:scale-[1.02] ${colSpanClass}`}
+                          >
+                            <Card className="group/bento transition-transform hover:scale-[1.02] h-full">
+                              <CardContent className="flex flex-col justify-between space-y-4 p-4 h-full">
+                                <AspectRatio ratio={16 / 9} className="bg-muted rounded-lg overflow-hidden">
+                                  {article.featuredImage ? (
+                                    <img
+                                      src={article.featuredImage.url}
+                                      alt={article.featuredImage.alt}
+                                      className="w-full h-full object-cover"
+                                    />
+                                  ) : (
+                                    <div className="w-full h-full bg-gradient-to-br from-violet-500 via-purple-500 to-blue-500" />
+                                  )}
+                                </AspectRatio>
+                                <div className="transition duration-200 group-hover/bento:translate-x-2">
+                                  <div className="mt-2 mb-2 flex items-center justify-between">
+                                    <div className="flex items-center gap-2">
+                                      {article.authorImage?.url ? (
+                                        <Avatar className="h-6 w-6">
+                                          <AvatarImage src={article.authorImage.url} alt={article.authorImage.alt || article.author} />
+                                          <AvatarFallback>{article.author.split(' ').map(n => n[0]).join('').toUpperCase()}</AvatarFallback>
+                                        </Avatar>
+                                      ) : (
+                                        <Skeleton className="h-6 w-6 rounded-full" />
+                                      )}
+                                    </div>
+                                    <Badge variant="secondary" className="text-xs">
+                                      {article.category}
+                                    </Badge>
+                                  </div>
+                                  <div className="font-sans font-bold text-neutral-600 dark:text-neutral-200 truncate mb-2">
+                                    {article.title}
+                                  </div>
+                                  <div className="font-sans text-xs font-normal text-neutral-600 dark:text-neutral-300 line-clamp-2">
+                                    {article.description}
+                                  </div>
+                                </div>
+                              </CardContent>
+                            </Card>
+                          </a>
+                        </HoverCardTrigger>
+                        <HoverCardContent className="w-80">
+                          <div className="space-y-2">
+                            <h4 className="text-sm font-semibold">{article.title}</h4>
+                            <p className="text-sm text-muted-foreground">{article.description}</p>
+                            <div className="flex items-center gap-2 pt-2">
+                              <Avatar className="h-8 w-8">
+                                {article.authorImage?.url ? (
+                                  <AvatarImage src={article.authorImage.url} alt={article.authorImage.alt || article.author} />
+                                ) : null}
+                                <AvatarFallback>{article.author.split(' ').map(n => n[0]).join('').toUpperCase()}</AvatarFallback>
+                              </Avatar>
+                              <div>
+                                <p className="text-sm font-medium">{article.author}</p>
+                                <p className="text-xs text-muted-foreground">{article.date} • {article.readTime} min read</p>
+                              </div>
+                            </div>
+                          </div>
+                        </HoverCardContent>
+                      </HoverCard>
+                    </ContextMenuTrigger>
+                    <ContextMenuContent>
+                      <ContextMenuItem onClick={() => handleShare(article)}>
+                        <Share2 className="h-4 w-4 me-2" />
+                        Share Article
+                      </ContextMenuItem>
+                      <ContextMenuItem onClick={() => handleBookmark(article)}>
+                        <Bookmark className="h-4 w-4 me-2" />
+                        Bookmark
+                      </ContextMenuItem>
+                      <ContextMenuItem onClick={() => handleCopyUrl(article.url)}>
+                        <Copy className="h-4 w-4 me-2" />
+                        Copy Link
+                      </ContextMenuItem>
+                    </ContextMenuContent>
+                  </ContextMenu>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Mobile Carousel View */}
+          <div className="md:hidden">
+            <Carousel className="w-full">
+              <CarouselContent>
+                {displayArticles.map((article, index) => (
+                  <CarouselItem key={index} className="basis-4/5">
+                    <Drawer>
+                      <DrawerTrigger asChild>
+                        <Card className="group/bento transition-transform hover:scale-[1.02] h-full cursor-pointer">
+                          <CardContent className="flex flex-col justify-between space-y-4 p-4 h-full">
+                            <AspectRatio ratio={16 / 9} className="bg-muted rounded-lg overflow-hidden">
+                              {article.featuredImage ? (
+                                <img
+                                  src={article.featuredImage.url}
+                                  alt={article.featuredImage.alt}
+                                  className="w-full h-full object-cover"
+                                />
+                              ) : (
+                                <div className="w-full h-full bg-gradient-to-br from-violet-500 via-purple-500 to-blue-500" />
+                              )}
+                            </AspectRatio>
+                            <div className="transition duration-200 group-hover/bento:translate-x-2">
+                              <div className="mt-2 mb-2 flex items-center justify-between">
+                                <div className="flex items-center gap-2">
+                                  {article.authorImage?.url ? (
+                                    <Avatar className="h-6 w-6">
+                                      <AvatarImage src={article.authorImage.url} alt={article.authorImage.alt} />
+                                      <AvatarFallback>{article.author.charAt(0)}</AvatarFallback>
+                                    </Avatar>
+                                  ) : (
+                                    <Avatar className="h-6 w-6">
+                                      <AvatarFallback>{article.author.charAt(0)}</AvatarFallback>
+                                    </Avatar>
+                                  )}
+                                  <span className="text-sm text-muted-foreground">{article.author}</span>
+                                </div>
+                                <Badge variant="outline" className="text-xs">
+                                  {article.category}
+                                </Badge>
+                              </div>
+                              <div className="font-sans font-bold text-lg text-foreground mb-2">
+                                {article.title}
+                              </div>
+                              <div className="font-sans text-sm text-muted-foreground line-clamp-2 mb-2">
+                                {article.description}
+                              </div>
+                              <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                                <div className="flex items-center gap-1">
+                                  <Calendar className="h-3 w-3" />
+                                  {article.date}
+                                </div>
+                                <div className="flex items-center gap-1">
+                                  <Clock className="h-3 w-3" />
+                                  {article.readTime} min read
+                                </div>
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      </DrawerTrigger>
+                      <DrawerContent>
+                        <DrawerHeader>
+                          <DrawerTitle>{article.title}</DrawerTitle>
+                        </DrawerHeader>
+                        <div className="p-4 space-y-4">
+                          <p className="text-muted-foreground">{article.description}</p>
+                          <div className="flex items-center gap-2">
+                            <Avatar className="h-8 w-8">
+                              {article.authorImage?.url ? (
+                                <AvatarImage src={article.authorImage.url} alt={article.authorImage.alt} />
+                              ) : null}
+                              <AvatarFallback>{article.author.charAt(0)}</AvatarFallback>
                             </Avatar>
-                          ) : (
-                            <Skeleton className="h-6 w-6 rounded-full" />
-                          )}
+                            <div>
+                              <p className="text-sm font-medium">{article.author}</p>
+                              <p className="text-xs text-muted-foreground">{article.date} • {article.readTime} min read</p>
+                            </div>
+                          </div>
+                          <div className="flex gap-2 pt-4">
+                            <button
+                              onClick={() => window.open(article.url, '_self')}
+                              className="flex-1 bg-primary text-primary-foreground rounded-md py-2 px-4 text-sm font-medium"
+                            >
+                              <Eye className="h-4 w-4 me-2 inline" />
+                              Read Article
+                            </button>
+                            <button
+                              onClick={() => handleShare(article)}
+                              className="bg-secondary text-secondary-foreground rounded-md py-2 px-4 text-sm font-medium"
+                            >
+                              <Share2 className="h-4 w-4" />
+                            </button>
+                          </div>
                         </div>
-                        <Badge variant="secondary" className="text-xs">
-                          {article.category}
-                        </Badge>
-                      </div>
-                      <div className="font-sans font-bold text-neutral-600 dark:text-neutral-200 truncate mb-2">
-                        {article.title}
-                      </div>
-                      <div className="font-sans text-xs font-normal text-neutral-600 dark:text-neutral-300 line-clamp-2">
-                        {article.description}
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-                </a>
-              );
-            })}
+                      </DrawerContent>
+                    </Drawer>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious />
+              <CarouselNext />
+            </Carousel>
           </div>
         </div>
       </div>

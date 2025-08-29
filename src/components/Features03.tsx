@@ -2,6 +2,9 @@ import React from 'react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import { ScrollArea } from "@/components/ui/scroll-area"
 import { 
   ArrowRight, 
   Blocks, 
@@ -12,7 +15,8 @@ import {
   Heart, 
   Check, 
   Plus, 
-  Minus 
+  Minus,
+  ChevronDown 
 } from "lucide-react"
 
 interface Features03Props {
@@ -110,6 +114,18 @@ const Features03: React.FC<Features03Props> = (props) => {
     }
   };
 
+  // Enhanced state for collapsible features
+  const [openFeatures, setOpenFeatures] = React.useState<Record<string, boolean>>({})
+
+  // Toggle feature expansion
+  const toggleFeature = (cardIndex: number, featureIndex: number) => {
+    const key = `${cardIndex}-${featureIndex}`
+    setOpenFeatures(prev => ({
+      ...prev,
+      [key]: !prev[key]
+    }))
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center">
       <div className="w-full max-w-screen-lg mx-auto py-12 px-6">
@@ -118,8 +134,10 @@ const Features03: React.FC<Features03Props> = (props) => {
           {subtitle}
         </h2>
         
-        {/* Dynamic Cards */}
-        <div className="mt-8 grid sm:grid-cols-2 md:grid-cols-5 lg:grid-cols-3 gap-6">
+        {/* Enhanced Dynamic Cards with FAQ Section */}
+        <div className="mt-8 space-y-12">
+          {/* Main Feature Cards */}
+          <div className="grid sm:grid-cols-2 md:grid-cols-5 lg:grid-cols-3 gap-6">
           {cards.map((card, cardIndex) => {
             const isEven = cardIndex % 2 === 0;
             
@@ -151,18 +169,34 @@ const Features03: React.FC<Features03Props> = (props) => {
                         {card.title}
                       </span>
 
-                      <ul className="mt-6 space-y-4">
-                        {card.features.map((feature, index) => (
-                          <li key={index}>
-                            <div className="flex items-start gap-3">
-                              {getIcon(feature.icon)}
-                              <p className="-mt-0.5">
-                                {feature.text}
-                              </p>
-                            </div>
-                          </li>
-                        ))}
-                      </ul>
+                      {/* Enhanced Features with Collapsible Details */}
+                      <ScrollArea className="mt-6 max-h-64">
+                        <ul className="space-y-4">
+                          {card.features.map((feature, index) => (
+                            <li key={index}>
+                              <Collapsible
+                                open={openFeatures[`${cardIndex}-${index}`]}
+                                onOpenChange={() => toggleFeature(cardIndex, index)}
+                              >
+                                <CollapsibleTrigger className="flex items-center justify-between w-full text-left p-2 rounded-lg hover:bg-muted/50 transition-colors">
+                                  <div className="flex items-start gap-3 flex-1">
+                                    {getIcon(feature.icon)}
+                                    <p className="-mt-0.5 font-medium">
+                                      {feature.text.split('.')[0]}
+                                    </p>
+                                  </div>
+                                  <ChevronDown className={`h-4 w-4 transition-transform ${openFeatures[`${cardIndex}-${index}`] ? 'rotate-180' : ''}`} />
+                                </CollapsibleTrigger>
+                                <CollapsibleContent className="ps-9 pt-2">
+                                  <p className="text-sm text-muted-foreground">
+                                    {feature.text.includes('.') ? feature.text.split('.').slice(1).join('.').trim() : 'Learn more about this feature and how it can benefit your workflow.'}
+                                  </p>
+                                </CollapsibleContent>
+                              </Collapsible>
+                            </li>
+                          ))}
+                        </ul>
+                      </ScrollArea>
 
                       <Button 
                         className="mt-12 w-full"
@@ -234,18 +268,34 @@ const Features03: React.FC<Features03Props> = (props) => {
                       {card.title}
                     </span>
 
-                    <ul className="mt-6 space-y-4">
-                      {card.features.map((feature, index) => (
-                        <li key={index}>
-                          <div className="flex items-start gap-3">
-                            {getIcon(feature.icon)}
-                            <p className="-mt-0.5">
-                              {feature.text}
-                            </p>
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
+                    {/* Enhanced Features with Collapsible Details */}
+                    <ScrollArea className="mt-6 max-h-64">
+                      <ul className="space-y-4">
+                        {card.features.map((feature, index) => (
+                          <li key={index}>
+                            <Collapsible
+                              open={openFeatures[`${cardIndex}-${index}`]}
+                              onOpenChange={() => toggleFeature(cardIndex, index)}
+                            >
+                              <CollapsibleTrigger className="flex items-center justify-between w-full text-left p-2 rounded-lg hover:bg-muted/50 transition-colors">
+                                <div className="flex items-start gap-3 flex-1">
+                                  {getIcon(feature.icon)}
+                                  <p className="-mt-0.5 font-medium">
+                                    {feature.text.split('.')[0]}
+                                  </p>
+                                </div>
+                                <ChevronDown className={`h-4 w-4 transition-transform ${openFeatures[`${cardIndex}-${index}`] ? 'rotate-180' : ''}`} />
+                              </CollapsibleTrigger>
+                              <CollapsibleContent className="ps-9 pt-2">
+                                <p className="text-sm text-muted-foreground">
+                                  {feature.text.includes('.') ? feature.text.split('.').slice(1).join('.').trim() : 'Learn more about this feature and how it can benefit your workflow.'}
+                                </p>
+                              </CollapsibleContent>
+                            </Collapsible>
+                          </li>
+                        ))}
+                      </ul>
+                    </ScrollArea>
 
                     <Button 
                       className="mt-12 w-full"
@@ -259,6 +309,38 @@ const Features03: React.FC<Features03Props> = (props) => {
               );
             }
           })}
+          </div>
+
+          {/* FAQ/Information Accordion Section */}
+          <div className="mt-16">
+            <h3 className="text-2xl font-bold tracking-tight mb-6">Frequently Asked Questions</h3>
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem value="item-1">
+                <AccordionTrigger>How do these features work together?</AccordionTrigger>
+                <AccordionContent>
+                  Our features are designed to work seamlessly together, allowing you to plan your strategy and engage your audience more effectively. Each tool complements the others to create a comprehensive solution.
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="item-2">
+                <AccordionTrigger>What makes this approach different?</AccordionTrigger>
+                <AccordionContent>
+                  We focus on simplicity and effectiveness. Our drag-and-drop interface and real-time analytics provide immediate value without the complexity of traditional tools.
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="item-3">
+                <AccordionTrigger>Can I customize the features for my needs?</AccordionTrigger>
+                <AccordionContent>
+                  Absolutely! Each feature can be customized to match your specific requirements. Whether you're creating simple forms or complex interactive content, our tools adapt to your workflow.
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="item-4">
+                <AccordionTrigger>How quickly can I see results?</AccordionTrigger>
+                <AccordionContent>
+                  Most users see immediate improvements in engagement within the first week. Our real-time analytics help you track progress and optimize your approach as you go.
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </div>
         </div>
       </div>
     </div>
