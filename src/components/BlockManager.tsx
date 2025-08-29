@@ -1,6 +1,5 @@
 import React, { useEffect, ComponentType } from 'react'
 import { createRoot } from 'react-dom/client'
-import { Toaster } from '@/components/ui/sonner'
 // TODO: change this to a dynamic import if needed
 import WavyHero from './WavyHero'
 import Comp582 from './Comp582'
@@ -78,11 +77,7 @@ const BlockManager: React.FC = () => {
     })
   }
 
-  return (
-    <>
-      <Toaster />
-    </>
-  ) // Add the Toaster for sonner notifications
+  return null
 }
 
 export default BlockManager
