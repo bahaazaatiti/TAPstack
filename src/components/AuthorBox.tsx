@@ -1,15 +1,69 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Separator } from '@/components/ui/separator'
+import { Badge } from '@/components/ui/badge'
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from '@/components/ui/hover-card'
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet'
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from '@/components/ui/drawer'
+import { ScrollArea } from '@/components/ui/scroll-area'
 import { 
   User, 
   ExternalLink, 
   Twitter, 
   Linkedin, 
-  Facebook 
+  Facebook,
+  Mail,
+  BookOpen,
+  TrendingUp,
+  Clock,
+  Tag,
+  FileText
 } from 'lucide-react'
+
+interface Article {
+  title: string
+  url: string
+  date: string
+  dateFormatted: string
+  category: string
+  description: string
+  readTime: string
+  featuredImage?: {
+    url: string
+    alt: string
+  }
+}
+
+interface PublicationStats {
+  totalArticles: number
+  recentArticles: number
+  categoriesCount: number
+  averageReadTime: number
+  firstPublication?: string
+  lastPublication?: string
+}
 
 interface Author {
   name: string
@@ -24,6 +78,8 @@ interface Author {
   twitter?: string
   linkedin?: string
   facebook?: string
+  email?: string
+  expertise?: string[]
 }
 
 interface AuthorBoxProps {
@@ -31,6 +87,8 @@ interface AuthorBoxProps {
   showbio?: boolean
   showsocial?: boolean
   customtitle?: string
+  articles?: Article[]
+  publicationStats?: PublicationStats | null
   [key: string]: any
 }
 
@@ -38,11 +96,306 @@ const AuthorBox: React.FC<AuthorBoxProps> = ({
   author,
   showbio = true,
   showsocial = true,
-  customtitle
+  customtitle,
+  articles = [],
+  publicationStats
 }) => {
+  const [isMobile, setIsMobile] = useState(false)
+
+  React.useEffect(() => {
+    const checkDevice = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkDevice()
+    window.addEventListener('resize', checkDevice)
+    return () => window.removeEventListener('resize', checkDevice)
+  }, [])
+
   // Don't render if no author is selected
   if (!author) {
     return null
+  }
+
+  // Quick preview content for hover card
+  const QuickPreview = () => (
+    <div className="space-y-3">
+      <div className="flex items-center space-x-3">
+        <Avatar className="size-10">
+          {author.avatar ? (
+            <AvatarImage src={author.avatar.url} alt={author.avatar.alt} />
+          ) : null}
+          <AvatarFallback>
+            <User className="w-4 h-4" />
+          </AvatarFallback>
+        </Avatar>
+        <div>
+          <div className="text-sm font-medium">{author.name}</div>
+          {author.position && (
+            <div className="text-xs text-muted-foreground">{author.position}</div>
+          )}
+        </div>
+      </div>
+      
+      {author.bio && (
+        <p className="text-sm text-muted-foreground line-clamp-3">
+          {typeof author.bio === 'string' 
+            ? (author.bio.length > 120 ? `${author.bio.substring(0, 120)}...` : author.bio)
+            : ''
+          }
+        </p>
+      )}
+      
+      {author.expertise && author.expertise.length > 0 && (
+        <div className="flex flex-wrap gap-1">
+          {author.expertise.slice(0, 3).map((tag, index) => (
+            <Badge key={index} variant="secondary" className="text-xs">
+              {typeof tag === 'string' ? tag : 'Tag'}
+            </Badge>
+          ))}
+          {author.expertise.length > 3 && (
+            <Badge variant="outline" className="text-xs">
+              +{author.expertise.length - 3} more
+            </Badge>
+          )}
+        </div>
+      )}
+      
+      {publicationStats && (
+        <div className="flex items-center gap-4 text-xs text-muted-foreground">
+          <div className="flex items-center gap-1">
+            <FileText className="w-3 h-3" />
+            {publicationStats.totalArticles} articles
+          </div>
+          <div className="flex items-center gap-1">
+            <Clock className="w-3 h-3" />
+            {publicationStats.averageReadTime} min avg
+          </div>
+        </div>
+      )}
+      
+      <div className="text-xs text-muted-foreground">
+        Click for full profile →
+      </div>
+    </div>
+  )
+
+  // Full profile content for sheet/drawer
+  const FullProfile = () => {
+    const content = (
+      <div className={`space-y-8 ${isMobile ? 'px-0' : 'px-6 pr-4'}`}>
+        {/* Header */}
+        <div className="text-center space-y-4 pb-6 border-b">
+          <Avatar className="size-20 mx-auto">
+            {author.avatar ? (
+              <AvatarImage src={author.avatar.url} alt={author.avatar.alt} />
+            ) : null}
+            <AvatarFallback>
+              <User className="w-8 h-8" />
+            </AvatarFallback>
+          </Avatar>
+          <div>
+            <h3 className="text-xl font-semibold">{author.name}</h3>
+            {(author.position || author.affiliation) && (
+              <p className="text-muted-foreground">
+                {author.position}
+                {author.position && author.affiliation && ' at '}
+                {author.affiliation}
+              </p>
+            )}
+          </div>
+        </div>
+
+        {/* Bio */}
+        {author.bio && (
+          <div className="space-y-3">
+            <h4 className="font-medium mb-3 flex items-center gap-2">
+              <User className="w-4 h-4" />
+              About
+            </h4>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              {typeof author.bio === 'string' ? author.bio : ''}
+            </p>
+          </div>
+        )}
+
+        {/* Expertise */}
+        {author.expertise && author.expertise.length > 0 && (
+          <div className="space-y-3">
+            <h4 className="font-medium mb-3 flex items-center gap-2">
+              <Tag className="w-4 h-4" />
+              Expertise
+            </h4>
+            <div className="flex flex-wrap gap-2">
+              {author.expertise.map((tag, index) => (
+                <Badge key={index} variant="secondary">
+                  {typeof tag === 'string' ? tag : 'Tag'}
+                </Badge>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Publication Stats */}
+        {publicationStats && (
+          <div className="space-y-4">
+            <h4 className="font-medium mb-4 flex items-center gap-2">
+              <TrendingUp className="w-4 h-4" />
+              Publication Stats
+            </h4>
+            <div className="grid grid-cols-2 gap-4 text-sm">
+              <div className="text-center p-4 bg-muted rounded-lg">
+                <div className="text-2xl font-bold text-primary">
+                  {publicationStats.totalArticles}
+                </div>
+                <div className="text-muted-foreground">Total Articles</div>
+              </div>
+              <div className="text-center p-4 bg-muted rounded-lg">
+                <div className="text-2xl font-bold text-primary">
+                  {publicationStats.recentArticles}
+                </div>
+                <div className="text-muted-foreground">Recent (30d)</div>
+              </div>
+              <div className="text-center p-4 bg-muted rounded-lg">
+                <div className="text-2xl font-bold text-primary">
+                  {publicationStats.categoriesCount}
+                </div>
+                <div className="text-muted-foreground">Categories</div>
+              </div>
+              <div className="text-center p-4 bg-muted rounded-lg">
+                <div className="text-2xl font-bold text-primary">
+                  {publicationStats.averageReadTime}m
+                </div>
+                <div className="text-muted-foreground">Avg Read Time</div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Recent Articles */}
+        {articles && articles.length > 0 && (
+          <div className="space-y-4">
+            <h4 className="font-medium mb-4 flex items-center gap-2">
+              <BookOpen className="w-4 h-4" />
+              Recent Articles ({articles.length})
+            </h4>
+            <div className="space-y-4 max-h-64 overflow-y-auto">
+              {articles.map((article, index) => (
+                <Card key={index} className="p-4">
+                  <div className="flex gap-3">
+                    {article.featuredImage && (
+                      <img
+                        src={article.featuredImage.url}
+                        alt={article.featuredImage.alt}
+                        className="w-16 h-16 object-cover rounded flex-shrink-0"
+                      />
+                    )}
+                    <div className="flex-1 min-w-0 space-y-2">
+                      <h5 className="font-medium text-sm line-clamp-2">
+                        <a 
+                          href={article.url}
+                          className="hover:text-primary transition-colors"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {article.title}
+                        </a>
+                      </h5>
+                      <p className="text-xs text-muted-foreground line-clamp-2">
+                        {typeof article.description === 'string' ? article.description : ''}
+                      </p>
+                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                        <Badge variant="outline" className="text-xs">
+                          {typeof article.category === 'string' ? article.category : 'Article'}
+                        </Badge>
+                        <span>{typeof article.dateFormatted === 'string' ? article.dateFormatted : ''}</span>
+                        <span>•</span>
+                        <span>{typeof article.readTime === 'number' ? article.readTime : 0} min read</span>
+                      </div>
+                    </div>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Social Links */}
+        {showsocial && (author.website || author.twitter || author.linkedin || author.facebook || author.email) && (
+          <div>
+            <h4 className="font-medium mb-3">Connect</h4>
+            <div className="flex flex-wrap gap-1">
+              {author.email && (
+                <Button asChild size="sm" variant="outline">
+                  <a href={`mailto:${author.email}`} title="Email">
+                    <Mail className="w-4 h-4 mr-2" />
+                    Email
+                  </a>
+                </Button>
+              )}
+              {author.website && (
+                <Button asChild size="sm" variant="outline">
+                  <a 
+                    href={author.website} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    title="Website"
+                  >
+                    <ExternalLink className="w-4 h-4 mr-2" />
+                    Website
+                  </a>
+                </Button>
+              )}
+              {author.twitter && (
+                <Button asChild size="sm" variant="outline">
+                  <a 
+                    href={`https://twitter.com/${author.twitter}`}
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    title="Twitter/X"
+                  >
+                    <Twitter className="w-4 h-4 mr-2" />
+                    Twitter
+                  </a>
+                </Button>
+              )}
+              {author.linkedin && (
+                <Button asChild size="sm" variant="outline">
+                  <a 
+                    href={author.linkedin}
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    title="LinkedIn"
+                  >
+                    <Linkedin className="w-4 h-4 mr-2" />
+                    LinkedIn
+                  </a>
+                </Button>
+              )}
+              {author.facebook && (
+                <Button asChild size="sm" variant="outline">
+                  <a 
+                    href={author.facebook}
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    title="Facebook"
+                  >
+                    <Facebook className="w-4 h-4 mr-2" />
+                    Facebook
+                  </a>
+                </Button>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+    );
+
+    // Return with or without ScrollArea based on mobile/desktop
+    return isMobile ? content : (
+      <ScrollArea className="h-full max-h-[80vh]">
+        {content}
+      </ScrollArea>
+    );
   }
 
   return (
@@ -56,30 +409,101 @@ const AuthorBox: React.FC<AuthorBoxProps> = ({
       <Card className="bg-muted">
         <CardContent className="pt-6">
           <div className="flex items-center gap-2.5 mb-4">
-            {/* Author Avatar */}
-            <Avatar className="size-12 border">
-              {author.avatar ? (
-                <AvatarImage 
-                  src={author.avatar.url} 
-                  alt={author.avatar.alt} 
-                />
-              ) : null}
-              <AvatarFallback>
-                <User className="w-5 h-5" />
-              </AvatarFallback>
-            </Avatar>
-            
-            {/* Author Info */}
-            <div>
-              <div className="text-sm font-medium leading-normal">{author.name}</div>
-              {(author.position || author.affiliation) && (
-                <div className="text-muted-foreground text-sm font-normal leading-normal">
-                  {author.position}
-                  {author.position && author.affiliation && ' & '}
-                  {author.affiliation}
+            {/* Author Avatar with Hover Card */}
+            <HoverCard>
+              <HoverCardTrigger asChild>
+                <div className="cursor-pointer">
+                  <Avatar className="size-12 border hover:ring-2 hover:ring-primary/20 transition-all duration-200">
+                    {author.avatar ? (
+                      <AvatarImage 
+                        src={author.avatar.url} 
+                        alt={author.avatar.alt} 
+                      />
+                    ) : null}
+                    <AvatarFallback>
+                      <User className="w-5 h-5" />
+                    </AvatarFallback>
+                  </Avatar>
                 </div>
+              </HoverCardTrigger>
+              <HoverCardContent className="w-80" side="top">
+                <QuickPreview />
+              </HoverCardContent>
+            </HoverCard>
+            
+            {/* Author Info with Interactive Name */}
+            <div className="flex-1">
+              {isMobile ? (
+                // Mobile: Use Drawer
+                <Drawer>
+                  <DrawerTrigger asChild>
+                    <button className="text-left hover:text-primary transition-colors">
+                      <div className="text-sm font-medium leading-normal">{author.name}</div>
+                      {(author.position || author.affiliation) && (
+                        <div className="text-muted-foreground text-sm font-normal leading-normal">
+                          {author.position}
+                          {author.position && author.affiliation && ' & '}
+                          {author.affiliation}
+                        </div>
+                      )}
+                    </button>
+                  </DrawerTrigger>
+                  <DrawerContent>
+                    <DrawerHeader>
+                      <DrawerTitle>Author Profile</DrawerTitle>
+                      <DrawerDescription>
+                        Detailed information about {author.name}
+                      </DrawerDescription>
+                    </DrawerHeader>
+                    <div className="px-4 pb-4 overflow-y-auto max-h-[70vh]">
+                      <FullProfile />
+                    </div>
+                    <DrawerFooter>
+                      <DrawerClose asChild>
+                        <Button variant="outline">Close</Button>
+                      </DrawerClose>
+                    </DrawerFooter>
+                  </DrawerContent>
+                </Drawer>
+              ) : (
+                // Desktop: Use Sheet
+                <Sheet>
+                  <SheetTrigger asChild>
+                    <button className="text-left hover:text-primary transition-colors">
+                      <div className="text-sm font-medium leading-normal">{author.name}</div>
+                      {(author.position || author.affiliation) && (
+                        <div className="text-muted-foreground text-sm font-normal leading-normal">
+                          {author.position}
+                          {author.position && author.affiliation && ' & '}
+                          {author.affiliation}
+                        </div>
+                      )}
+                    </button>
+                  </SheetTrigger>
+                  <SheetContent className="sm:max-w-md">
+                    <SheetHeader>
+                      <SheetTitle>Author Profile</SheetTitle>
+                      <SheetDescription>
+                        Detailed information about {author.name}
+                      </SheetDescription>
+                    </SheetHeader>
+                    <div className="mt-6">
+                      <FullProfile />
+                    </div>
+                  </SheetContent>
+                </Sheet>
               )}
             </div>
+
+            {/* Quick Stats Display */}
+            {publicationStats && (
+              <div className="text-right">
+                <div className="text-xs text-muted-foreground">Publications</div>
+                <div className="text-lg font-semibold text-primary">
+                  {publicationStats.totalArticles}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Biography */}
@@ -90,62 +514,128 @@ const AuthorBox: React.FC<AuthorBoxProps> = ({
             </>
           )}
 
-          {/* Social Links */}
+          {/* Expertise Tags */}
+          {author.expertise && author.expertise.length > 0 && (
+            <div className="mb-4">
+              <div className="flex flex-wrap gap-2">
+                {author.expertise.slice(0, 5).map((tag, index) => (
+                  <Badge key={index} variant="secondary" className="text-xs">
+                    {typeof tag === 'string' ? tag : 'Tag'}
+                  </Badge>
+                ))}
+                {author.expertise.length > 5 && (
+                  <Badge variant="outline" className="text-xs">
+                    +{author.expertise.length - 5} more
+                  </Badge>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Social Links and View Profile Button */}
           {showsocial && (author.website || author.twitter || author.linkedin || author.facebook) && (
             <div className="flex items-center gap-2.5">
-            {author.website && (
-              <Button asChild size="icon">
-                <a 
-                  href={author.website} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  title="Website"
-                >
-                  <ExternalLink className="w-4 h-4" />
-                </a>
-              </Button>
-            )}
+              {author.website && (
+                <Button asChild size="icon" variant="ghost">
+                  <a 
+                    href={author.website} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    title="Website"
+                  >
+                    <ExternalLink className="w-4 h-4" />
+                  </a>
+                </Button>
+              )}
 
-            {author.twitter && (
-              <Button asChild size="icon">
-                <a 
-                  href={`https://twitter.com/${author.twitter}`}
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  title="Twitter/X"
-                >
-                  <Twitter className="w-4 h-4" />
-                </a>
-              </Button>
-            )}
+              {author.twitter && (
+                <Button asChild size="icon" variant="ghost">
+                  <a 
+                    href={`https://twitter.com/${author.twitter}`}
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    title="Twitter/X"
+                  >
+                    <Twitter className="w-4 h-4" />
+                  </a>
+                </Button>
+              )}
 
-            {author.linkedin && (
-              <Button asChild size="icon">
-                <a 
-                  href={author.linkedin}
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  title="LinkedIn"
-                >
-                  <Linkedin className="w-4 h-4" />
-                </a>
-              </Button>
-            )}
+              {author.linkedin && (
+                <Button asChild size="icon" variant="ghost">
+                  <a 
+                    href={author.linkedin}
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    title="LinkedIn"
+                  >
+                    <Linkedin className="w-4 h-4" />
+                  </a>
+                </Button>
+              )}
 
-            {author.facebook && (
-              <Button asChild size="icon">
-                <a 
-                  href={author.facebook}
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  title="Facebook"
-                >
-                  <Facebook className="w-4 h-4" />
-                </a>
-              </Button>
-            )}
-          </div>
-        )}
+              {author.facebook && (
+                <Button asChild size="icon" variant="ghost">
+                  <a 
+                    href={author.facebook}
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    title="Facebook"
+                  >
+                    <Facebook className="w-4 h-4" />
+                  </a>
+                </Button>
+              )}
+
+              {/* View Full Profile Button */}
+              {isMobile ? (
+                <Drawer>
+                  <DrawerTrigger asChild>
+                    <Button size="sm" variant="outline" className="ml-auto">
+                      <User className="w-4 h-4 mr-2" />
+                      View Profile
+                    </Button>
+                  </DrawerTrigger>
+                  <DrawerContent>
+                    <DrawerHeader>
+                      <DrawerTitle>Author Profile</DrawerTitle>
+                      <DrawerDescription>
+                        Detailed information about {author.name}
+                      </DrawerDescription>
+                    </DrawerHeader>
+                    <div className="px-4 pb-4 overflow-y-auto max-h-[70vh]">
+                      <FullProfile />
+                    </div>
+                    <DrawerFooter>
+                      <DrawerClose asChild>
+                        <Button variant="outline">Close</Button>
+                      </DrawerClose>
+                    </DrawerFooter>
+                  </DrawerContent>
+                </Drawer>
+              ) : (
+                <Sheet>
+                  <SheetTrigger asChild>
+                    <Button size="sm" variant="outline" className="ml-auto">
+                      <User className="w-4 h-4 mr-2" />
+                      View Profile
+                    </Button>
+                  </SheetTrigger>
+                  <SheetContent className="sm:max-w-md">
+                    <SheetHeader>
+                      <SheetTitle>Author Profile</SheetTitle>
+                      <SheetDescription>
+                        Detailed information about {author.name}
+                      </SheetDescription>
+                    </SheetHeader>
+                    <div className="mt-6">
+                      <FullProfile />
+                    </div>
+                  </SheetContent>
+                </Sheet>
+              )}
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>

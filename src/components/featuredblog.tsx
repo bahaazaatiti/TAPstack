@@ -169,7 +169,7 @@ const FeaturedBlog: React.FC<FeaturedBlogProps> = (props) => {
                           <CardContent className="flex flex-col gap-4 p-6">
                             <div className="flex flex-row gap-4 items-center">
                               <Badge>{article.category}</Badge>
-                              <p className="flex flex-row gap-2 text-sm items-center">
+                              <div className="flex flex-row gap-2 text-sm items-center">
                                 <span className="text-muted-foreground">By</span>
                                 {article.authorImage?.url ? (
                                   <Avatar className="h-6 w-6">
@@ -185,7 +185,7 @@ const FeaturedBlog: React.FC<FeaturedBlogProps> = (props) => {
                                   <Skeleton className="h-6 w-6 rounded-full" />
                                 )}
                                 <span>{article.author}</span>
-                              </p>
+                              </div>
                             </div>
                             <div className="flex flex-col gap-2">
                               <h3 className={`max-w-3xl tracking-tight ${
@@ -257,7 +257,7 @@ const FeaturedBlog: React.FC<FeaturedBlogProps> = (props) => {
                           <CardContent className="flex flex-col gap-4 p-6">
                             <div className="flex flex-row gap-4 items-center">
                               <Badge>{article.category}</Badge>
-                              <p className="flex flex-row gap-2 text-sm items-center">
+                              <div className="flex flex-row gap-2 text-sm items-center">
                                 <span className="text-muted-foreground">By</span>
                                 {article.authorImage?.url ? (
                                   <Avatar className="h-6 w-6">
@@ -273,7 +273,7 @@ const FeaturedBlog: React.FC<FeaturedBlogProps> = (props) => {
                                   <Skeleton className="h-6 w-6 rounded-full" />
                                 )}
                                 <span>{article.author}</span>
-                              </p>
+                              </div>
                             </div>
                             <div className="flex flex-col gap-2">
                               <h3 className={`max-w-3xl tracking-tight ${
