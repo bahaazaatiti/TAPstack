@@ -11,6 +11,16 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { Calendar } from "@/components/ui/calendar";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
+import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuSeparator,
+  ContextMenuTrigger,
+} from "@/components/ui/context-menu";
 import {
   Pagination,
   PaginationContent,
@@ -20,12 +30,14 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { cn } from "@/lib/utils";
+import { DateRange } from "react-day-picker";
+import { toast } from "sonner";
 import {
   BadgeDollarSign,
   Bike,
   BookHeart,
   BriefcaseBusiness,
-  Calendar,
+  Calendar as CalendarIcon,
   ClockIcon,
   Cpu,
   FlaskRound,
@@ -35,6 +47,10 @@ import {
   SlidersHorizontal,
   X,
   Check,
+  ExternalLink,
+  Copy,
+  Share2,
+  Bookmark,
 } from "lucide-react";
 
 interface BlogProps {
@@ -103,6 +119,17 @@ const Blog: React.FC<BlogProps> = (props) => {
   const [sortOption, setSortOption] = useState("date-desc");
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchSuggestions, setSearchSuggestions] = useState<string[]>([]);
+  const [selectedDateRange, setSelectedDateRange] = useState<DateRange | undefined>(undefined);
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Mobile detection
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Update search query from URL params
   useEffect(() => {
@@ -150,6 +177,24 @@ const Blog: React.FC<BlogProps> = (props) => {
       filtered = filtered.filter(article => selectedCategories.includes(article.category));
     }
 
+    // Filter by date range
+    if (selectedDateRange?.from || selectedDateRange?.to) {
+      filtered = filtered.filter(article => {
+        const articleDate = new Date(article.date);
+        const fromDate = selectedDateRange?.from;
+        const toDate = selectedDateRange?.to;
+        
+        if (fromDate && toDate) {
+          return articleDate >= fromDate && articleDate <= toDate;
+        } else if (fromDate) {
+          return articleDate >= fromDate;
+        } else if (toDate) {
+          return articleDate <= toDate;
+        }
+        return true;
+      });
+    }
+
     // Sort articles
     const sortConfig = sortOptions.find(opt => opt.value === sortOption);
     if (sortConfig) {
@@ -178,7 +223,7 @@ const Blog: React.FC<BlogProps> = (props) => {
     }
 
     return filtered;
-  }, [allArticles, searchQuery, selectedCategories, sortOption]);
+  }, [allArticles, searchQuery, selectedCategories, sortOption, selectedDateRange]);
 
   // Calculate pagination
   const totalPages = Math.ceil(filteredArticles.length / postsPerPage);
@@ -211,13 +256,112 @@ const Blog: React.FC<BlogProps> = (props) => {
     );
   };
 
+  const handleCategoryClick = (category: string) => {
+    // Toggle category selection
+    handleCategoryToggle(category);
+  };
+
+  const handleDateRangeSelect = (range: DateRange | undefined) => {
+    setSelectedDateRange(range);
+    setIsCalendarOpen(false);
+  };
+
+  const clearDateFilter = () => {
+    setSelectedDateRange(undefined);
+  };
+
   const handleClearAllFilters = () => {
     setSearchQuery("");
     setSelectedCategories([]);
     setSortOption("date-desc");
+    setSelectedDateRange(undefined);
   };
 
-  const hasActiveFilters = searchQuery || selectedCategories.length > 0 || sortOption !== "date-desc";
+  // Article preview content component
+  const ArticlePreview: React.FC<{ article: Article }> = ({ article }) => (
+    <div className="space-y-3">
+      <div className="flex items-center gap-2">
+        <Badge variant="secondary" className="text-xs">
+          {article.category}
+        </Badge>
+        <span className="text-xs text-muted-foreground">
+          {new Date(article.date).toLocaleDateString()}
+        </span>
+      </div>
+      
+      {article.featuredImage && (
+        <div className="aspect-video bg-muted rounded-lg overflow-hidden">
+          <img
+            src={article.featuredImage.url}
+            alt={article.featuredImage.alt}
+            className="w-full h-full object-cover"
+          />
+        </div>
+      )}
+      
+      <div>
+        <h4 className="font-semibold line-clamp-2">{article.title}</h4>
+        <p className="text-sm text-muted-foreground line-clamp-3 mt-2">
+          {article.description}
+        </p>
+      </div>
+      
+      <div className="flex items-center justify-between text-xs text-muted-foreground">
+        <div className="flex items-center gap-2">
+          {article.authorImage?.url ? (
+            <Avatar className="h-4 w-4">
+              <AvatarImage 
+                src={article.authorImage.url} 
+                alt={article.authorImage.alt || article.author}
+              />
+              <AvatarFallback className="text-xs">
+                {article.author.split(' ').map(n => n[0]).join('').toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
+          ) : null}
+          <span>By {article.author}</span>
+        </div>
+        <span>{article.readTime} min read</span>
+      </div>
+      
+      <div className="pt-2">
+        <Button asChild size="sm" className="w-full">
+          <a href={article.url}>Read Article</a>
+        </Button>
+      </div>
+    </div>
+  );
+
+  // Context menu actions
+  const copyArticleLink = (url: string, title: string) => {
+    const fullUrl = url.startsWith('http') ? url : `${window.location.origin}${url}`;
+    navigator.clipboard.writeText(fullUrl).then(() => {
+      toast.success(`Link copied: ${title}`);
+    });
+  };
+
+  const shareArticle = (url: string, title: string) => {
+    const fullUrl = url.startsWith('http') ? url : `${window.location.origin}${url}`;
+    if (navigator.share) {
+      navigator.share({
+        title: title,
+        url: fullUrl,
+      }).catch(console.error);
+    } else {
+      copyArticleLink(url, title);
+    }
+  };
+
+  const bookmarkArticle = (title: string) => {
+    toast.success(`Bookmarked: ${title}`);
+  };
+
+  const openInNewTab = (url: string) => {
+    const fullUrl = url.startsWith('http') ? url : `${window.location.origin}${url}`;
+    window.open(fullUrl, '_blank', 'noopener,noreferrer');
+  };
+
+  const hasActiveFilters = searchQuery || selectedCategories.length > 0 || sortOption !== "date-desc" || selectedDateRange?.from || selectedDateRange?.to;
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -236,14 +380,14 @@ const Blog: React.FC<BlogProps> = (props) => {
             <h2 className="text-3xl font-bold tracking-tight">{title}</h2>
             
             {/* Enhanced Search with Command */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 w-full sm:w-auto">
               <Popover open={isSearchOpen} onOpenChange={setIsSearchOpen}>
                 <PopoverTrigger asChild>
                   <Button
                     variant="outline"
                     role="combobox"
                     aria-expanded={isSearchOpen}
-                    className="w-full sm:w-80 justify-between"
+                    className="flex-1 sm:w-80 justify-between"
                   >
                     {searchQuery || "Search articles..."}
                     <SearchIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -284,10 +428,43 @@ const Blog: React.FC<BlogProps> = (props) => {
                 </PopoverContent>
               </Popover>
               
+              {/* Date Range Picker */}
+              <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
+                <PopoverTrigger asChild>
+                  <Button variant="outline" size="icon" className="relative shrink-0">
+                    <CalendarIcon className="h-4 w-4" />
+                    {(selectedDateRange?.from || selectedDateRange?.to) && (
+                      <div className="absolute -top-1 -right-1 h-2 w-2 bg-primary rounded-full" />
+                    )}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="end">
+                  <Calendar
+                    mode="range"
+                    selected={selectedDateRange}
+                    onSelect={handleDateRangeSelect}
+                    initialFocus
+                    numberOfMonths={2}
+                  />
+                  {(selectedDateRange?.from || selectedDateRange?.to) && (
+                    <div className="p-3 border-t">
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        onClick={clearDateFilter}
+                        className="w-full"
+                      >
+                        Clear Date Filter
+                      </Button>
+                    </div>
+                  )}
+                </PopoverContent>
+              </Popover>
+              
               {/* Advanced Filters Button */}
               <Popover>
                 <PopoverTrigger asChild>
-                  <Button variant="outline" size="icon">
+                  <Button variant="outline" size="icon" className="shrink-0">
                     <SlidersHorizontal className="h-4 w-4" />
                   </Button>
                 </PopoverTrigger>
@@ -374,6 +551,16 @@ const Blog: React.FC<BlogProps> = (props) => {
                   />
                 </Badge>
               ))}
+              {(selectedDateRange?.from || selectedDateRange?.to) && (
+                <Badge variant="secondary" className="gap-1">
+                  Date: {selectedDateRange?.from?.toLocaleDateString()}
+                  {selectedDateRange?.to && ` - ${selectedDateRange.to.toLocaleDateString()}`}
+                  <X 
+                    className="h-3 w-3 cursor-pointer" 
+                    onClick={clearDateFilter}
+                  />
+                </Badge>
+              )}
               {sortOption !== "date-desc" && (
                 <Badge variant="secondary" className="gap-1">
                   Sort: {sortOptions.find(opt => opt.value === sortOption)?.label}
@@ -408,65 +595,183 @@ const Blog: React.FC<BlogProps> = (props) => {
           {paginatedArticles.length > 0 ? (
             paginatedArticles.map((article: Article, i: number) => (
               <div key={i}>
-                <Card className="shadow-none border-none">
-                  <CardContent className="p-0">
-                    <div className="flex flex-col sm:flex-row sm:items-center overflow-hidden">
-                      <div className="px-0 sm:p-0 flex-shrink-0 pb-2">
-                        {article.featuredImage ? (
-                          <div className="aspect-video  sm:w-56 sm:aspect-square bg-muted rounded-lg overflow-hidden">
-                            <img
-                              src={article.featuredImage.url}
-                              alt={article.featuredImage.alt}
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
-                        ) : (
-                          <div className="aspect-video sm:w-56 sm:aspect-square bg-muted rounded-lg" />
-                        )}
-                      </div>
-                      <div className="px-0 sm:px-6 py-0 flex flex-col">
-                        <div className="flex items-center gap-6">
-                          <Badge className="bg-primary/5 text-primary hover:bg-primary/5 shadow-none">
-                            {article.category}
-                          </Badge>
-                        </div>
+                <ContextMenu>
+                  <ContextMenuTrigger asChild>
+                    <Card className="shadow-none border-none cursor-pointer">
+                      <CardContent className="p-0">
+                        {isMobile ? (
+                          <Drawer>
+                            <DrawerTrigger asChild>
+                              <div className="flex flex-col sm:flex-row sm:items-center overflow-hidden hover:bg-muted/50 transition-colors rounded-lg p-2 -m-2 gap-2">
+                                <div className="px-0 sm:p-0 flex-shrink-0 pb-2">
+                                  {article.featuredImage ? (
+                                    <div className="aspect-video  sm:w-56 sm:aspect-square bg-muted rounded-lg overflow-hidden">
+                                      <img
+                                        src={article.featuredImage.url}
+                                        alt={article.featuredImage.alt}
+                                        className="w-full h-full object-cover"
+                                      />
+                                    </div>
+                                  ) : (
+                                    <div className="aspect-video sm:w-56 sm:aspect-square bg-muted rounded-lg" />
+                                  )}
+                                </div>
+                                <div className="px-4 sm:px-6 py-0 flex flex-col">
+                                  <div className="flex items-center gap-6">
+                                    <Badge className="bg-primary/5 text-primary hover:bg-primary/5 shadow-none">
+                                      {article.category}
+                                    </Badge>
+                                  </div>
 
-                        <h3 className="mt-4 text-2xl font-semibold tracking-tight">
-                          <a href={article.url} className="hover:text-primary transition-colors">
-                            {article.title}
-                          </a>
-                        </h3>
-                        <p className="mt-2 text-muted-foreground line-clamp-3 text-ellipsis">
-                          {article.description}
-                        </p>
-                        <div className="mt-4 flex items-center gap-6 text-muted-foreground text-sm font-medium">
-                          <div className="flex items-center gap-2">
-                            {article.authorImage?.url ? (
-                              <Avatar className="h-5 w-5">
-                                <AvatarImage 
-                                  src={article.authorImage.url} 
-                                  alt={article.authorImage.alt || article.author}
-                                />
-                                <AvatarFallback>
-                                  {article.author.split(' ').map(n => n[0]).join('').toUpperCase()}
-                                </AvatarFallback>
-                              </Avatar>
-                            ) : (
-                              <Skeleton className="h-5 w-5 rounded-full" />
-                            )}
-                            <span>By {article.author}</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <ClockIcon className="h-4 w-4" /> {article.readTime} min read
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <Calendar className="h-4 w-4" /> {formatDate(article.date)}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                                  <h3 className="mt-2 text-2xl font-semibold tracking-tight">
+                                    {article.title}
+                                  </h3>
+                                  <p className="mt-2 text-muted-foreground line-clamp-3 text-ellipsis">
+                                    {article.description}
+                                  </p>
+                                  <div className="mt-4 flex items-center gap-6 text-muted-foreground text-sm font-medium">
+                                    <div className="flex items-center gap-2">
+                                      {article.authorImage?.url ? (
+                                        <Avatar className="h-5 w-5">
+                                          <AvatarImage 
+                                            src={article.authorImage.url} 
+                                            alt={article.authorImage.alt || article.author}
+                                          />
+                                          <AvatarFallback>
+                                            {article.author.split(' ').map(n => n[0]).join('').toUpperCase()}
+                                          </AvatarFallback>
+                                        </Avatar>
+                                      ) : (
+                                        <Skeleton className="h-5 w-5 rounded-full" />
+                                      )}
+                                      <span>By {article.author}</span>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                      <ClockIcon className="h-4 w-4" /> {article.readTime} min read
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                      <CalendarIcon className="h-4 w-4" /> {formatDate(article.date)}
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </DrawerTrigger>
+                            <DrawerContent>
+                              <DrawerHeader>
+                                <DrawerTitle>Article Preview</DrawerTitle>
+                                <DrawerDescription>
+                                  Quick preview of {article.title}
+                                </DrawerDescription>
+                              </DrawerHeader>
+                              <div className="px-4 pb-4 overflow-y-auto max-h-[70vh]">
+                                <ArticlePreview article={article} />
+                              </div>
+                              <DrawerFooter>
+                                <DrawerClose asChild>
+                                  <Button variant="outline">Close</Button>
+                                </DrawerClose>
+                              </DrawerFooter>
+                            </DrawerContent>
+                          </Drawer>
+                        ) : (
+                          <HoverCard>
+                            <HoverCardTrigger asChild>
+                              <div className="flex flex-col sm:flex-row sm:items-center overflow-hidden transition-colors rounded-lg p-2 -m-2 cursor-pointer">
+                                <div className="px-0 sm:p-0 flex-shrink-0 pb-2">
+                                  {article.featuredImage ? (
+                                    <div className="aspect-video  sm:w-56 sm:aspect-square bg-muted rounded-lg overflow-hidden">
+                                      <img
+                                        src={article.featuredImage.url}
+                                        alt={article.featuredImage.alt}
+                                        className="w-full h-full object-cover"
+                                      />
+                                    </div>
+                                  ) : (
+                                    <div className="aspect-video sm:w-56 sm:aspect-square bg-muted rounded-lg" />
+                                  )}
+                                </div>
+                                <div className="px-0 sm:px-6 py-0 flex flex-col">
+                                  <div className="flex items-center gap-6">
+                                    <Badge className="bg-primary/5 text-primary hover:bg-primary/5 shadow-none">
+                                      {article.category}
+                                    </Badge>
+                                  </div>
+
+                                  <h3 className="mt-4 text-2xl font-semibold tracking-tight hover:text-primary transition-colors">
+                                    <a href={article.url} className="hover:text-primary transition-colors">
+                                      {article.title}
+                                    </a>
+                                  </h3>
+                                  <p className="mt-2 text-muted-foreground line-clamp-3 text-ellipsis">
+                                    {article.description}
+                                  </p>
+                                  <div className="mt-4 flex items-center gap-6 text-muted-foreground text-sm font-medium">
+                                    <div className="flex items-center gap-2">
+                                      {article.authorImage?.url ? (
+                                        <Avatar className="h-5 w-5">
+                                          <AvatarImage 
+                                            src={article.authorImage.url} 
+                                            alt={article.authorImage.alt || article.author}
+                                          />
+                                          <AvatarFallback>
+                                            {article.author.split(' ').map(n => n[0]).join('').toUpperCase()}
+                                          </AvatarFallback>
+                                        </Avatar>
+                                      ) : (
+                                        <Skeleton className="h-5 w-5 rounded-full" />
+                                      )}
+                                      <span>By {article.author}</span>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                      <ClockIcon className="h-4 w-4" /> {article.readTime} min read
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                      <CalendarIcon className="h-4 w-4" /> {formatDate(article.date)}
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </HoverCardTrigger>
+                              <HoverCardContent className="w-80" side="top">
+                              <ArticlePreview article={article} />
+                            </HoverCardContent>
+                          </HoverCard>
+                        )}
+                      </CardContent>
+                    </Card>
+                  </ContextMenuTrigger>
+                  <ContextMenuContent>
+                    <ContextMenuItem 
+                      onClick={() => copyArticleLink(article.url, article.title)}
+                      className="cursor-pointer"
+                    >
+                      <Copy className="mr-2 h-4 w-4" />
+                      Copy Link
+                    </ContextMenuItem>
+                    <ContextMenuItem 
+                      onClick={() => shareArticle(article.url, article.title)}
+                      className="cursor-pointer"
+                    >
+                      <Share2 className="mr-2 h-4 w-4" />
+                      Share Article
+                    </ContextMenuItem>
+                    <ContextMenuItem 
+                      onClick={() => bookmarkArticle(article.title)}
+                      className="cursor-pointer"
+                    >
+                      <Bookmark className="mr-2 h-4 w-4" />
+                      Bookmark
+                    </ContextMenuItem>
+                    <ContextMenuSeparator />
+                    <ContextMenuItem 
+                      onClick={() => openInNewTab(article.url)}
+                      className="cursor-pointer"
+                    >
+                      <ExternalLink className="mr-2 h-4 w-4" />
+                      Open in New Tab
+                    </ContextMenuItem>
+                  </ContextMenuContent>
+                </ContextMenu>
                 {i < paginatedArticles.length - 1 && (
                   <Separator className="mt-6" />
                 )}
@@ -536,8 +841,9 @@ const Blog: React.FC<BlogProps> = (props) => {
               return (
                 <div
                   key={category.name}
+                  onClick={() => handleCategoryClick(category.name)}
                   className={cn(
-                    "flex items-center justify-between gap-2 p-3 rounded-lg transition-colors",
+                    "flex items-center justify-between gap-2 p-3 rounded-lg transition-colors cursor-pointer",
                     "bg-muted/50 hover:bg-muted",
                     isSelected && "bg-primary/10 border border-primary/20"
                   )}

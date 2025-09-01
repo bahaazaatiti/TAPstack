@@ -7,9 +7,8 @@ import { Button } from "@/components/ui/button";
 import {
   Carousel,
   CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
+  CarouselItem
+
 } from "@/components/ui/carousel";
 import {
   ContextMenu,
@@ -382,8 +381,8 @@ const BentoGridBlock: React.FC<BentoGridBlockProps> = (props) => {
   };
 
   return (
-    <div className="w-full py-10 lg:py-16 px-6 xl:px-10">
-      <div className="container mx-auto flex flex-col gap-14">
+    <div className="w-full py-10 lg:py-16">
+      <div className="container mx-auto flex flex-col gap-14 ps-4">
         <div className="flex w-full flex-col sm:flex-row sm:justify-between sm:items-center gap-8">
           <h4 className="text-3xl md:text-5xl tracking-tighter max-w-xl font-regular">
             {title}
@@ -605,8 +604,6 @@ const BentoGridBlock: React.FC<BentoGridBlockProps> = (props) => {
                   </CarouselItem>
                 ))}
               </CarouselContent>
-              <CarouselPrevious />
-              <CarouselNext />
             </Carousel>
           </div>
         </div>
