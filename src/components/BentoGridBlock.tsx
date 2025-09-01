@@ -28,6 +28,11 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 import { 
   ExternalLink, 
   Copy, 
@@ -183,45 +188,84 @@ const BentoGridBlock: React.FC<BentoGridBlockProps> = (props) => {
       <ContextMenu>
         <ContextMenuTrigger asChild>
           <div className={colSpanClass}>
-            {/* Desktop: Regular link */}
-            <a
-              href={article.url}
-              className="hidden md:block transition-transform hover:scale-[1.02]"
-            >
-              <Card className="group/bento transition-transform hover:scale-[1.02] h-[18rem]">
-                <CardContent className="flex flex-col justify-between space-y-4 p-4 h-full">
-                  <HeaderComponent article={article} />
-                  <div className="transition duration-200 group-hover/bento:translate-x-2">
-                    <div className="mt-2 mb-2 flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        {article.authorImage?.url ? (
-                          <Avatar className="h-6 w-6">
-                            <AvatarImage 
-                              src={article.authorImage.url} 
-                              alt={article.authorImage.alt || article.author}
-                            />
-                            <AvatarFallback>
-                              {article.author.split(' ').map(n => n[0]).join('').toUpperCase()}
-                            </AvatarFallback>
-                          </Avatar>
-                        ) : (
-                          <Skeleton className="h-6 w-6 rounded-full" />
-                        )}
+            {/* Desktop: Regular link with HoverCard */}
+            <HoverCard>
+              <HoverCardTrigger asChild>
+                <a
+                  href={article.url}
+                  className="hidden md:block transition-transform hover:scale-[1.02]"
+                >
+                  <Card className="group/bento transition-transform hover:scale-[1.02] h-[18rem]">
+                    <CardContent className="flex flex-col justify-between space-y-4 p-4 h-full">
+                      <HeaderComponent article={article} />
+                      <div className="transition duration-200 group-hover/bento:translate-x-2">
+                        <div className="mt-2 mb-2 flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            {article.authorImage?.url ? (
+                              <Avatar className="h-6 w-6">
+                                <AvatarImage 
+                                  src={article.authorImage.url} 
+                                  alt={article.authorImage.alt || article.author}
+                                />
+                                <AvatarFallback>
+                                  {article.author.split(' ').map(n => n[0]).join('').toUpperCase()}
+                                </AvatarFallback>
+                              </Avatar>
+                            ) : (
+                              <Skeleton className="h-6 w-6 rounded-full" />
+                            )}
+                          </div>
+                          <Badge variant="secondary" className="text-xs">
+                            {article.category}
+                          </Badge>
+                        </div>
+                        <div className="font-sans font-bold text-neutral-600 dark:text-neutral-200 truncate mb-2">
+                          {article.title}
+                        </div>
+                        <div className="font-sans text-xs font-normal text-neutral-600 dark:text-neutral-300 line-clamp-1">
+                          {article.description}
+                        </div>
                       </div>
-                      <Badge variant="secondary" className="text-xs">
-                        {article.category}
-                      </Badge>
-                    </div>
-                    <div className="font-sans font-bold text-neutral-600 dark:text-neutral-200 truncate mb-2">
-                      {article.title}
-                    </div>
-                    <div className="font-sans text-xs font-normal text-neutral-600 dark:text-neutral-300 line-clamp-1">
+                    </CardContent>
+                  </Card>
+                </a>
+              </HoverCardTrigger>
+              <HoverCardContent className="w-80">
+                <div className="space-y-4">
+                  <div>
+                    <h4 className="text-sm font-semibold leading-none">{article.title}</h4>
+                    <p className="text-sm text-muted-foreground mt-2">
                       {article.description}
+                    </p>
+                  </div>
+                  <div className="flex items-center justify-between space-x-2">
+                    <div className="flex items-center gap-2">
+                      {article.category && (
+                        <Badge variant="secondary" className="text-xs">
+                          {article.category}
+                        </Badge>
+                      )}
+                      <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                        <Clock className="h-3 w-3" />
+                        <span>{article.readTime} min read</span>
+                      </div>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
-            </a>
+                  {article.author && (
+                    <div className="flex items-center gap-2">
+                      <User className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-sm">{article.author}</span>
+                      {article.date && (
+                        <>
+                          <span className="text-sm text-muted-foreground">•</span>
+                          <span className="text-sm text-muted-foreground">{article.date}</span>
+                        </>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </HoverCardContent>
+            </HoverCard>
 
             {/* Mobile: Drawer */}
             <Drawer>
@@ -368,45 +412,84 @@ const BentoGridBlock: React.FC<BentoGridBlockProps> = (props) => {
                     <ContextMenu>
                       <ContextMenuTrigger asChild>
                         <div>
-                          {/* Desktop: Regular link */}
-                          <a
-                            href={article.url}
-                            className="hidden md:block transition-transform hover:scale-[1.02]"
-                          >
-                            <Card className="group/bento transition-transform hover:scale-[1.02] h-[18rem]">
-                              <CardContent className="flex flex-col justify-between space-y-4 p-4 h-full">
-                                <HeaderComponent article={article} />
-                                <div className="transition duration-200 group-hover/bento:translate-x-2">
-                                  <div className="mt-2 mb-2 flex items-center justify-between">
-                                    <div className="flex items-center gap-2">
-                                      {article.authorImage?.url ? (
-                                        <Avatar className="h-6 w-6">
-                                          <AvatarImage 
-                                            src={article.authorImage.url} 
-                                            alt={article.authorImage.alt || article.author}
-                                          />
-                                          <AvatarFallback>
-                                            {article.author.split(' ').map(n => n[0]).join('').toUpperCase()}
-                                          </AvatarFallback>
-                                        </Avatar>
-                                      ) : (
-                                        <Skeleton className="h-6 w-6 rounded-full" />
-                                      )}
+                          {/* Desktop: Regular link with HoverCard */}
+                          <HoverCard>
+                            <HoverCardTrigger asChild>
+                              <a
+                                href={article.url}
+                                className="hidden md:block transition-transform hover:scale-[1.02]"
+                              >
+                                <Card className="group/bento transition-transform hover:scale-[1.02] h-[18rem]">
+                                  <CardContent className="flex flex-col justify-between space-y-4 p-4 h-full">
+                                    <HeaderComponent article={article} />
+                                    <div className="transition duration-200 group-hover/bento:translate-x-2">
+                                      <div className="mt-2 mb-2 flex items-center justify-between">
+                                        <div className="flex items-center gap-2">
+                                          {article.authorImage?.url ? (
+                                            <Avatar className="h-6 w-6">
+                                              <AvatarImage 
+                                                src={article.authorImage.url} 
+                                                alt={article.authorImage.alt || article.author}
+                                              />
+                                              <AvatarFallback>
+                                                {article.author.split(' ').map(n => n[0]).join('').toUpperCase()}
+                                              </AvatarFallback>
+                                            </Avatar>
+                                          ) : (
+                                            <Skeleton className="h-6 w-6 rounded-full" />
+                                          )}
+                                        </div>
+                                        <Badge variant="secondary" className="text-xs">
+                                          {article.category}
+                                        </Badge>
+                                      </div>
+                                      <div className="font-sans font-bold text-neutral-600 dark:text-neutral-200 truncate mb-2">
+                                        {article.title}
+                                      </div>
+                                      <div className="font-sans text-xs font-normal text-neutral-600 dark:text-neutral-300 line-clamp-2">
+                                        {article.description}
+                                      </div>
                                     </div>
-                                    <Badge variant="secondary" className="text-xs">
-                                      {article.category}
-                                    </Badge>
-                                  </div>
-                                  <div className="font-sans font-bold text-neutral-600 dark:text-neutral-200 truncate mb-2">
-                                    {article.title}
-                                  </div>
-                                  <div className="font-sans text-xs font-normal text-neutral-600 dark:text-neutral-300 line-clamp-2">
+                                  </CardContent>
+                                </Card>
+                              </a>
+                            </HoverCardTrigger>
+                            <HoverCardContent className="w-80">
+                              <div className="space-y-4">
+                                <div>
+                                  <h4 className="text-sm font-semibold leading-none">{article.title}</h4>
+                                  <p className="text-sm text-muted-foreground mt-2">
                                     {article.description}
+                                  </p>
+                                </div>
+                                <div className="flex items-center justify-between space-x-2">
+                                  <div className="flex items-center gap-2">
+                                    {article.category && (
+                                      <Badge variant="secondary" className="text-xs">
+                                        {article.category}
+                                      </Badge>
+                                    )}
+                                    <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                                      <Clock className="h-3 w-3" />
+                                      <span>{article.readTime} min read</span>
+                                    </div>
                                   </div>
                                 </div>
-                              </CardContent>
-                            </Card>
-                          </a>
+                                {article.author && (
+                                  <div className="flex items-center gap-2">
+                                    <User className="h-4 w-4 text-muted-foreground" />
+                                    <span className="text-sm">{article.author}</span>
+                                    {article.date && (
+                                      <>
+                                        <span className="text-sm text-muted-foreground">•</span>
+                                        <span className="text-sm text-muted-foreground">{article.date}</span>
+                                      </>
+                                    )}
+                                  </div>
+                                )}
+                              </div>
+                            </HoverCardContent>
+                          </HoverCard>
 
                           {/* Mobile: Drawer */}
                           <Drawer>

@@ -20,6 +20,11 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 import { Button } from "@/components/ui/button";
 import { 
   ExternalLink, 
@@ -142,57 +147,96 @@ const FeaturedBlog: React.FC<FeaturedBlogProps> = (props) => {
             <ContextMenu key={index}>
               <ContextMenuTrigger asChild>
                 <div className={`${index === 0 ? 'md:col-span-2' : ''}`}>
-                  {/* Desktop: Regular link */}
-                  <a
-                    href={article.url}
-                    className="hidden md:block hover:opacity-75 cursor-pointer"
-                  >
-                    <Card className="border-none shadow-none hover:shadow-md transition-shadow">
-                      <CardHeader className="p-0">
-                        <div className="bg-muted rounded-md aspect-video overflow-hidden">
-                          {article.featuredImage ? (
-                            <img
-                              src={article.featuredImage.url}
-                              alt={article.featuredImage.alt}
-                              className="w-full h-full object-cover"
-                            />
-                          ) : null}
-                        </div>
-                      </CardHeader>
-                      <CardContent className="flex flex-col gap-4 p-6">
-                        <div className="flex flex-row gap-4 items-center">
-                          <Badge>{article.category}</Badge>
-                          <p className="flex flex-row gap-2 text-sm items-center">
-                            <span className="text-muted-foreground">By</span>
-                            {article.authorImage?.url ? (
-                              <Avatar className="h-6 w-6">
-                                <AvatarImage 
-                                  src={article.authorImage.url} 
-                                  alt={article.authorImage.alt || article.author}
+                  {/* Desktop: Regular link with HoverCard */}
+                  <HoverCard>
+                    <HoverCardTrigger asChild>
+                      <a
+                        href={article.url}
+                        className="hidden md:block hover:opacity-75 cursor-pointer"
+                      >
+                        <Card className="border-none shadow-none hover:shadow-md transition-shadow">
+                          <CardHeader className="p-0">
+                            <div className="bg-muted rounded-md aspect-video overflow-hidden">
+                              {article.featuredImage ? (
+                                <img
+                                  src={article.featuredImage.url}
+                                  alt={article.featuredImage.alt}
+                                  className="w-full h-full object-cover"
                                 />
-                                <AvatarFallback>
-                                  {article.author.split(' ').map(n => n[0]).join('').toUpperCase()}
-                                </AvatarFallback>
-                              </Avatar>
-                            ) : (
-                              <Skeleton className="h-6 w-6 rounded-full" />
-                            )}
-                            <span>{article.author}</span>
-                          </p>
-                        </div>
-                        <div className="flex flex-col gap-2">
-                          <h3 className={`max-w-3xl tracking-tight ${
-                            index === 0 ? 'text-4xl' : 'text-2xl'
-                          }`}>
-                            {article.title}
-                          </h3>
-                          <p className="max-w-3xl text-muted-foreground text-base">
+                              ) : null}
+                            </div>
+                          </CardHeader>
+                          <CardContent className="flex flex-col gap-4 p-6">
+                            <div className="flex flex-row gap-4 items-center">
+                              <Badge>{article.category}</Badge>
+                              <p className="flex flex-row gap-2 text-sm items-center">
+                                <span className="text-muted-foreground">By</span>
+                                {article.authorImage?.url ? (
+                                  <Avatar className="h-6 w-6">
+                                    <AvatarImage 
+                                      src={article.authorImage.url} 
+                                      alt={article.authorImage.alt || article.author}
+                                    />
+                                    <AvatarFallback>
+                                      {article.author.split(' ').map(n => n[0]).join('').toUpperCase()}
+                                    </AvatarFallback>
+                                  </Avatar>
+                                ) : (
+                                  <Skeleton className="h-6 w-6 rounded-full" />
+                                )}
+                                <span>{article.author}</span>
+                              </p>
+                            </div>
+                            <div className="flex flex-col gap-2">
+                              <h3 className={`max-w-3xl tracking-tight ${
+                                index === 0 ? 'text-4xl' : 'text-2xl'
+                              }`}>
+                                {article.title}
+                              </h3>
+                              <p className="max-w-3xl text-muted-foreground text-base">
+                                {article.description}
+                              </p>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      </a>
+                    </HoverCardTrigger>
+                    <HoverCardContent className="w-80">
+                      <div className="space-y-4">
+                        <div>
+                          <h4 className="text-sm font-semibold leading-none">{article.title}</h4>
+                          <p className="text-sm text-muted-foreground mt-2">
                             {article.description}
                           </p>
                         </div>
-                      </CardContent>
-                    </Card>
-                  </a>
+                        <div className="flex items-center justify-between space-x-2">
+                          <div className="flex items-center gap-2">
+                            {article.category && (
+                              <Badge variant="secondary" className="text-xs">
+                                {article.category}
+                              </Badge>
+                            )}
+                            <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                              <Clock className="h-3 w-3" />
+                              <span>{article.readTime} min read</span>
+                            </div>
+                          </div>
+                        </div>
+                        {article.author && (
+                          <div className="flex items-center gap-2">
+                            <User className="h-4 w-4 text-muted-foreground" />
+                            <span className="text-sm">{article.author}</span>
+                            {article.date && (
+                              <>
+                                <span className="text-sm text-muted-foreground">•</span>
+                                <span className="text-sm text-muted-foreground">{article.date}</span>
+                              </>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </HoverCardContent>
+                  </HoverCard>
 
                   {/* Mobile: Drawer */}
                   <Drawer>

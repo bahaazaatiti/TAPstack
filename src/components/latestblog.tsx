@@ -2,6 +2,7 @@ import React from "react";
 import { MoveRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
@@ -21,6 +22,11 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 import { 
   ExternalLink, 
   Copy, 
@@ -190,54 +196,93 @@ const LatestBlog: React.FC<LatestBlogProps> = (props) => {
               <ContextMenu key={index}>
                 <ContextMenuTrigger asChild>
                   <div>
-                    {/* Desktop: Regular link */}
-                    <a
-                      href={article.url || '#'}
-                      className="hidden md:block hover:opacity-75 cursor-pointer"
-                    >
-                      <Card className="border-none shadow-none hover:shadow-md transition-shadow h-full">
-                        <CardHeader className="p-0">
-                          <div className="bg-muted rounded-md aspect-video mb-4 overflow-hidden">
-                            {article.featuredImage ? (
-                              <img
-                                src={article.featuredImage.url}
-                                alt={article.featuredImage.alt || article.title || 'Article image'}
-                                className="w-full h-full object-cover"
-                              />
-                            ) : null}
-                          </div>
-                        </CardHeader>
-                        <CardContent className="flex flex-col gap-2 p-6 pt-0">
-                          <h3 className="text-xl tracking-tight">{article.title || 'Untitled'}</h3>
-                          <p className="text-muted-foreground text-base">
-                            {article.description || 'No description available'}
-                          </p>
-                          <div className="text-sm text-muted-foreground">
-                            {article.author && (
-                              <div className="flex items-center gap-2">
-                                <span>By</span>
-                                {article.authorImage?.url ? (
-                                  <Avatar className="h-4 w-4">
-                                    <AvatarImage 
-                                      src={article.authorImage.url} 
-                                      alt={article.authorImage.alt || article.author}
-                                    />
-                                    <AvatarFallback>
-                                      {article.author.split(' ').map(n => n[0]).join('').toUpperCase()}
-                                    </AvatarFallback>
-                                  </Avatar>
-                                ) : (
-                                  <Skeleton className="h-4 w-4 rounded-full" />
-                                )}
-                                <span>{article.author}</span>
-                                {article.date && <span> • {article.date}</span>}
+                    {/* Desktop: Regular link with HoverCard */}
+                    <HoverCard>
+                      <HoverCardTrigger asChild>
+                        <a
+                          href={article.url || '#'}
+                          className="hidden md:block hover:opacity-75 cursor-pointer"
+                        >
+                          <Card className="border-none shadow-none hover:shadow-md transition-shadow h-full">
+                            <CardHeader className="p-0">
+                              <div className="bg-muted rounded-md aspect-video mb-4 overflow-hidden">
+                                {article.featuredImage ? (
+                                  <img
+                                    src={article.featuredImage.url}
+                                    alt={article.featuredImage.alt || article.title || 'Article image'}
+                                    className="w-full h-full object-cover"
+                                  />
+                                ) : null}
                               </div>
-                            )}
-                            {!article.author && article.date && <span>{article.date}</span>}
+                            </CardHeader>
+                            <CardContent className="flex flex-col gap-2 p-6 pt-0">
+                              <h3 className="text-xl tracking-tight">{article.title || 'Untitled'}</h3>
+                              <p className="text-muted-foreground text-base">
+                                {article.description || 'No description available'}
+                              </p>
+                              <div className="text-sm text-muted-foreground">
+                                {article.author && (
+                                  <div className="flex items-center gap-2">
+                                    <span>By</span>
+                                    {article.authorImage?.url ? (
+                                      <Avatar className="h-4 w-4">
+                                        <AvatarImage 
+                                          src={article.authorImage.url} 
+                                          alt={article.authorImage.alt || article.author}
+                                        />
+                                        <AvatarFallback>
+                                          {article.author.split(' ').map(n => n[0]).join('').toUpperCase()}
+                                        </AvatarFallback>
+                                      </Avatar>
+                                    ) : (
+                                      <Skeleton className="h-4 w-4 rounded-full" />
+                                    )}
+                                    <span>{article.author}</span>
+                                    {article.date && <span> • {article.date}</span>}
+                                  </div>
+                                )}
+                                {!article.author && article.date && <span>{article.date}</span>}
+                              </div>
+                            </CardContent>
+                          </Card>
+                        </a>
+                      </HoverCardTrigger>
+                      <HoverCardContent className="w-80">
+                        <div className="space-y-4">
+                          <div>
+                            <h4 className="text-sm font-semibold leading-none">{article.title || 'Untitled'}</h4>
+                            <p className="text-sm text-muted-foreground mt-2">
+                              {article.description || 'No description available'}
+                            </p>
                           </div>
-                        </CardContent>
-                      </Card>
-                    </a>
+                          <div className="flex items-center justify-between space-x-2">
+                            <div className="flex items-center gap-2">
+                              {article.category && (
+                                <Badge variant="secondary" className="text-xs">
+                                  {article.category}
+                                </Badge>
+                              )}
+                              <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                                <Clock className="h-3 w-3" />
+                                <span>{article.readTime} min read</span>
+                              </div>
+                            </div>
+                          </div>
+                          {article.author && (
+                            <div className="flex items-center gap-2">
+                              <User className="h-4 w-4 text-muted-foreground" />
+                              <span className="text-sm">{article.author}</span>
+                              {article.date && (
+                                <>
+                                  <span className="text-sm text-muted-foreground">•</span>
+                                  <span className="text-sm text-muted-foreground">{article.date}</span>
+                                </>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      </HoverCardContent>
+                    </HoverCard>
 
                     {/* Mobile: Drawer */}
                     <Drawer>
