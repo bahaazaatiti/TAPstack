@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList } from '@/components/ui/breadcrumb'
 import { toast } from '@/components/ui/sonner'
+import AuthorBox from './AuthorBox'
 import { 
   Clock, 
   Calendar, 
@@ -517,7 +518,7 @@ const Article: React.FC<ArticleProps> = ({
             )}
 
             {/* Enhanced Article Metadata */}
-            <Tabs defaultValue="info" className="w-full">
+            <Tabs defaultValue="author" className="w-full">
               <TabsList className="flex w-full">
                 <TabsTrigger 
                   value="info" 
@@ -592,78 +593,12 @@ const Article: React.FC<ArticleProps> = ({
 
               <TabsContent value="author" className="space-y-4">
                 {author && (
-                  <Card>
-                    <CardContent className="pt-6">
-                      <div className="flex items-start gap-4">
-                        {/* Author Avatar */}
-                        <Avatar className="size-16 border">
-                          {author.avatar ? (
-                            <AvatarImage 
-                              src={author.avatar.url} 
-                              alt={author.avatar.alt} 
-                            />
-                          ) : null}
-                          <AvatarFallback>
-                            <User className="w-8 h-8" />
-                          </AvatarFallback>
-                        </Avatar>
-                        
-                        {/* Author Details */}
-                        <div className="flex-1 space-y-3">
-                          <div>
-                            <h3 className="text-lg font-semibold">{author.name}</h3>
-                            {(author.position || author.affiliation) && (
-                              <p className="text-muted-foreground">
-                                {author.position}
-                                {author.position && author.affiliation && ' • '}
-                                {author.affiliation}
-                              </p>
-                            )}
-                          </div>
-                          
-                          {author.bio && (
-                            <p className="text-sm leading-relaxed">{author.bio}</p>
-                          )}
-                          
-                          {/* Social Links */}
-                          <div className="flex items-center gap-2">
-                            {author.website && (
-                              <Button variant="outline" size="sm" asChild>
-                                <a href={author.website} target="_blank" rel="noopener noreferrer">
-                                  <ExternalLink className="h-4 w-4 me-1" />
-                                  Website
-                                </a>
-                              </Button>
-                            )}
-                            {author.twitter && (
-                              <Button variant="outline" size="sm" asChild>
-                                <a href={`https://twitter.com/${author.twitter}`} target="_blank" rel="noopener noreferrer">
-                                  <Twitter className="h-4 w-4 me-1" />
-                                  Twitter
-                                </a>
-                              </Button>
-                            )}
-                            {author.linkedin && (
-                              <Button variant="outline" size="sm" asChild>
-                                <a href={author.linkedin} target="_blank" rel="noopener noreferrer">
-                                  <Linkedin className="h-4 w-4 me-1" />
-                                  LinkedIn
-                                </a>
-                              </Button>
-                            )}
-                            {author.facebook && (
-                              <Button variant="outline" size="sm" asChild>
-                                <a href={author.facebook} target="_blank" rel="noopener noreferrer">
-                                  <Facebook className="h-4 w-4 me-1" />
-                                  Facebook
-                                </a>
-                              </Button>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
+                  <AuthorBox 
+                    author={author}
+                    showbio={true}
+                    showsocial={true}
+                    customtitle="About the Author"
+                  />
                 )}
               </TabsContent>
 

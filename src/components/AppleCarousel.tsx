@@ -92,6 +92,14 @@ const AppleCarousel: React.FC<AppleCarouselProps> = (props) => {
               />
             </div>
           )}
+          {/* Description under the photo */}
+          {article.description && typeof article.description === 'string' && article.description.trim() !== '' && (
+            <div className="p-4">
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                {article.description}
+              </p>
+            </div>
+          )}
         </CardContent>
       </UICard>
     ),
