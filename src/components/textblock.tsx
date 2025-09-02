@@ -74,27 +74,17 @@ const TextBlock: React.FC<TextBlockProps> = (props) => {
             <Card className={`${isMaximized ? 'fixed inset-4 z-50 max-w-none' : ''}`}>
               <CardContent className="p-6 h-full flex flex-col">
                 {/* Header with Controls */}
-                <div className="flex items-start justify-between mb-6">
-                  <div className="flex items-center gap-4">
-                    {icon && icon.url && (
-                      <img
-                        src={icon.url}
-                        alt={icon.alt}
-                        className="w-12 h-12 object-cover rounded-lg"
-                      />
-                    )}
+                <div className="flex-col items-start justify-between mb-6">
+                  {/* Control Actions */}
+                  <div className="flex items-center gap-2 mb-4 w-full justify-between">
                     <div>
                       {subtitle && (
                         <Badge variant="secondary" className="mb-2">
                           {subtitle}
                         </Badge>
                       )}
-                      <h2 className="text-foreground text-4xl font-semibold">{title}</h2>
                     </div>
-                  </div>
-                  
-                  {/* Control Actions */}
-                  <div className="flex items-center gap-2">
+                    <div>
                     <Button
                       variant="ghost"
                       size="sm"
@@ -119,12 +109,28 @@ const TextBlock: React.FC<TextBlockProps> = (props) => {
                     >
                       {isMaximized ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
                     </Button>
+                    </div>
                   </div>
+
+                  <div className="flex items-center gap-4">
+                    {icon && icon.url && (
+                      <img
+                        src={icon.url}
+                        alt={icon.alt}
+                        className="w-12 h-12 object-cover rounded-lg"
+                      />
+                    )}
+                    <div>
+                      <h2 className="text-foreground text-4xl font-semibold">{title}</h2>
+                    </div>
+                  </div>
+                  
+
                 </div>
 
                 {/* Content Area */}
                 <div className="flex-1">
-                  <ScrollArea className="h-auto pr-4">
+                  <ScrollArea className="h-auto ps-4">
                     <div className="text-muted-foreground text-xl leading-relaxed">
                       <Collapsible
                         open={isExpanded}

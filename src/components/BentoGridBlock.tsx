@@ -153,6 +153,14 @@ const BentoGridBlock: React.FC<BentoGridBlockProps> = (props) => {
     window.open(fullUrl, '_blank', 'noopener,noreferrer');
   };
 
+  // RTL detection function
+  const isRTL = () => {
+    if (typeof document !== 'undefined') {
+      return document.documentElement.dir === 'rtl' || document.body.classList.contains('rtl');
+    }
+    return false;
+  };
+
   const HeaderComponent = ({ article }: { article: Article }) => (
     <>
       {article.featuredImage ? (
@@ -398,10 +406,11 @@ const BentoGridBlock: React.FC<BentoGridBlockProps> = (props) => {
           </div>
 
           {/* Mobile Carousel */}
-          <div className="md:hidden">
+          <div className="md:hidden" dir={isRTL() ? "rtl" : "ltr"}>
             <Carousel
               opts={{
                 align: "start",
+                direction: isRTL() ? "rtl" : "ltr",
               }}
               className="w-full"
             >
