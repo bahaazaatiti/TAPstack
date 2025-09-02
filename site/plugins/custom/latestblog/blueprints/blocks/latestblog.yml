@@ -11,13 +11,7 @@ fields:
     label: Button Text
     type: text
     default: View all articles
-    help: Text displayed on the "view more" button
-    
-  buttonUrl:
-    label: Button URL
-    type: url
-    default: /
-    help: URL the button links to (defaults to home page)
+    help: Text displayed on the "view more" button that links to this blog's search page
     
   maxArticles:
     label: Maximum Articles

@@ -61,10 +61,15 @@ foreach ($articlePages->limit($maxArticles) as $article) {
 }
 
 // Prepare block data - using manual approach for now, can be converted to pass-block-data later
+// Generate search URL for the parent blog
+$parentPage = $page; // The current page where this block is placed
+$searchUrl = site()->url() . '/search?blog=' . $parentPage->slug();
+
 $blockData = [
   'title' => $block->title()->isNotEmpty() ? $block->title()->value() : 'Latest articles',
   'buttonText' => $block->buttonText()->isNotEmpty() ? $block->buttonText()->value() : 'View all articles',
-  'buttonUrl' => $block->buttonUrl()->isNotEmpty() ? $block->buttonUrl()->value() : '/',
+  'buttonUrl' => $searchUrl,
+  'parentBlogSlug' => $parentPage->slug(),
   'articles' => $articles
 ];
 ?>

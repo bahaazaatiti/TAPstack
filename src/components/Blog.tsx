@@ -60,6 +60,7 @@ interface BlogProps {
   blogPage?: string;
   articles?: Article[];
   searchQuery?: string;
+  blogParam?: string; // For parent-specific blog search
   [key: string]: any;
 }
 
@@ -110,6 +111,7 @@ const Blog: React.FC<BlogProps> = (props) => {
     postsPerPage = 20,
     articles: articleData = [],
     searchQuery: initialSearchQuery = "",
+    blogParam = "",
   } = props;
 
   // State for search and pagination
@@ -377,7 +379,16 @@ const Blog: React.FC<BlogProps> = (props) => {
         {/* Header with Title and Advanced Search */}
         <div className="flex flex-col gap-6">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <h2 className="text-3xl font-bold tracking-tight">{title}</h2>
+            <div className="flex flex-col gap-1">
+              <h2 className="text-3xl font-bold tracking-tight">
+                {blogParam ? `${title} - ${blogParam}` : title}
+              </h2>
+              {blogParam && (
+                <p className="text-sm text-muted-foreground">
+                  Searching within {blogParam} blog
+                </p>
+              )}
+            </div>
             
             {/* Enhanced Search with Command */}
             <div className="flex items-center gap-2 w-full sm:w-auto">
@@ -585,9 +596,17 @@ const Blog: React.FC<BlogProps> = (props) => {
               {selectedCategories.length > 0 && (
                 <span> in {selectedCategories.join(", ")}</span>
               )}
+              {blogParam && (
+                <span> from {blogParam} blog</span>
+              )}
             </>
           ) : (
-            <>Showing {allArticles.length} articles</>
+            <>
+              Showing {allArticles.length} articles
+              {blogParam && (
+                <span> from {blogParam} blog</span>
+              )}
+            </>
           )}
         </div>
 

@@ -5,22 +5,47 @@
 // Check if this is a search page
 $isSearchPage = $page->intendedTemplate()->name() === 'search';
 $searchQuery = '';
+$blogParam = '';
 
 if ($isSearchPage) {
   // Get search query from URL parameters
   $searchQuery = get('q', '');
+  // Get blog parameter for parent-specific search
+  $blogParam = get('blog', '');
   
-  // If there's a search query, search across all pages with article content
-  if ($searchQuery) {
-    $articlePages = site()->index()
-      ->filterBy('intendedTemplate', 'article')
-      ->search($searchQuery, ['fields' => ['title', 'text', 'description', 'author', 'category']])
-      ->sortBy('date', 'desc');
+  if ($blogParam) {
+    // Search within a specific blog (parent-specific search)
+    $blogPage = page($blogParam);
+    if ($blogPage) {
+      if ($searchQuery) {
+        // Search within the specific blog with query
+        $articlePages = $blogPage->children()
+          ->filterBy('intendedTemplate', 'article')
+          ->search($searchQuery, ['fields' => ['title', 'text', 'description', 'author', 'category']])
+          ->sortBy('date', 'desc');
+      } else {
+        // Show all articles from the specific blog
+        $articlePages = $blogPage->children()
+          ->filterBy('intendedTemplate', 'article')
+          ->sortBy('date', 'desc');
+      }
+    } else {
+      // Blog not found, show empty results
+      $articlePages = new \Kirby\Cms\Pages();
+    }
   } else {
-    // No search query, show all articles
-    $articlePages = site()->index()
-      ->filterBy('intendedTemplate', 'article')
-      ->sortBy('date', 'desc');
+    // Global search across all articles
+    if ($searchQuery) {
+      $articlePages = site()->index()
+        ->filterBy('intendedTemplate', 'article')
+        ->search($searchQuery, ['fields' => ['title', 'text', 'description', 'author', 'category']])
+        ->sortBy('date', 'desc');
+    } else {
+      // No search query, show all articles
+      $articlePages = site()->index()
+        ->filterBy('intendedTemplate', 'article')
+        ->sortBy('date', 'desc');
+    }
   }
 } else {
   // Get articles from the current page's children (normal blog behavior)
@@ -92,5 +117,6 @@ foreach ($articlePages as $article) {
   'showCategories' => $block->showCategories()->toBool(),
   'postsPerPage' => $block->postsPerPage()->isNotEmpty() ? (int)$block->postsPerPage()->value() : 20,
   'articles' => $articles,
-  'searchQuery' => $searchQuery
+  'searchQuery' => $searchQuery,
+  'blogParam' => $blogParam
 ]]) ?>
