@@ -65,6 +65,59 @@
       "content": <?= json_encode((string)$page->text()->kirbytext()) ?>,
       "author": <?php 
         if ($page->author()->isNotEmpty() && $author = $page->author()->toUser()) {
+          // Get author's articles for statistics and recent articles
+          $authorUuid = $author->uuid()->toString();
+          $authorArticles = site()->index()
+            ->filterBy('intendedTemplate', 'article')
+            ->filter(function($page) use ($authorUuid) {
+                $pageAuthor = $page->author()->toUser();
+                return $pageAuthor && $pageAuthor->uuid()->toString() === $authorUuid;
+            })
+            ->sortBy('date', 'desc');
+          
+          // Process recent articles for timeline (limit to 10)
+          $articlesList = [];
+          foreach ($authorArticles->limit(10) as $article) {
+            $featuredImage = null;
+            if ($article->featuredImage()->isNotEmpty()) {
+                $imageFile = $article->featuredImage()->toFile();
+                if ($imageFile) {
+                    $featuredImage = [
+                        'url' => $imageFile->url(),
+                        'alt' => $imageFile->alt()->value() ?: $article->title()->value()
+                    ];
+                }
+            }
+            
+            $articlesList[] = [
+                'title' => $article->title()->value(),
+                'url' => $article->url(),
+                'date' => $article->date()->toDate('Y-m-d'),
+                'dateFormatted' => $article->date()->toDate('M j, Y'),
+                'category' => $article->category()->value() ?: 'Article',
+                'description' => $article->description()->value() ?: $article->text()->excerpt(150),
+                'readTime' => $article->readTime()->value() ?: '5',
+                'featuredImage' => $featuredImage
+            ];
+          }
+          
+          // Calculate publication statistics
+          $categories = $authorArticles->pluck('category', ',', true);
+          $publicationStats = [
+            'totalArticles' => $authorArticles->count(),
+            'recentArticles' => $authorArticles->filterBy('date', '>', date('Y-m-d', strtotime('-30 days')))->count(),
+            'categoriesCount' => count($categories),
+            'averageReadTime' => round($authorArticles->avg('readTime') ?: 5),
+            'firstPublication' => $authorArticles->last() ? $authorArticles->last()->date()->toDate('Y-m-d') : null,
+            'lastPublication' => $authorArticles->first() ? $authorArticles->first()->date()->toDate('Y-m-d') : null
+          ];
+          
+          // Process expertise tags
+          $expertiseTags = [];
+          if ($author->expertise()->isNotEmpty()) {
+            $expertiseTags = $author->expertise()->split(',');
+          }
+          
           echo json_encode([
             'name' => (string)$author->name(),
             'position' => (string)$author->position(),
@@ -77,7 +130,11 @@
             'website' => (string)$author->website(),
             'twitter' => (string)$author->twitter(),
             'linkedin' => (string)$author->linkedin(),
-            'facebook' => (string)$author->facebook()
+            'facebook' => (string)$author->facebook(),
+            'email' => (string)$author->email(),
+            'expertise' => $expertiseTags,
+            'articles' => $articlesList,
+            'publicationStats' => $publicationStats
           ]);
         } else {
           echo 'null';

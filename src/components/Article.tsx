@@ -42,6 +42,29 @@ interface Author {
   twitter?: string
   linkedin?: string
   facebook?: string
+  email?: string
+  expertise?: string[]
+  articles?: Array<{
+    title: string
+    url: string
+    date: string
+    dateFormatted: string
+    category: string
+    description: string
+    readTime: string
+    featuredImage?: {
+      url: string
+      alt: string
+    }
+  }>
+  publicationStats?: {
+    totalArticles: number
+    recentArticles: number
+    categoriesCount: number
+    averageReadTime: number
+    firstPublication?: string
+    lastPublication?: string
+  }
 }
 
 interface ArticleProps {
@@ -598,6 +621,8 @@ const Article: React.FC<ArticleProps> = ({
                     showbio={true}
                     showsocial={true}
                     customtitle="About the Author"
+                    articles={author.articles}
+                    publicationStats={author.publicationStats}
                   />
                 )}
               </TabsContent>
