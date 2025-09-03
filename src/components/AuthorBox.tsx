@@ -408,7 +408,7 @@ const AuthorBox: React.FC<AuthorBoxProps> = ({
       {/* Author Details Box */}
       <Card className="bg-muted">
         <CardContent className="pt-6">
-          <div className="flex items-center gap-2.5 mb-4">
+          <div className="flex items-center gap-1 mb-4">
             {/* Author Avatar with Hover Card */}
             <HoverCard>
               <HoverCardTrigger asChild>
@@ -437,7 +437,7 @@ const AuthorBox: React.FC<AuthorBoxProps> = ({
                 // Mobile: Use Drawer
                 <Drawer>
                   <DrawerTrigger asChild>
-                    <button className="text-left hover:text-primary transition-colors">
+                    <button className="text-start hover:text-primary transition-colors">
                       <div className="text-sm font-medium leading-normal">{author.name}</div>
                       {(author.position || author.affiliation) && (
                         <div className="text-muted-foreground text-sm font-normal leading-normal">
@@ -469,7 +469,7 @@ const AuthorBox: React.FC<AuthorBoxProps> = ({
                 // Desktop: Use Sheet
                 <Sheet>
                   <SheetTrigger asChild>
-                    <button className="text-left hover:text-primary transition-colors">
+                    <button className="text-start hover:text-primary transition-colors">
                       <div className="text-sm font-medium leading-normal">{author.name}</div>
                       {(author.position || author.affiliation) && (
                         <div className="text-muted-foreground text-sm font-normal leading-normal">
@@ -534,7 +534,7 @@ const AuthorBox: React.FC<AuthorBoxProps> = ({
 
           {/* Social Links and View Profile Button */}
           {showsocial && (author.website || author.twitter || author.linkedin || author.facebook) && (
-            <div className="flex items-center gap-2.5">
+            <div className="flex items-center gap-1">
               {author.website && (
                 <Button asChild size="icon" variant="ghost">
                   <a 

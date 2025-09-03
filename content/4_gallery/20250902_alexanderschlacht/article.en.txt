@@ -1,0 +1,37 @@
+Title: Alexanderschlacht
+
+----
+
+Text: 
+
+----
+
+Date: 2025-09-02
+
+----
+
+Category: Technology
+
+----
+
+Author: - user://ce0b9kJC
+
+----
+
+Tags: 
+
+----
+
+Description: It is an oil painting by the German artist Albrecht Altdorfer (1480-1538) that depicts the battle that took place in southern Anatolia in 333 BC between the army of Alexander the Macedonian and the Persian Achaemenid army led by Emperor Darius III.
+
+----
+
+Readtime: 5
+
+----
+
+Featuredimage: - file://nz0r0rdpep83kmgs
+
+----
+
+Uuid: jdzrljmwmgkuafbu

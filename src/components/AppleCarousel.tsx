@@ -122,9 +122,9 @@ const AppleCarousel: React.FC<AppleCarouselProps> = (props) => {
   }
 
   return (
-    <div className="w-full py-10 lg:py-16">
+    <div className="w-full py-6 lg:py-12">
       <div className="px-6 xl:px-10">
-        <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-foreground mb-8 max-w-xl">
+        <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-foreground max-w-xl">
           {title}
         </h2>
       </div>

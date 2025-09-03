@@ -23,11 +23,33 @@ interface SiteSearchProps {
     slug: string
     isActive: boolean
   }>
+  currentLanguage?: string
+  defaultLanguage?: string
 }
 
-export default function SiteSearch({ sitepages = [] }: SiteSearchProps) {
+export default function SiteSearch({ 
+  sitepages = [], 
+  currentLanguage,
+  defaultLanguage = 'en'
+}: SiteSearchProps) {
   const [open, setOpen] = React.useState(false)
   const [searchQuery, setSearchQuery] = React.useState("")
+
+  // Detect current language from URL if not provided 
+  // TODO: PLEASE FIX THIS FIND BETTER SOLUTION THAN THIS
+  const detectCurrentLanguage = React.useCallback(() => {
+    if (currentLanguage) return currentLanguage
+    
+    const path = window.location.pathname
+    const langCode = path.split('/')[1]
+    
+    // Simple language detection - if first path segment looks like a language code
+    if (langCode && langCode.length === 2 && langCode !== 'en') {
+      return langCode
+    }
+    
+    return defaultLanguage
+  }, [currentLanguage, defaultLanguage])
 
   React.useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -54,8 +76,23 @@ export default function SiteSearch({ sitepages = [] }: SiteSearchProps) {
 
   const handleSearchPage = () => {
     setOpen(false)
-    // Navigate to search page with query
-    const searchUrl = `/search${searchQuery ? `?q=${encodeURIComponent(searchQuery)}` : ''}`
+    
+    // Get current language
+    const lang = detectCurrentLanguage()
+    
+    // Navigate to search page with language prefix if not default language
+    let searchUrl = ''
+    if (lang !== defaultLanguage) {
+      searchUrl = `/${lang}/search`
+    } else {
+      searchUrl = '/search'
+    }
+    
+    // Add query parameter if search query exists
+    if (searchQuery) {
+      searchUrl += `?q=${encodeURIComponent(searchQuery)}`
+    }
+    
     window.location.href = searchUrl
   }
 

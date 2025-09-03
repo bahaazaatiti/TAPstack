@@ -28,8 +28,6 @@ function Calendar({
       showOutsideDays={showOutsideDays}
       className={cn(
         "bg-background group/calendar p-3 [--cell-size:--spacing(8)] [[data-slot=card-content]_&]:bg-transparent [[data-slot=popover-content]_&]:bg-transparent",
-        String.raw`rtl:**:[.rdp-button\_next>svg]:rotate-180`,
-        String.raw`rtl:**:[.rdp-button\_previous>svg]:rotate-180`,
         className
       )}
       captionLayout={captionLayout}
@@ -134,13 +132,22 @@ function Calendar({
           )
         },
         Chevron: ({ className, orientation, ...props }) => {
-          if (orientation === "left") {
+          // Check if we're in RTL mode by looking at body class
+          const isRTL = document.body.dir === 'rtl' || 
+                       document.body.className.includes('rtl');
+          
+          // In RTL, swap left and right orientations
+          const effectiveOrientation = isRTL ? 
+            (orientation === 'left' ? 'right' : orientation === 'right' ? 'left' : orientation) : 
+            orientation;
+          
+          if (effectiveOrientation === "left") {
             return (
               <ChevronLeftIcon className={cn("size-4", className)} {...props} />
             )
           }
 
-          if (orientation === "right") {
+          if (effectiveOrientation === "right") {
             return (
               <ChevronRightIcon
                 className={cn("size-4", className)}

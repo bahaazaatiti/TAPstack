@@ -1,6 +1,6 @@
 <?php
 
-Kirby::plugin('project/latestblog-block', [
+Kirby::plugin('custom/latestblog', [
   'blueprints' => [
     'blocks/latestblog' => __DIR__ . '/blueprints/blocks/latestblog.yml'
   ],

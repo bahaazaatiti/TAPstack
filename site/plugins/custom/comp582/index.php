@@ -1,6 +1,6 @@
 <?php
 
-Kirby::plugin('blogsite/comp582-block', [
+Kirby::plugin('custom/comp582', [
   'blueprints' => [
     'blocks/comp582' => __DIR__ . '/blueprints/blocks/comp582.yml'
   ],

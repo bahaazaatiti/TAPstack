@@ -38,6 +38,12 @@ interface Features03Props {
     buttonurl: string;
     buttonexternal: boolean;
   }>;
+  showfaq?: boolean;
+  faqtitle?: string;
+  faqs?: Array<{
+    question: string;
+    answer: string;
+  }>;
   [key: string]: any;
 }
 
@@ -45,6 +51,9 @@ const Features03: React.FC<Features03Props> = (props) => {
   const {
     title = "Design and Engage:",
     subtitle = "Build Smarter Spaces and Strategies",
+    showfaq = true,
+    faqtitle = "Frequently Asked Questions",
+    faqs = [],
     cards = [
       {
         title: "Plan Smarter",
@@ -178,18 +187,18 @@ const Features03: React.FC<Features03Props> = (props) => {
                                 open={openFeatures[`${cardIndex}-${index}`]}
                                 onOpenChange={() => toggleFeature(cardIndex, index)}
                               >
-                                <CollapsibleTrigger className="flex items-center justify-between w-full text-left p-2 rounded-lg hover:bg-muted/50 transition-colors">
+                                <CollapsibleTrigger className="flex items-center justify-between w-full text-start p-2 rounded-lg hover:bg-muted/50 transition-colors">
                                   <div className="flex items-start gap-3 flex-1">
                                     {getIcon(feature.icon)}
                                     <p className="-mt-0.5 font-medium">
-                                      {feature.text.split('.')[0]}
+                                      {feature.text.split('\n')[0]}
                                     </p>
                                   </div>
                                   <ChevronDown className={`h-4 w-4 transition-transform ${openFeatures[`${cardIndex}-${index}`] ? 'rotate-180' : ''}`} />
                                 </CollapsibleTrigger>
                                 <CollapsibleContent className="ps-9 pt-2">
                                   <p className="text-sm text-muted-foreground">
-                                    {feature.text.includes('.') ? feature.text.split('.').slice(1).join('.').trim() : 'Learn more about this feature and how it can benefit your workflow.'}
+                                    {feature.text.includes('\n') ? feature.text.split('\n').slice(1).join('\n').trim() : 'Learn more about this feature and how it can benefit your workflow.'}
                                   </p>
                                 </CollapsibleContent>
                               </Collapsible>
@@ -277,18 +286,18 @@ const Features03: React.FC<Features03Props> = (props) => {
                               open={openFeatures[`${cardIndex}-${index}`]}
                               onOpenChange={() => toggleFeature(cardIndex, index)}
                             >
-                              <CollapsibleTrigger className="flex items-center justify-between w-full text-left p-2 rounded-lg hover:bg-muted/50 transition-colors">
+                              <CollapsibleTrigger className="flex items-center justify-between w-full text-start p-2 rounded-lg hover:bg-muted/50 transition-colors">
                                 <div className="flex items-start gap-3 flex-1">
                                   {getIcon(feature.icon)}
                                   <p className="-mt-0.5 font-medium">
-                                    {feature.text.split('.')[0]}
+                                    {feature.text.split('\n')[0]}
                                   </p>
                                 </div>
                                 <ChevronDown className={`h-4 w-4 transition-transform ${openFeatures[`${cardIndex}-${index}`] ? 'rotate-180' : ''}`} />
                               </CollapsibleTrigger>
                               <CollapsibleContent className="ps-9 pt-2">
                                 <p className="text-sm text-muted-foreground">
-                                  {feature.text.includes('.') ? feature.text.split('.').slice(1).join('.').trim() : 'Learn more about this feature and how it can benefit your workflow.'}
+                                  {feature.text.includes('\n') ? feature.text.split('\n').slice(1).join('\n').trim() : 'Learn more about this feature and how it can benefit your workflow.'}
                                 </p>
                               </CollapsibleContent>
                             </Collapsible>
@@ -311,36 +320,22 @@ const Features03: React.FC<Features03Props> = (props) => {
           })}
           </div>
 
-          {/* FAQ/Information Accordion Section */}
-          <div className="mt-16">
-            <h3 className="text-2xl font-bold tracking-tight mb-6">Frequently Asked Questions</h3>
-            <Accordion type="single" collapsible className="w-full">
-              <AccordionItem value="item-1">
-                <AccordionTrigger>How do these features work together?</AccordionTrigger>
-                <AccordionContent>
-                  Our features are designed to work seamlessly together, allowing you to plan your strategy and engage your audience more effectively. Each tool complements the others to create a comprehensive solution.
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="item-2">
-                <AccordionTrigger>What makes this approach different?</AccordionTrigger>
-                <AccordionContent>
-                  We focus on simplicity and effectiveness. Our drag-and-drop interface and real-time analytics provide immediate value without the complexity of traditional tools.
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="item-3">
-                <AccordionTrigger>Can I customize the features for my needs?</AccordionTrigger>
-                <AccordionContent>
-                  Absolutely! Each feature can be customized to match your specific requirements. Whether you're creating simple forms or complex interactive content, our tools adapt to your workflow.
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="item-4">
-                <AccordionTrigger>How quickly can I see results?</AccordionTrigger>
-                <AccordionContent>
-                  Most users see immediate improvements in engagement within the first week. Our real-time analytics help you track progress and optimize your approach as you go.
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-          </div>
+          {/* Dynamic FAQ/Information Accordion Section */}
+          {showfaq && faqs.length > 0 && (
+            <div className="mt-16">
+              <h3 className="text-2xl font-bold tracking-tight mb-6">{faqtitle}</h3>
+              <Accordion type="single" collapsible className="w-full">
+                {faqs.map((faq, index) => (
+                  <AccordionItem key={index} value={`item-${index}`}>
+                    <AccordionTrigger>{faq.question}</AccordionTrigger>
+                    <AccordionContent>
+                      {faq.answer}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </div>
+          )}
         </div>
       </div>
     </div>

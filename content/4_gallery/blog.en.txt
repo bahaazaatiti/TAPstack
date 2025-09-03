@@ -2,15 +2,15 @@ Title: Gallery
 
 ----
 
-Header: [{"content":{"logo":[],"logotext":"TAP","shownavigation":"true","languages":[{"value":"en","label":"English"},{"value":"ar","label":"العربية"}],"defaultlanguage":"en","showthemetoggle":"true","showlanguageselector":"true","showusermenu":"true"},"id":"225e8140-ed08-4469-9d37-c058edfd095f","isHidden":false,"type":"comp582"}]
+Header: [{"content":{"logolight":["file://6mnvswiucrxjrtnh"],"logodark":["file://ydknwavegcs9owf6"],"logotext":"TAP","shownavigation":"true","languages":[{"value":"en","label":"English"},{"value":"ar","label":"العربية"}],"defaultlanguage":"en","showthemetoggle":"true","showlanguageselector":"true","showusermenu":"true","logo":["file://pn0tebstfpgwsgst"]},"id":"d3fa8ce1-5927-4471-82b6-2746e155e566","isHidden":false,"type":"comp582"}]
 
 ----
 
-Blocks: [{"content":{"title":"Featured Stories","selectionmode":"latest","articles":[],"latestcount":10,"onlywithimages":"true","initialscroll":0},"id":"37b15aea-fc4e-4198-ae6b-17d4b391744d","isHidden":false,"type":"applecarousel"}]
+Blocks: [{"content":{"title":"Gallery","selectionmode":"latest","articles":[],"latestcount":10,"onlywithimages":"true","initialscroll":0},"id":"37b15aea-fc4e-4198-ae6b-17d4b391744d","isHidden":false,"type":"applecarousel"}]
 
 ----
 
-Footer: [{"content":{"name":"","logo":[],"columns":[],"copyright":"© 2025 The Alawite Project. All rights reserved","policies":[],"showmodetoggle":"true"},"id":"c0787bbd-f959-45c1-82d1-599c04413859","isHidden":false,"type":"footer"}]
+Footer: [{"content":{"name":"","logo":[],"columns":[],"copyright":"© 2025 The Alawite Project. All Rights Reserved","policies":[],"showmodetoggle":"true"},"id":"18b0687c-9477-4760-8c2a-22b8c94af858","isHidden":false,"type":"footer"}]
 
 ----
 

@@ -8,8 +8,18 @@ function RadioGroup({
   className,
   ...props
 }: React.ComponentProps<typeof RadioGroupPrimitive.Root>) {
+    const scrollAreaRef = React.useRef<HTMLDivElement>(null)
+  
+    React.useEffect(() => {
+      // Remove dir attribute after component mounts
+      if (scrollAreaRef.current) {
+        scrollAreaRef.current.removeAttribute('dir')
+      }
+    }, [])
+    
   return (
     <RadioGroupPrimitive.Root
+      ref={scrollAreaRef}
       data-slot="radio-group"
       className={cn("grid gap-3", className)}
       {...props}

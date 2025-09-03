@@ -307,7 +307,11 @@ const Comp582: React.FC<Comp582Props> = (props) => {
         {/* Right side */}
         <div className="flex items-center gap-2">
           {/* Search */}
-          <SiteSearch sitepages={sitepages} />
+          <SiteSearch 
+            sitepages={sitepages} 
+            currentLanguage={currentLanguage}
+            defaultLanguage={defaultlanguage}
+          />
           {/* Theme toggle */}
           {(showthemetoggle === true || showthemetoggle === 'true') && (
             <ThemeToggle />

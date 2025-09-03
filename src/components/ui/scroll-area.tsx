@@ -8,8 +8,18 @@ function ScrollArea({
   children,
   ...props
 }: React.ComponentProps<typeof ScrollAreaPrimitive.Root>) {
+  const scrollAreaRef = React.useRef<HTMLDivElement>(null)
+
+  React.useEffect(() => {
+    // Remove dir attribute after component mounts
+    if (scrollAreaRef.current) {
+      scrollAreaRef.current.removeAttribute('dir')
+    }
+  }, [])
+  
   return (
     <ScrollAreaPrimitive.Root
+      ref={scrollAreaRef}
       data-slot="scroll-area"
       className={cn("relative", className)}
       {...props}

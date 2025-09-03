@@ -175,9 +175,9 @@ const LatestBlog: React.FC<LatestBlogProps> = (props) => {
 
   return (
     <div className="w-full py-10 lg:py-16 px-6 xl:px-10">
-      <div className="container mx-auto flex flex-col gap-14">
+      <div className="container mx-auto flex flex-col sm:gap-14">
         <div className="flex w-full flex-col sm:flex-row sm:justify-between sm:items-center gap-8">
-          <h4 className="text-3xl md:text-5xl tracking-tighter max-w-xl font-regular">
+          <h4 className="text-3xl md:text-5xl tracking-tighter max-w-xl font-bold">
             {title}
           </h4>
           <Button className="gap-4" asChild>
@@ -337,8 +337,8 @@ const LatestBlog: React.FC<LatestBlogProps> = (props) => {
                       <DrawerContent>
                         <div className="mx-auto w-full max-w-sm">
                           <DrawerHeader>
-                            <DrawerTitle className="text-left">{article.title || 'Untitled'}</DrawerTitle>
-                            <DrawerDescription className="text-left">
+                            <DrawerTitle className="text-start">{article.title || 'Untitled'}</DrawerTitle>
+                            <DrawerDescription className="text-start">
                               {article.description || 'No description available'}
                             </DrawerDescription>
                           </DrawerHeader>

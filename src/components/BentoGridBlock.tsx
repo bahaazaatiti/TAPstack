@@ -152,7 +152,7 @@ const BentoGridBlock: React.FC<BentoGridBlockProps> = (props) => {
     const fullUrl = url.startsWith('http') ? url : `${window.location.origin}${url}`;
     window.open(fullUrl, '_blank', 'noopener,noreferrer');
   };
-
+  // TODO, FIX CAROUSEL, REMOVE RTL DETECTION AND CHECK SCROLL-SHEET COMPONENT
   // RTL detection function
   const isRTL = () => {
     if (typeof document !== 'undefined') {
@@ -316,8 +316,8 @@ const BentoGridBlock: React.FC<BentoGridBlockProps> = (props) => {
               <DrawerContent>
                 <div className="mx-auto w-full max-w-sm">
                   <DrawerHeader>
-                    <DrawerTitle className="text-left">{article.title}</DrawerTitle>
-                    <DrawerDescription className="text-left">
+                    <DrawerTitle className="text-start">{article.title}</DrawerTitle>
+                    <DrawerDescription className="text-start">
                       {article.description}
                     </DrawerDescription>
                   </DrawerHeader>
@@ -541,8 +541,8 @@ const BentoGridBlock: React.FC<BentoGridBlockProps> = (props) => {
                             <DrawerContent>
                               <div className="mx-auto w-full max-w-sm">
                                 <DrawerHeader>
-                                  <DrawerTitle className="text-left">{article.title}</DrawerTitle>
-                                  <DrawerDescription className="text-left">
+                                  <DrawerTitle className="text-start">{article.title}</DrawerTitle>
+                                  <DrawerDescription className="text-start">
                                     {article.description}
                                   </DrawerDescription>
                                 </DrawerHeader>

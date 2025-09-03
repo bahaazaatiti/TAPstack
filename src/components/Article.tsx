@@ -26,7 +26,8 @@ import {
   BarChart3,
   BookOpen,
   Eye,
-  Maximize
+  Maximize,
+  ChevronDown
 } from 'lucide-react'
 
 interface Author {
@@ -448,10 +449,13 @@ const Article: React.FC<ArticleProps> = ({
                       <FileText className="h-5 w-5" />
                       PDF Viewer
                     </CardTitle>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 line-clamp-1">
                       <Select value={selectedPdf} onValueChange={setSelectedPdf}>
-                        <SelectTrigger className="w-64">
-                          <SelectValue placeholder="Select a PDF to view" />
+                        <SelectTrigger className="w-12 md:w-64 [&>svg]:hidden md:[&>svg]:block">
+                          <SelectValue placeholder="Select a PDF to view" className="hidden md:block" />
+                          <div className="md:hidden flex items-center justify-center">
+                            <ChevronDown className="h-4 w-4" />
+                          </div>
                         </SelectTrigger>
                         <SelectContent>
                           {pdfFiles.map((pdf, index) => (
@@ -467,7 +471,7 @@ const Article: React.FC<ArticleProps> = ({
                           <DialogTrigger asChild>
                             <Button variant="outline" size="sm" className="gap-2">
                               <Maximize className="h-4 w-4" />
-                              Fullscreen
+                              <span className="hidden md:inline">Fullscreen</span>
                             </Button>
                           </DialogTrigger>
                           <DialogContent className=" max-h-[90vh] h-[90vh] p-0 sm:max-w-2xl">

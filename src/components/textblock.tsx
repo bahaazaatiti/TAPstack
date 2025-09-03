@@ -46,6 +46,11 @@ const TextBlock: React.FC<TextBlockProps> = (props) => {
   const paragraphs = description.split('\n\n').filter(p => p.trim());
   const hasMoreParagraphs = paragraphs.length > 1;
 
+  // Auto-expand when maximized, auto-collapse when minimized
+  React.useEffect(() => {
+    setIsExpanded(isMaximized);
+  }, [isMaximized]);
+
   // Actions
   const copyContent = () => {
     navigator.clipboard.writeText(description).then(() => {
@@ -67,7 +72,7 @@ const TextBlock: React.FC<TextBlockProps> = (props) => {
 
   return (
     <section>
-      <div className="py-20">
+      <div className="py-10">
         <div className="mx-auto w-full max-w-7xl px-6">
           <div className="mx-auto max-w-screen-xl">
             {/* Main Content */}
@@ -129,8 +134,8 @@ const TextBlock: React.FC<TextBlockProps> = (props) => {
                 </div>
 
                 {/* Content Area */}
-                <div className="flex-1">
-                  <ScrollArea className="h-auto ps-4">
+                <div className="flex-1 min-h-0">
+                  <ScrollArea className={`ps-4 ${isMaximized ? 'h-[calc(100vh-16rem)]' : 'h-auto'}`}>
                     <div className="text-muted-foreground text-xl leading-relaxed">
                       <Collapsible
                         open={isExpanded}
