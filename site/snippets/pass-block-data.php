@@ -442,7 +442,38 @@ $siteData['translations'] = [
     'link_copied' => t('link_copied'),
     'bookmarked' => t('bookmarked'),
     'categories' => t('categories'),
-    'searching_within' => t('searching_within')
+    'searching_within' => t('searching_within'),
+    // AuthorBox component translations
+    'min_avg' => t('min_avg'),
+    'click_full_profile' => t('click_full_profile'),
+    'about' => t('about'),
+    'expertise' => t('expertise'),
+    'publication_stats' => t('publication_stats'),
+    'total_articles' => t('total_articles'),
+    'recent_30d' => t('recent_30d'),
+    'avg_read_time' => t('avg_read_time'),
+    'recent_articles' => t('recent_articles'),
+    'connect' => t('connect'),
+    'email' => t('email'),
+    'website' => t('website'),
+    'twitter' => t('twitter'),
+    'linkedin' => t('linkedin'),
+    'facebook' => t('facebook'),
+    'author_profile' => t('author_profile'),
+    'detailed_info_about' => t('detailed_info_about'),
+    'publications' => t('publications'),
+    'view_profile' => t('view_profile'),
+    // BentoGridBlock component translations
+    'featured_articles' => t('featured_articles'),
+    'read_full_article' => t('read_full_article'),
+    'open_article' => t('open_article'),
+    // FeaturedBlog component translations
+    'latest_articles' => t('latest_articles'),
+    // LatestBlog component translations
+    'view_all_articles' => t('view_all_articles'),
+    'untitled' => t('untitled'),
+    'no_description_available' => t('no_description_available'),
+    'article_image' => t('article_image')
 ];
 
 // Merge site data with block data

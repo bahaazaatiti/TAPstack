@@ -89,6 +89,7 @@ interface AuthorBoxProps {
   customtitle?: string
   articles?: Article[]
   publicationStats?: PublicationStats | null
+  translations?: any
   [key: string]: any
 }
 
@@ -99,7 +100,8 @@ const AuthorBox: React.FC<AuthorBoxProps> = (props) => {
     showsocial = true,
     customtitle,
     articles = [],
-    publicationStats
+    publicationStats,
+    translations = {}
   } = props;
   const [isMobile, setIsMobile] = useState(false)
 
@@ -165,17 +167,17 @@ const AuthorBox: React.FC<AuthorBoxProps> = (props) => {
         <div className="flex items-center gap-4 text-xs text-muted-foreground">
           <div className="flex items-center gap-1">
             <FileText className="w-3 h-3" />
-            {publicationStats.totalArticles} articles
+            {publicationStats.totalArticles} {translations.articles || 'articles'}
           </div>
           <div className="flex items-center gap-1">
             <Clock className="w-3 h-3" />
-            {publicationStats.averageReadTime} min avg
+            {publicationStats.averageReadTime} {translations.min_avg || 'min avg'}
           </div>
         </div>
       )}
       
       <div className="text-xs text-muted-foreground">
-        Click for full profile →
+        {translations.click_full_profile || 'Click for full profile →'}
       </div>
     </div>
   )
@@ -211,7 +213,7 @@ const AuthorBox: React.FC<AuthorBoxProps> = (props) => {
           <div className="space-y-3">
             <h4 className="font-medium mb-3 flex items-center gap-2">
               <User className="w-4 h-4" />
-              About
+              {translations.about || 'About'}
             </h4>
             <p className="text-sm text-muted-foreground leading-relaxed">
               {typeof author.bio === 'string' ? author.bio : ''}
@@ -224,7 +226,7 @@ const AuthorBox: React.FC<AuthorBoxProps> = (props) => {
           <div className="space-y-3">
             <h4 className="font-medium mb-3 flex items-center gap-2">
               <Tag className="w-4 h-4" />
-              Expertise
+              {translations.expertise || 'Expertise'}
             </h4>
             <div className="flex flex-wrap gap-2">
               {author.expertise.map((tag, index) => (
@@ -241,32 +243,32 @@ const AuthorBox: React.FC<AuthorBoxProps> = (props) => {
           <div className="space-y-4">
             <h4 className="font-medium mb-4 flex items-center gap-2">
               <TrendingUp className="w-4 h-4" />
-              Publication Stats
+              {translations.publication_stats || 'Publication Stats'}
             </h4>
             <div className="grid grid-cols-2 gap-4 text-sm">
               <div className="text-center p-4 bg-muted rounded-lg">
                 <div className="text-2xl font-bold text-primary">
                   {publicationStats.totalArticles}
                 </div>
-                <div className="text-muted-foreground">Total Articles</div>
+                <div className="text-muted-foreground">{translations.total_articles || 'Total Articles'}</div>
               </div>
               <div className="text-center p-4 bg-muted rounded-lg">
                 <div className="text-2xl font-bold text-primary">
                   {publicationStats.recentArticles}
                 </div>
-                <div className="text-muted-foreground">Recent (30d)</div>
+                <div className="text-muted-foreground">{translations.recent_30d || 'Recent (30d)'}</div>
               </div>
               <div className="text-center p-4 bg-muted rounded-lg">
                 <div className="text-2xl font-bold text-primary">
                   {publicationStats.categoriesCount}
                 </div>
-                <div className="text-muted-foreground">Categories</div>
+                <div className="text-muted-foreground">{translations.categories || 'Categories'}</div>
               </div>
               <div className="text-center p-4 bg-muted rounded-lg">
                 <div className="text-2xl font-bold text-primary">
                   {publicationStats.averageReadTime}m
                 </div>
-                <div className="text-muted-foreground">Avg Read Time</div>
+                <div className="text-muted-foreground">{translations.avg_read_time || 'Avg Read Time'}</div>
               </div>
             </div>
           </div>
@@ -277,7 +279,7 @@ const AuthorBox: React.FC<AuthorBoxProps> = (props) => {
           <div className="space-y-4">
             <h4 className="font-medium mb-4 flex items-center gap-2">
               <BookOpen className="w-4 h-4" />
-              Recent Articles ({articles.length})
+              {translations.recent_articles || 'Recent Articles'} ({articles.length})
             </h4>
             <div className="space-y-4 max-h-64 overflow-y-auto">
               {articles.map((article, index) => (
@@ -310,7 +312,7 @@ const AuthorBox: React.FC<AuthorBoxProps> = (props) => {
                         </Badge>
                         <span>{typeof article.dateFormatted === 'string' ? article.dateFormatted : ''}</span>
                         <span>•</span>
-                        <span>{typeof article.readTime === 'number' ? article.readTime : 0} min read</span>
+                        <span>{typeof article.readTime === 'number' ? article.readTime : 0} {translations.min_read || 'min read'}</span>
                       </div>
                     </div>
                   </div>
@@ -323,13 +325,13 @@ const AuthorBox: React.FC<AuthorBoxProps> = (props) => {
         {/* Social Links */}
         {showsocial && (author.website || author.twitter || author.linkedin || author.facebook || author.email) && (
           <div>
-            <h4 className="font-medium mb-3">Connect</h4>
+            <h4 className="font-medium mb-3">{translations.connect || 'Connect'}</h4>
             <div className="flex flex-wrap gap-1">
               {author.email && (
                 <Button asChild size="sm" variant="outline">
-                  <a href={`mailto:${author.email}`} title="Email">
+                  <a href={`mailto:${author.email}`} title={translations.email || 'Email'}>
                     <Mail className="w-4 h-4 mr-2" />
-                    Email
+                    {translations.email || 'Email'}
                   </a>
                 </Button>
               )}
@@ -339,10 +341,10 @@ const AuthorBox: React.FC<AuthorBoxProps> = (props) => {
                     href={author.website} 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    title="Website"
+                    title={translations.website || 'Website'}
                   >
                     <ExternalLink className="w-4 h-4 mr-2" />
-                    Website
+                    {translations.website || 'Website'}
                   </a>
                 </Button>
               )}
@@ -352,10 +354,10 @@ const AuthorBox: React.FC<AuthorBoxProps> = (props) => {
                     href={`https://twitter.com/${author.twitter}`}
                     target="_blank" 
                     rel="noopener noreferrer"
-                    title="Twitter/X"
+                    title={translations.twitter || 'Twitter'}
                   >
                     <Twitter className="w-4 h-4 mr-2" />
-                    Twitter
+                    {translations.twitter || 'Twitter'}
                   </a>
                 </Button>
               )}
@@ -365,10 +367,10 @@ const AuthorBox: React.FC<AuthorBoxProps> = (props) => {
                     href={author.linkedin}
                     target="_blank" 
                     rel="noopener noreferrer"
-                    title="LinkedIn"
+                    title={translations.linkedin || 'LinkedIn'}
                   >
                     <Linkedin className="w-4 h-4 mr-2" />
-                    LinkedIn
+                    {translations.linkedin || 'LinkedIn'}
                   </a>
                 </Button>
               )}
@@ -378,10 +380,10 @@ const AuthorBox: React.FC<AuthorBoxProps> = (props) => {
                     href={author.facebook}
                     target="_blank" 
                     rel="noopener noreferrer"
-                    title="Facebook"
+                    title={translations.facebook || 'Facebook'}
                   >
                     <Facebook className="w-4 h-4 mr-2" />
-                    Facebook
+                    {translations.facebook || 'Facebook'}
                   </a>
                 </Button>
               )}
@@ -451,9 +453,9 @@ const AuthorBox: React.FC<AuthorBoxProps> = (props) => {
                   </DrawerTrigger>
                   <DrawerContent>
                     <DrawerHeader>
-                      <DrawerTitle>Author Profile</DrawerTitle>
+                      <DrawerTitle>{translations.author_profile || 'Author Profile'}</DrawerTitle>
                       <DrawerDescription>
-                        Detailed information about {author.name}
+                        {translations.detailed_info_about || 'Detailed information about'} {author.name}
                       </DrawerDescription>
                     </DrawerHeader>
                     <div className="px-4 pb-4 overflow-y-auto max-h-[70vh]">
@@ -461,7 +463,7 @@ const AuthorBox: React.FC<AuthorBoxProps> = (props) => {
                     </div>
                     <DrawerFooter>
                       <DrawerClose asChild>
-                        <Button variant="outline">Close</Button>
+                        <Button variant="outline">{translations.close || 'Close'}</Button>
                       </DrawerClose>
                     </DrawerFooter>
                   </DrawerContent>
@@ -483,9 +485,9 @@ const AuthorBox: React.FC<AuthorBoxProps> = (props) => {
                   </SheetTrigger>
                   <SheetContent className="sm:max-w-md">
                     <SheetHeader>
-                      <SheetTitle>Author Profile</SheetTitle>
+                      <SheetTitle>{translations.author_profile || 'Author Profile'}</SheetTitle>
                       <SheetDescription>
-                        Detailed information about {author.name}
+                        {translations.detailed_info_about || 'Detailed information about'} {author.name}
                       </SheetDescription>
                     </SheetHeader>
                     <div className="mt-6">
@@ -499,7 +501,7 @@ const AuthorBox: React.FC<AuthorBoxProps> = (props) => {
             {/* Quick Stats Display */}
             {publicationStats && (
               <div className="text-right">
-                <div className="text-xs text-muted-foreground">Publications</div>
+                <div className="text-xs text-muted-foreground">{translations.publications || 'Publications'}</div>
                 <div className="text-lg font-semibold text-primary">
                   {publicationStats.totalArticles}
                 </div>
@@ -542,7 +544,7 @@ const AuthorBox: React.FC<AuthorBoxProps> = (props) => {
                     href={author.website} 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    title="Website"
+                    title={translations.website || 'Website'}
                   >
                     <ExternalLink className="w-4 h-4" />
                   </a>
@@ -555,7 +557,7 @@ const AuthorBox: React.FC<AuthorBoxProps> = (props) => {
                     href={`https://twitter.com/${author.twitter}`}
                     target="_blank" 
                     rel="noopener noreferrer"
-                    title="Twitter/X"
+                    title={translations.twitter || 'Twitter'}
                   >
                     <Twitter className="w-4 h-4" />
                   </a>
@@ -568,7 +570,7 @@ const AuthorBox: React.FC<AuthorBoxProps> = (props) => {
                     href={author.linkedin}
                     target="_blank" 
                     rel="noopener noreferrer"
-                    title="LinkedIn"
+                    title={translations.linkedin || 'LinkedIn'}
                   >
                     <Linkedin className="w-4 h-4" />
                   </a>
@@ -581,7 +583,7 @@ const AuthorBox: React.FC<AuthorBoxProps> = (props) => {
                     href={author.facebook}
                     target="_blank" 
                     rel="noopener noreferrer"
-                    title="Facebook"
+                    title={translations.facebook || 'Facebook'}
                   >
                     <Facebook className="w-4 h-4" />
                   </a>
@@ -594,14 +596,14 @@ const AuthorBox: React.FC<AuthorBoxProps> = (props) => {
                   <DrawerTrigger asChild>
                     <Button size="sm" variant="outline" className="ml-auto">
                       <User className="w-4 h-4 mr-2" />
-                      View Profile
+                      {translations.view_profile || 'View Profile'}
                     </Button>
                   </DrawerTrigger>
                   <DrawerContent>
                     <DrawerHeader>
-                      <DrawerTitle>Author Profile</DrawerTitle>
+                      <DrawerTitle>{translations.author_profile || 'Author Profile'}</DrawerTitle>
                       <DrawerDescription>
-                        Detailed information about {author.name}
+                        {translations.detailed_info_about || 'Detailed information about'} {author.name}
                       </DrawerDescription>
                     </DrawerHeader>
                     <div className="px-4 pb-4 overflow-y-auto max-h-[70vh]">
@@ -609,7 +611,7 @@ const AuthorBox: React.FC<AuthorBoxProps> = (props) => {
                     </div>
                     <DrawerFooter>
                       <DrawerClose asChild>
-                        <Button variant="outline">Close</Button>
+                        <Button variant="outline">{translations.close || 'Close'}</Button>
                       </DrawerClose>
                     </DrawerFooter>
                   </DrawerContent>
@@ -619,14 +621,14 @@ const AuthorBox: React.FC<AuthorBoxProps> = (props) => {
                   <SheetTrigger asChild>
                     <Button size="sm" variant="outline" className="me-auto">
                       <User className="w-4 h-4 mr-2" />
-                      View Profile
+                      {translations.view_profile || 'View Profile'}
                     </Button>
                   </SheetTrigger>
                   <SheetContent className="sm:max-w-md">
                     <SheetHeader>
-                      <SheetTitle>Author Profile</SheetTitle>
+                      <SheetTitle>{translations.author_profile || 'Author Profile'}</SheetTitle>
                       <SheetDescription>
-                        Detailed information about {author.name}
+                        {translations.detailed_info_about || 'Detailed information about'} {author.name}
                       </SheetDescription>
                     </SheetHeader>
                     <div className="mt-6">

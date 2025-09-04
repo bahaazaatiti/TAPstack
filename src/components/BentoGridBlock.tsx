@@ -45,6 +45,9 @@ import { toast } from "sonner";
 interface BentoGridBlockProps {
   title?: string;
   articles?: Article[];
+  translations?: { 
+    [key: string]: any;
+  };
   [key: string]: any;
 }
 
@@ -70,8 +73,9 @@ interface Article {
 
 const BentoGridBlock: React.FC<BentoGridBlockProps> = (props) => {
   const {
-    title = "Featured Articles",
-    articles: articleData = []
+    title = props.translations?.featured_articles || "Featured Articles",
+    articles: articleData = [],
+    translations = {}
   } = props;
 
   // Use articles from props (now always provided by pass-block-data.php)
@@ -84,7 +88,7 @@ const BentoGridBlock: React.FC<BentoGridBlockProps> = (props) => {
   const copyArticleLink = (url: string, title: string) => {
     const fullUrl = url.startsWith('http') ? url : `${window.location.origin}${url}`;
     navigator.clipboard.writeText(fullUrl).then(() => {
-      toast.success(`Link copied: ${title}`);
+      toast.success(`${translations.link_copied || "Link copied:"} ${title}`);
     });
   };
 
@@ -101,7 +105,7 @@ const BentoGridBlock: React.FC<BentoGridBlockProps> = (props) => {
   };
 
   const bookmarkArticle = (title: string) => {
-    toast.success(`Bookmarked: ${title}`);
+    toast.success(`${translations.bookmarked || "Bookmarked:"} ${title}`);
   };
 
   const openInNewTab = (url: string) => {
@@ -210,7 +214,7 @@ const BentoGridBlock: React.FC<BentoGridBlockProps> = (props) => {
                       )}
                       <div className="flex items-center gap-1 text-sm text-muted-foreground">
                         <Clock className="h-3 w-3" />
-                        <span>{article.readTime} min read</span>
+                        <span>{article.readTime} {translations.min_read || "min read"}</span>
                       </div>
                     </div>
                   </div>
@@ -287,7 +291,7 @@ const BentoGridBlock: React.FC<BentoGridBlockProps> = (props) => {
                         )}
                         <div className="flex items-center gap-1 text-sm text-muted-foreground">
                           <Clock className="h-3 w-3" />
-                          <span>{article.readTime} min read</span>
+                          <span>{article.readTime} {translations.min_read || "min read"}</span>
                         </div>
                       </div>
                     </div>
@@ -306,10 +310,10 @@ const BentoGridBlock: React.FC<BentoGridBlockProps> = (props) => {
                   </div>
                   <DrawerFooter>
                     <Button onClick={() => window.location.href = article.url}>
-                      Read Full Article
+                      {translations.read_full_article || "Read Full Article"}
                     </Button>
                     <DrawerClose asChild>
-                      <Button variant="outline">Close</Button>
+                      <Button variant="outline">{translations.close || "Close"}</Button>
                     </DrawerClose>
                   </DrawerFooter>
                 </div>
@@ -320,24 +324,24 @@ const BentoGridBlock: React.FC<BentoGridBlockProps> = (props) => {
         <ContextMenuContent>
           <ContextMenuItem onClick={() => window.location.href = article.url}>
             <ExternalLink className="mr-2 h-4 w-4" />
-            Open Article
+            {translations.open_article || "Open Article"}
           </ContextMenuItem>
           <ContextMenuItem onClick={() => openInNewTab(article.url)}>
             <ExternalLink className="mr-2 h-4 w-4" />
-            Open in New Tab
+            {translations.open_in_new_tab || "Open in New Tab"}
           </ContextMenuItem>
           <ContextMenuSeparator />
           <ContextMenuItem onClick={() => copyArticleLink(article.url, article.title)}>
             <Copy className="mr-2 h-4 w-4" />
-            Copy Link
+            {translations.copy_link || "Copy Link"}
           </ContextMenuItem>
           <ContextMenuItem onClick={() => shareArticle(article.url, article.title)}>
             <Share2 className="mr-2 h-4 w-4" />
-            Share Article
+            {translations.share_article || "Share Article"}
           </ContextMenuItem>
           <ContextMenuItem onClick={() => bookmarkArticle(article.title)}>
             <Bookmark className="mr-2 h-4 w-4" />
-            Bookmark
+            {translations.bookmark || "Bookmark"}
           </ContextMenuItem>
         </ContextMenuContent>
       </ContextMenu>
@@ -435,7 +439,7 @@ const BentoGridBlock: React.FC<BentoGridBlockProps> = (props) => {
                                     )}
                                     <div className="flex items-center gap-1 text-sm text-muted-foreground">
                                       <Clock className="h-3 w-3" />
-                                      <span>{article.readTime} min read</span>
+                                      <span>{article.readTime} {translations.min_read || "min read"}</span>
                                     </div>
                                   </div>
                                 </div>
@@ -512,7 +516,7 @@ const BentoGridBlock: React.FC<BentoGridBlockProps> = (props) => {
                                       )}
                                       <div className="flex items-center gap-1 text-sm text-muted-foreground">
                                         <Clock className="h-3 w-3" />
-                                        <span>{article.readTime} min read</span>
+                                        <span>{article.readTime} {translations.min_read || "min read"}</span>
                                       </div>
                                     </div>
                                   </div>
@@ -531,10 +535,10 @@ const BentoGridBlock: React.FC<BentoGridBlockProps> = (props) => {
                                 </div>
                                 <DrawerFooter>
                                   <Button onClick={() => window.location.href = article.url}>
-                                    Read Full Article
+                                    {translations.read_full_article || "Read Full Article"}
                                   </Button>
                                   <DrawerClose asChild>
-                                    <Button variant="outline">Close</Button>
+                                    <Button variant="outline">{translations.close || "Close"}</Button>
                                   </DrawerClose>
                                 </DrawerFooter>
                               </div>
@@ -545,24 +549,24 @@ const BentoGridBlock: React.FC<BentoGridBlockProps> = (props) => {
                       <ContextMenuContent>
                         <ContextMenuItem onClick={() => window.location.href = article.url}>
                           <ExternalLink className="mr-2 h-4 w-4" />
-                          Open Article
+                          {translations.open_article || "Open Article"}
                         </ContextMenuItem>
                         <ContextMenuItem onClick={() => openInNewTab(article.url)}>
                           <ExternalLink className="mr-2 h-4 w-4" />
-                          Open in New Tab
+                          {translations.open_in_new_tab || "Open in New Tab"}
                         </ContextMenuItem>
                         <ContextMenuSeparator />
                         <ContextMenuItem onClick={() => copyArticleLink(article.url, article.title)}>
                           <Copy className="mr-2 h-4 w-4" />
-                          Copy Link
+                          {translations.copy_link || "Copy Link"}
                         </ContextMenuItem>
                         <ContextMenuItem onClick={() => shareArticle(article.url, article.title)}>
                           <Share2 className="mr-2 h-4 w-4" />
-                          Share Article
+                          {translations.share_article || "Share Article"}
                         </ContextMenuItem>
                         <ContextMenuItem onClick={() => bookmarkArticle(article.title)}>
                           <Bookmark className="mr-2 h-4 w-4" />
-                          Bookmark
+                          {translations.bookmark || "Bookmark"}
                         </ContextMenuItem>
                       </ContextMenuContent>
                     </ContextMenu>

@@ -39,6 +39,9 @@ import { toast } from "sonner";
 interface FeaturedBlogProps {
   title?: string;
   articles?: Article[];
+  translations?: {
+    [key: string]: any;
+  };
   [key: string]: any;
 }
 
@@ -64,8 +67,9 @@ interface Article {
 
 const FeaturedBlog: React.FC<FeaturedBlogProps> = (props) => {
   const {
-    title = "Latest articles",
-    articles: articleData = []
+    title = props.translations?.latest_articles || "Latest articles",
+    articles: articleData = [],
+    translations = {}
   } = props;
 
   // Use articles from props (now always provided by pass-block-data.php)
@@ -78,7 +82,7 @@ const FeaturedBlog: React.FC<FeaturedBlogProps> = (props) => {
   const copyArticleLink = (url: string, title: string) => {
     const fullUrl = url.startsWith('http') ? url : `${window.location.origin}${url}`;
     navigator.clipboard.writeText(fullUrl).then(() => {
-      toast.success(`Link copied: ${title}`);
+      toast.success(`${translations.link_copied || "Link copied:"} ${title}`);
     });
   };
 
@@ -95,7 +99,7 @@ const FeaturedBlog: React.FC<FeaturedBlogProps> = (props) => {
   };
 
   const bookmarkArticle = (title: string) => {
-    toast.success(`Bookmarked: ${title}`);
+    toast.success(`${translations.bookmarked || "Bookmarked:"} ${title}`);
   };
 
   const openInNewTab = (url: string) => {
@@ -139,7 +143,7 @@ const FeaturedBlog: React.FC<FeaturedBlogProps> = (props) => {
                             <div className="flex flex-row gap-4 items-center">
                               <Badge>{article.category}</Badge>
                               <div className="flex flex-row gap-2 text-sm items-center">
-                                <span className="text-muted-foreground">By</span>
+                                <span className="text-muted-foreground">{translations.by || "By"}</span>
                                 {article.authorImage?.url ? (
                                   <Avatar className="h-6 w-6">
                                     <AvatarImage 
@@ -187,7 +191,7 @@ const FeaturedBlog: React.FC<FeaturedBlogProps> = (props) => {
                             )}
                             <div className="flex items-center gap-1 text-sm text-muted-foreground">
                               <Clock className="h-3 w-3" />
-                              <span>{article.readTime} min read</span>
+                              <span>{article.readTime} {translations.min_read || "min read"}</span>
                             </div>
                           </div>
                         </div>
@@ -227,7 +231,7 @@ const FeaturedBlog: React.FC<FeaturedBlogProps> = (props) => {
                             <div className="flex flex-row gap-4 items-center">
                               <Badge>{article.category}</Badge>
                               <div className="flex flex-row gap-2 text-sm items-center">
-                                <span className="text-muted-foreground">By</span>
+                                <span className="text-muted-foreground">{translations.by || "By"}</span>
                                 {article.authorImage?.url ? (
                                   <Avatar className="h-6 w-6">
                                     <AvatarImage 
@@ -272,7 +276,7 @@ const FeaturedBlog: React.FC<FeaturedBlogProps> = (props) => {
                               <Badge variant="secondary">{article.category}</Badge>
                               <div className="flex items-center gap-1 text-sm text-muted-foreground">
                                 <Clock className="h-3 w-3" />
-                                <span>{article.readTime} min read</span>
+                                <span>{article.readTime} {translations.min_read || "min read"}</span>
                               </div>
                             </div>
                           </div>
@@ -285,10 +289,10 @@ const FeaturedBlog: React.FC<FeaturedBlogProps> = (props) => {
                         </div>
                         <DrawerFooter>
                           <Button onClick={() => window.location.href = article.url}>
-                            Read Full Article
+                            {translations.read_full_article || "Read Full Article"}
                           </Button>
                           <DrawerClose asChild>
-                            <Button variant="outline">Close</Button>
+                            <Button variant="outline">{translations.close || "Close"}</Button>
                           </DrawerClose>
                         </DrawerFooter>
                       </div>
@@ -299,24 +303,24 @@ const FeaturedBlog: React.FC<FeaturedBlogProps> = (props) => {
               <ContextMenuContent>
                 <ContextMenuItem onClick={() => window.location.href = article.url}>
                   <ExternalLink className="mr-2 h-4 w-4" />
-                  Open Article
+                  {translations.open_article || "Open Article"}
                 </ContextMenuItem>
                 <ContextMenuItem onClick={() => openInNewTab(article.url)}>
                   <ExternalLink className="mr-2 h-4 w-4" />
-                  Open in New Tab
+                  {translations.open_in_new_tab || "Open in New Tab"}
                 </ContextMenuItem>
                 <ContextMenuSeparator />
                 <ContextMenuItem onClick={() => copyArticleLink(article.url, article.title)}>
                   <Copy className="mr-2 h-4 w-4" />
-                  Copy Link
+                  {translations.copy_link || "Copy Link"}
                 </ContextMenuItem>
                 <ContextMenuItem onClick={() => shareArticle(article.url, article.title)}>
                   <Share2 className="mr-2 h-4 w-4" />
-                  Share Article
+                  {translations.share_article || "Share Article"}
                 </ContextMenuItem>
                 <ContextMenuItem onClick={() => bookmarkArticle(article.title)}>
                   <Bookmark className="mr-2 h-4 w-4" />
-                  Bookmark
+                  {translations.bookmark || "Bookmark"}
                 </ContextMenuItem>
               </ContextMenuContent>
             </ContextMenu>
