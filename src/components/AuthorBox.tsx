@@ -92,14 +92,15 @@ interface AuthorBoxProps {
   [key: string]: any
 }
 
-const AuthorBox: React.FC<AuthorBoxProps> = ({
-  author,
-  showbio = true,
-  showsocial = true,
-  customtitle,
-  articles = [],
-  publicationStats
-}) => {
+const AuthorBox: React.FC<AuthorBoxProps> = (props) => {
+  const {
+    author,
+    showbio = true,
+    showsocial = true,
+    customtitle,
+    articles = [],
+    publicationStats
+  } = props;
   const [isMobile, setIsMobile] = useState(false)
 
   React.useEffect(() => {

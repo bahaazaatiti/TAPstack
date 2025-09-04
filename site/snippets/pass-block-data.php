@@ -141,12 +141,181 @@ foreach ($block->content()->fields() as $field) {
                 error_log("No valid files found for field '$key', setting to null");
             }
         }
+        // Handle page:// references (for pages fields stored as arrays)
+        elseif (is_string($firstItem) && strpos($firstItem, 'page://') === 0) {
+            $processedPages = [];
+            foreach ($value as $pageRef) {
+                $page = kirby()->page($pageRef);
+                if ($page && $page->template() == 'article') {
+                    // Process as article
+                    $processedPages[] = processArticleCollection([$page])[0];
+                }
+            }
+            $blockData[$key] = $processedPages;
+        }
     }
     // Process structure fields
     elseif ($field->type() === 'structure') {
         $blockData[$key] = $field->toStructure()->toArray();
     }
+    // Process pages fields that reference articles
+    elseif ($field->type() === 'pages') {
+        $pages = $field->toPages();
+        if ($pages->count() > 0) {
+            // Check if these are article pages by looking at the first page's template
+            $firstPage = $pages->first();
+            if ($firstPage && $firstPage->template() == 'article') {
+                // Process as article collection
+                $blockData[$key] = processArticleCollection($pages);
+            } else {
+                // Keep as regular pages collection
+                $blockData[$key] = $pages->toArray();
+            }
+        } else {
+            // No pages found - set to empty array so auto-selection can kick in
+            $blockData[$key] = [];
+        }
+    }
+    // Process users fields (like author selection)
+    elseif ($field->type() === 'users') {
+        $users = $field->toUsers();
+        if ($users->count() > 0) {
+            $user = $users->first(); // Assuming single user selection
+            if ($user) {
+                // Get author avatar
+                $authorAvatar = null;
+                if ($user->avatar()) {
+                    $avatarFile = $user->avatar();
+                    if ($avatarFile) {
+                        $authorAvatar = [
+                            'url' => $avatarFile->url(),
+                            'alt' => $user->name()->value()
+                        ];
+                    }
+                }
+                
+                // Process expertise tags
+                $expertiseTags = [];
+                if ($user->expertise()->isNotEmpty()) {
+                    $expertiseTags = $user->expertise()->split(',');
+                }
+                
+                $blockData[$key] = [
+                    'name' => $user->name()->value(),
+                    'position' => $user->position()->value() ?: '',
+                    'affiliation' => $user->affiliation()->value() ?: '',
+                    'bio' => $user->bio()->value() ?: '',
+                    'avatar' => $authorAvatar,
+                    'website' => $user->website()->value() ?: '',
+                    'twitter' => $user->twitter()->value() ?: '',
+                    'linkedin' => $user->linkedin()->value() ?: '',
+                    'facebook' => $user->facebook()->value() ?: '',
+                    'email' => $user->email(),
+                    'expertise' => $expertiseTags
+                ];
+            }
+        } else {
+            $blockData[$key] = null;
+        }
+    }
     // Keep other fields as they are (already in the array)
+}
+
+/**
+ * Process a collection of article pages into standardized article objects
+ * This handles the common article processing logic used across blog components
+ */
+if (!function_exists('processArticleCollection')) {
+    function processArticleCollection($articlePages) {
+        $articles = [];
+        
+        foreach ($articlePages as $article) {
+            // Get featured image if available
+            $featuredImage = null;
+            if ($article->featuredImage()->isNotEmpty()) {
+                $imageFile = $article->featuredImage()->toFile();
+                if ($imageFile) {
+                    $featuredImage = [
+                        'url' => $imageFile->url(),
+                        'alt' => $imageFile->alt()->value() ?: $article->title()->value(),
+                        'width' => $imageFile->width(),
+                        'height' => $imageFile->height()
+                    ];
+                }
+            } elseif ($article->images()->first()) {
+                // Fallback to first image if no featured image set
+                $imageFile = $article->images()->first();
+                $featuredImage = [
+                    'url' => $imageFile->url(),
+                    'alt' => $imageFile->alt()->value() ?: $article->title()->value(),
+                    'width' => $imageFile->width(),
+                    'height' => $imageFile->height()
+                ];
+            }
+
+            // Get author information from user relationship
+            $author = $article->author()->toUser();
+            $authorName = $author ? $author->name()->value() : 'Unknown Author';
+            
+            // Get author image if available
+            $authorImage = null;
+            if ($author && $author->avatar()) {
+                $avatarFile = $author->avatar();
+                if ($avatarFile) {
+                    $authorImage = [
+                        'url' => $avatarFile->url(),
+                        'alt' => $author->name()->value()
+                    ];
+                }
+            }
+
+            $articles[] = [
+                'title' => $article->title()->value(),
+                'description' => $article->description()->isNotEmpty() ? $article->description()->value() : $article->text()->excerpt(150),
+                'category' => $article->category()->isNotEmpty() ? $article->category()->value() : ($article->parent() ? $article->parent()->title()->value() : 'Articles'),
+                'date' => $article->date()->toDate('M j, Y'),
+                'readTime' => $article->readTime()->isNotEmpty() ? (int)$article->readTime()->value() : 5,
+                'url' => $article->url(),
+                'author' => $authorName,
+                'authorImage' => $authorImage,
+                'tags' => $article->tags()->split(','),
+                'featuredImage' => $featuredImage
+            ];
+        }
+        
+        return $articles;
+    }
+}
+
+// Add auto-selection logic for empty article fields (like bentogrid's fallback)
+// This runs after initial field processing to handle empty pages fields 
+// TODO: reoptimize, it doesnt respect max in blueprints currently
+foreach ($blockData as $key => $value) {
+    // Check if this is an articles field that came back empty or null
+    if (($key === 'articles' || strpos($key, 'article') !== false) && 
+        (is_null($value) || (is_array($value) && empty($value)))) {
+        
+        // Auto-select articles with smart fallback logic
+        $selectedArticles = null;
+        
+        // Try current page's children first
+        if (isset($page)) {
+            $pageArticles = $page->children()->filterBy('template', 'article')->listed();
+            if ($pageArticles->count() > 0) {
+                $selectedArticles = $pageArticles->limit(8); // Default limit, can be overridden by blueprint max
+            }
+        }
+        
+        // Fallback to all site articles if no page articles found
+        if (!$selectedArticles || $selectedArticles->count() === 0) {
+            $siteArticles = site()->index()->filterBy('template', 'article')->listed()->sortBy('date', 'desc');
+            $selectedArticles = $siteArticles->limit(8); // Default limit
+        }
+        
+        if ($selectedArticles && $selectedArticles->count() > 0) {
+            $blockData[$key] = processArticleCollection($selectedArticles);
+        }
+    }
 }
 
 // Add common site data that blocks might need

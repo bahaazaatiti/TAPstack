@@ -65,45 +65,14 @@ interface Article {
 const FeaturedBlog: React.FC<FeaturedBlogProps> = (props) => {
   const {
     title = "Latest articles",
-    articles: articleData = [],
+    articles: articleData = []
   } = props;
 
-  // Use articles from props if available, otherwise fall back to mock data
-  const articles: Article[] = articleData.length > 0 ? articleData : [
-    {
-      title: "A beginner's guide to blockchain for engineers",
-      description: "Managing a small business today is already tough. Avoid further complications by ditching outdated, tedious trade methods. Our goal is to streamline SMB trade, making it easier and faster than ever.",
-      category: "Technology",
-      date: "Nov 20, 2024",
-      readTime: 5,
-      url: "/blog/blockchain-guide",
-      author: "John Doe",
-      featuredImage: null
-    },
-    {
-      title: "Top business trends for 2025",
-      description: "Managing a small business today is already tough. Avoid further complications by ditching outdated, tedious trade methods.",
-      category: "Business",
-      date: "Nov 15, 2024",
-      readTime: 3,
-      url: "/blog/business-trends",
-      author: "Jane Smith",
-      featuredImage: null
-    },
-    {
-      title: "Essential health tips for remote workers",
-      description: "Managing a small business today is already tough. Avoid further complications by ditching outdated, tedious trade methods.",
-      category: "Health",
-      date: "Nov 10, 2024",
-      readTime: 4,
-      url: "/blog/health-tips",
-      author: "Dr. Sarah Johnson",
-      featuredImage: null
-    }
-  ];
+  // Use articles from props (now always provided by pass-block-data.php)
+  const articles: Article[] = articleData;
 
-  // Show up to 3 articles
-  const featuredArticles = articles.slice(0, 3);
+  // Blueprint max: 3 constraint handles limiting, so use all provided articles
+  const featuredArticles = articles;
 
   // Context menu actions
   const copyArticleLink = (url: string, title: string) => {

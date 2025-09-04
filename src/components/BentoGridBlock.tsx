@@ -45,7 +45,6 @@ import { toast } from "sonner";
 interface BentoGridBlockProps {
   title?: string;
   articles?: Article[];
-  gridStyle?: 'default' | 'large-first' | 'balanced';
   [key: string]: any;
 }
 
@@ -72,57 +71,14 @@ interface Article {
 const BentoGridBlock: React.FC<BentoGridBlockProps> = (props) => {
   const {
     title = "Featured Articles",
-    articles: articleData = [],
-    gridStyle = 'default'
+    articles: articleData = []
   } = props;
 
-  // Use articles from props if available, otherwise fall back to mock data
-  const articles: Article[] = articleData.length > 0 ? articleData : [
-    {
-      title: "Getting Started with React",
-      description: "Learn the fundamentals of React development and build your first component.",
-      category: "Technology",
-      date: "Nov 20, 2024",
-      readTime: 5,
-      url: "/blog/react-guide",
-      author: "John Doe",
-      featuredImage: null
-    },
-    {
-      title: "Modern Web Design Trends",
-      description: "Explore the latest trends in web design and user experience.",
-      category: "Design",
-      date: "Nov 15, 2024",
-      readTime: 7,
-      url: "/blog/web-design",
-      author: "Jane Smith",
-      featuredImage: null
-    },
-    {
-      title: "JavaScript Best Practices",
-      description: "Essential tips and tricks for writing clean, maintainable JavaScript code.",
-      category: "Programming",
-      date: "Nov 10, 2024",
-      readTime: 6,
-      url: "/blog/js-practices",
-      author: "Alex Johnson",
-      featuredImage: null
-    },
-    {
-      title: "CSS Grid vs Flexbox",
-      description: "Understanding when to use CSS Grid versus Flexbox for layouts.",
-      category: "CSS",
-      date: "Nov 5, 2024",
-      readTime: 4,
-      url: "/blog/css-layout",
-      author: "Sarah Wilson",
-      featuredImage: null
-    }
-  ];
+  // Use articles from props (now always provided by pass-block-data.php)
+  const articles: Article[] = articleData;
 
-  // Limit articles based on grid style
-  const maxArticles = gridStyle === 'large-first' ? 5 : 6;
-  const displayArticles = articles.slice(0, maxArticles);
+  // Blueprint max: 6 constraint handles limiting, so use all provided articles
+  const displayArticles = articles;
 
   // Context menu actions
   const copyArticleLink = (url: string, title: string) => {

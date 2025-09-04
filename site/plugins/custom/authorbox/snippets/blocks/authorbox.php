@@ -1,24 +1,12 @@
 <?php 
-// AuthorBox block snippet - displays author information with enhanced features
-$selectedAuthor = null;
-$authorArticles = [];
-$publicationStats = null;
+// AuthorBox block snippet - uses pass-block-data.php with special author processing
 
+$additionalData = [];
+
+// Process author-specific data if an author is selected
 if ($block->author()->isNotEmpty()) {
     $authorUser = $block->author()->toUser();
     if ($authorUser) {
-        // Get author avatar
-        $authorAvatar = null;
-        if ($authorUser->avatar()) {
-            $avatarFile = $authorUser->avatar();
-            if ($avatarFile) {
-                $authorAvatar = [
-                    'url' => $avatarFile->url(),
-                    'alt' => $authorUser->name()->value()
-                ];
-            }
-        }
-        
         // Fetch author's articles from across the site
         $authorUuid = $authorUser->uuid()->toString();
         $allArticles = site()->index()
@@ -30,6 +18,7 @@ if ($block->author()->isNotEmpty()) {
             ->sortBy('date', 'desc');
         
         // Process articles for timeline
+        $authorArticles = [];
         foreach ($allArticles->limit(10) as $article) {
             // Get featured image if available
             $featuredImage = null;
@@ -66,42 +55,12 @@ if ($block->author()->isNotEmpty()) {
             'lastPublication' => $allArticles->first() ? $allArticles->first()->date()->toDate('Y-m-d') : null
         ];
         
-        // Process expertise tags
-        $expertiseTags = [];
-        if ($authorUser->expertise()->isNotEmpty()) {
-            $expertiseTags = $authorUser->expertise()->split(',');
-        }
-        
-        $selectedAuthor = [
-            'name' => $authorUser->name()->value(),
-            'position' => $authorUser->position()->value() ?: '',
-            'affiliation' => $authorUser->affiliation()->value() ?: '',
-            'bio' => $authorUser->bio()->value() ?: '',
-            'avatar' => $authorAvatar,
-            'website' => $authorUser->website()->value() ?: '',
-            'twitter' => $authorUser->twitter()->value() ?: '',
-            'linkedin' => $authorUser->linkedin()->value() ?: '',
-            'facebook' => $authorUser->facebook()->value() ?: '',
-            'email' => $authorUser->email(),
-            'expertise' => $expertiseTags
-        ];
+        $additionalData['articles'] = $authorArticles;
+        $additionalData['publicationStats'] = $publicationStats;
     }
 }
-
-// Prepare block data
-$blockData = [
-    'author' => $selectedAuthor,
-    'showbio' => $block->showbio()->toBool(),
-    'showsocial' => $block->showsocial()->toBool(),
-    'customtitle' => $block->customtitle()->value(),
-    'articles' => $authorArticles,
-    'publicationStats' => $publicationStats
-];
 ?>
 
 <div id="authorbox-<?= $block->id() ?>" class="authorbox-container"></div>
 
-<script>
-window.blockData = window.blockData || {};
-window.blockData['authorbox-<?= $block->id() ?>'] = <?= json_encode($blockData) ?>;
-</script>
+<?php snippet('pass-block-data', ['block' => $block, 'blockType' => 'authorbox', 'additionalData' => $additionalData]) ?>
