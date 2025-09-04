@@ -2,19 +2,26 @@ name: Comp 582 (Dynamic Navigation Header)
 icon: layout
 info: "Navigation automatically displays all published pages from your site content"
 fields:
-  logo:
-    label: Logo Image
+  logolight:
+    label: Logo Image (Light Mode)
     type: files
     multiple: false
     accept:
       - image/*
-    help: Upload a logo image (optional)
+    help: Upload a logo image for light mode (optional)
+  logodark:
+    label: Logo Image (Dark Mode)
+    type: files
+    multiple: false
+    accept:
+      - image/*
+    help: Upload a logo image for dark mode (optional)
   logotext:
     label: Logo Text
     type: text
     placeholder: Your Brand
     default: TAP
-    help: Text to display when no logo image is provided
+    help: Text to display as logo text - clicking will navigate to home page
   shownavigation:
     label: Show Navigation
     type: toggle

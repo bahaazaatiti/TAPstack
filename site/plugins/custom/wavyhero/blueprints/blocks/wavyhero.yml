@@ -1,0 +1,63 @@
+name: Wavy Hero Section
+icon: waves
+fields:
+  title:
+    label: Title
+    type: text
+    placeholder: Your Hero Title
+  subtitle:
+    label: Subtitle
+    type: textarea
+    placeholder: Your hero subtitle goes here
+  buttonText:
+    label: Button Text
+    type: text
+    placeholder: Get Started
+  buttonUrl:
+    label: Button URL
+    type: url
+  buttonExternal:
+    label: External Link
+    type: toggle
+    default: false
+  waveColors:
+    label: Wave Colors
+    type: structure
+    fields:
+      color:
+        label: Color
+        type: text
+        placeholder: "#38bdf8"
+        help: Enter hex color codes (e.g., #38bdf8)
+    default:
+      - color: "#38bdf8"
+      - color: "#818cf8"
+      - color: "#c084fc"
+      - color: "#e879f9"
+      - color: "#22d3ee"
+  speed:
+    label: Animation Speed
+    type: select
+    options:
+      slow: Slow
+      fast: Fast
+    default: fast
+  waveWidth:
+    label: Wave Width
+    type: number
+    default: 50
+    min: 10
+    max: 100
+  blur:
+    label: Blur Amount
+    type: number
+    default: 10
+    min: 0
+    max: 30
+  waveOpacity:
+    label: Wave Opacity
+    type: range
+    default: 0.5
+    min: 0.1
+    max: 1
+    step: 0.1

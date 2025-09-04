@@ -1,0 +1,104 @@
+title: Article
+
+num: date
+status:
+  draft: true
+  unlisted: true
+  listed: true
+
+columns:
+  main:
+    width: 2/3
+    sections:
+      content:
+        type: fields
+        fields:
+          title:
+            label: Title
+            type: text
+            required: true
+          text:
+            label: Content
+            type: textarea
+            # translate: true            # api can be added to auto translate
+            size: large
+  sidebar:
+    width: 1/3
+    sections:
+      meta:
+        type: fields
+        fields:
+          date:
+            label: Date
+            type: date
+            required: true
+            default: today
+          category:
+            label: Category
+            type: select
+            options:
+              Technology: Technology
+              Business: Business
+              Finance: Finance
+              Health: Health
+              Lifestyle: Lifestyle
+              Politics: Politics
+              Science: Science
+              Sports: Sports
+            required: true
+          author:
+            label: Author
+            type: users
+            multiple: false
+            required: true
+            query: kirby.users.filterBy("role", "author")
+            help: Select the author from the user list
+          tags:
+            label: Tags
+            type: tags
+          description:
+            label: Description
+            type: textarea
+            help: Short description for blog listing
+          readTime:
+            label: Read Time (minutes)
+            type: number
+            min: 1
+            default: 5
+          featuredImage:
+            label: Featured Image
+            type: files
+            multiple: false
+            accept:
+              - image/jpeg
+              - image/jpg
+              - image/png
+              - image/webp
+            help: Main image for this article (used in blog listings)
+            
+
+      # this is for when i add the blog globe     
+      # location:
+      #   type: fields
+      #   label: Location
+      #   fields:
+      #     latitude:
+      #       label: Latitude
+      #       type: number
+      #       step: 0.000001
+      #       min: -90
+      #       max: 90
+      #       help: "Latitude coordinate (-90 to 90). Example: 40.7128 for New York"
+      #       placeholder: "40.7128"
+      #     longitude:
+      #       label: Longitude
+      #       type: number
+      #       step: 0.000001
+      #       min: -180
+      #       max: 180
+      #       help: "Longitude coordinate (-180 to 180). Example: -74.0060 for New York"
+      #       placeholder: "-74.0060"
+      #     locationNote:
+      #       label: Location Note
+      #       type: info
+      #       text: "Add coordinates to show this article on the blog globe. You can find coordinates using Google Maps: right-click on a location and copy the coordinates."

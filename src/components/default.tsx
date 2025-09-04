@@ -1,16 +1,21 @@
-import React from "react"
+import React, { useState } from "react"
 import { cn } from "../lib/utils"
-import LaunchUI from "./logos/launch-ui"
 import ThemeToggle from "@/components/ui/theme-toggle"
 import { Separator } from "./ui/separator"
 import { Button } from "./ui/button"
-import { ArrowUp } from "lucide-react"
+import { ArrowUp, Github, LogIn, ChevronDown } from "lucide-react"
 import {
   Footer,
   FooterBottom,
-  FooterColumn,
-  FooterContent,
 } from "./ui/footer"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "./ui/dialog"
 
 
 interface FooterSectionProps {
@@ -18,61 +23,69 @@ interface FooterSectionProps {
 }
 
 const FooterSection: React.FC<FooterSectionProps> = (props) => {
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  
   const {
-    logo = <LaunchUI />,
-    name = "Launch UI",
-    columns = [],
     copyright = "© 2025 ta. All rights reserved",
     policies = [],
     showModeToggle = true,
     className = "",
+    translations = {},
   } = props
 
-  // Handle logo data structure (single object or array)
-  const logoData = Array.isArray(logo) ? logo[0] : logo
-
-  const LogoComponent = () => {
-    if (logoData && logoData.url) {
-      return (
-        <img
-          src={logoData.url}
-          alt={logoData.alt || name}
-          className="h-8 w-auto"
-        />
-      )
-    }
-    // fallback to LaunchUI icon if no image
-
-  }
-
   return (
-    <footer className={cn("bg-background w-full px-4 fixed bottom-0 left-0 z-50", className)}>
+    <footer className={cn("bg-background w-full px-4 fixed bottom-0 left-0 z-40", className)}>
       <div className="max-w-container mx-auto">
         <Footer>
-          <FooterContent>
-            <FooterColumn className="col-span-2 sm:col-span-3 md:col-span-1">
-              <div className="flex items-center gap-2">
-                <LogoComponent />
-                <h3 className="text-xl font-bold">{name}</h3>
-              </div>
-            </FooterColumn>
-            {Array.isArray(columns) && columns.map((column, index) => (
-              <FooterColumn key={index}>
-                <h3 className="text-md pt-1 font-semibold">{column.title}</h3>
-                {Array.isArray(column.links) && column.links.map((link: any, linkIndex: number) => (
-                  <a
-                    key={linkIndex}
-                    href={link.href}
-                    className="text-muted-foreground text-sm"
-                  >
-                    {link.text}
-                  </a>
-                ))}
-              </FooterColumn>
-            ))}
-          </FooterContent>
           <FooterBottom>
-            <div>{copyright}</div>
+            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+              <DialogTrigger asChild>
+                <button className="text-start hover:text-primary transition-colors cursor-pointer">
+                  {copyright}
+                </button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                  <DialogTitle>{translations.quick_actions || "Quick Actions"}</DialogTitle>
+                  <DialogDescription>
+                    {translations.choose_action || "Choose an action below"}
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="flex flex-col gap-4 py-4">
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="w-full h-auto py-4 px-6 flex items-center justify-start gap-4"
+                    onClick={() => {
+                      window.open('https://github.com/bahaazaatiti/TAPstack', '_blank')
+                      setIsDialogOpen(false)
+                    }}
+                  >
+                    <Github className="size-6 shrink-0" />
+                    <div className="flex flex-col items-start text-start">
+                      <span className="font-medium text-base">{translations.github || "GitHub"}</span>
+                      <span className="text-sm text-muted-foreground">{translations.report_bugs || "Report bugs here!"}</span>
+                    </div>
+                  </Button>
+                  
+                  <Button
+                    variant="default"
+                    size="lg"
+                    className="w-full h-auto py-4 px-6 flex items-center justify-start gap-4"
+                    onClick={() => {
+                      window.location.href = '/panel'
+                      setIsDialogOpen(false)
+                    }}
+                  >
+                    <LogIn className="size-6 shrink-0" />
+                    <div className="flex flex-col items-start text-start">
+                      <span className="font-medium text-base">{translations.login || "Login"}</span>
+                      <span className="text-sm opacity-75">{translations.access_panel || "Access admin panel"}</span>
+                    </div>
+                  </Button>
+                </div>
+              </DialogContent>
+            </Dialog>
             <div className="flex items-center gap-4">
               {Array.isArray(policies) && policies.map((policy: any, index: number) => (
                 <a key={index} href={policy.href}>
@@ -89,7 +102,7 @@ const FooterSection: React.FC<FooterSectionProps> = (props) => {
                 onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
               >
                 <ArrowUp className="size-4" />
-                Back to top
+                {translations.back_to_top || "Back to top"}
               </Button>
               {(showModeToggle === true || showModeToggle === 'true') && <ThemeToggle />}
             </div>

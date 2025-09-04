@@ -1,19 +1,33 @@
 import React, { useEffect, ComponentType } from 'react'
 import { createRoot } from 'react-dom/client'
 // TODO: change this to a dynamic import if needed
-import Navbar from './Navbar'
-import Hero from './Hero'
-import Navbar04 from './Navbar04'
+import WavyHero from './WavyHero'
 import Comp582 from './Comp582'
 import FooterSection from './default'
+import Blog from './Blog'
+import LatestBlog from './latestblog'
+import FeaturedBlog from './featuredblog'
+import BentoGridBlock from './BentoGridBlock'
+import TextBlock from './textblock'
+import Features03 from './Features03'
+import AppleCarousel from './AppleCarousel'
+import Article from './Article'
+import AuthorBox from './AuthorBox'
 
 // Block registry - add new blocks here
 const blockComponents: Record<string, ComponentType<any>> = {
-  navbar: Navbar,
-  hero: Hero,
-  navbar04: Navbar04,
+  wavyhero: WavyHero,
   comp582: Comp582,
+  blog: Blog,
+  latestblog: LatestBlog,
+  featuredblog: FeaturedBlog,
+  bentogrid: BentoGridBlock,
+  applecarousel: AppleCarousel,
+  textblock: TextBlock,
+  features03: Features03,
   footer: FooterSection,
+  article: Article,
+  authorbox: AuthorBox,
   // Add more blocks here as you create them
   // TODO: Consider using dynamic imports for better performance
 }
@@ -63,7 +77,7 @@ const BlockManager: React.FC = () => {
     })
   }
 
-  return null // This component doesn't render anything itself
+  return null
 }
 
 export default BlockManager

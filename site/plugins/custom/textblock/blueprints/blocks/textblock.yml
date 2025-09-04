@@ -1,0 +1,21 @@
+name: Text Block
+icon: text
+fields:
+  icon:
+    label: Icon Image
+    type: files
+    multiple: false
+    help: Small icon image that appears above the title (similar to emoji size)
+  subtitle:
+    label: Subtitle
+    type: text
+    placeholder: Your Subtitle Here
+    help: Appears above the title in primary color
+  title:
+    label: Title
+    type: text
+    placeholder: Your Title Here
+  description:
+    label: Description
+    type: textarea
+    placeholder: Your description text goes here

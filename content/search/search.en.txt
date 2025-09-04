@@ -1,0 +1,17 @@
+Title: Search
+
+----
+
+Header: [{"content":{"logo":[],"logotext":"TAP","shownavigation":"true","languages":[{"value":"en","label":"English"},{"value":"ar","label":"العربية"}],"defaultlanguage":"en","showthemetoggle":"true","showlanguageselector":"true","showusermenu":"true"},"id":"351afe36-c8fd-4fba-963d-3b6df6239bf1","isHidden":false,"type":"comp582"}]
+
+----
+
+Blocks: [{"content":{"title":"Search Results","showcategories":"true","postsperpage":20,"blogpage":[]},"id":"fa3c560e-ded5-4d9e-b15b-240d37f8d686","isHidden":false,"type":"blog"}]
+
+----
+
+Footer: [{"content":{"name":"","logo":[],"columns":[],"copyright":"© 2025 The Alawite Project. All rights reserved","policies":[],"showmodetoggle":"true"},"id":"98d6b0a8-06a8-44f2-8507-323835155d28","isHidden":false,"type":"footer"}]
+
+----
+
+Uuid: vdunmalaymhgbsi0
