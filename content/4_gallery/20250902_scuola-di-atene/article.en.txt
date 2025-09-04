@@ -1,0 +1,37 @@
+Title: Scuola di Atene
+
+----
+
+Text: 
+
+----
+
+Date: 2025-09-02
+
+----
+
+Category: Business
+
+----
+
+Author: - user://ce0b9kJC
+
+----
+
+Tags: 
+
+----
+
+Description: A detail from the School of Athens fresco (Italian: Scuola di Atene) by Italian Renaissance artist Raphael. The fresco was painted between 1509 and 1511. The detail depicts Plato and Aristotle in dialogue.
+
+----
+
+Readtime: 5
+
+----
+
+Featuredimage: - file://izw8j8iqmqtsxbvz
+
+----
+
+Uuid: 45n3t7s03tnopabu

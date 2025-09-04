@@ -1,0 +1,25 @@
+name: Latest Blog
+icon: newspaper
+fields:
+  title:
+    label: Section Title
+    type: text
+    default: Latest articles
+    help: Title displayed above the articles grid
+    
+  buttonText:
+    label: Button Text
+    type: text
+    default: View all articles
+    help: Text displayed on the "view more" button that links to this blog's search page
+    
+  articles:
+    label: Articles
+    type: pages
+    multiple: true
+    min: 0
+    max: 8
+    query: site.index.filterBy('template', 'article').listed.sortBy('date', 'desc')
+    info: "{{ page.title }} - {{ page.date.toDate('M j, Y') }}"
+    help: "Select up to 8 articles from anywhere on the site. Leave empty to auto-select latest articles."
+    empty: "No articles found on the site."

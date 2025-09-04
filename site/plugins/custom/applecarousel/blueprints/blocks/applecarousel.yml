@@ -1,0 +1,53 @@
+name: Apple Cards Carousel
+icon: images
+fields:
+  title:
+    label: Section Title
+    type: text
+    default: Featured Stories
+    help: Title displayed above the carousel
+    
+  selectionMode:
+    label: Article Selection Mode
+    type: select
+    default: manual
+    options:
+      manual: Manual Selection (Pick 10 articles)
+      latest: Latest from Parent Section
+    help: Choose how to select articles for the carousel
+    
+  articles:
+    label: Articles
+    type: pages
+    multiple: true
+    min: 0
+    max: 10
+    query: site.index.filterBy('template', 'article').listed
+    info: "{{ page.title }} - {{ page.date.toDate('M j, Y') }}"
+    help: "Select up to 10 articles to display in the carousel. Only used when Manual Selection is chosen."
+    empty: "No articles found on the site."
+    when:
+      selectionMode: manual
+    
+  latestCount:
+    label: Number of Latest Articles
+    type: number
+    default: 10
+    min: 1
+    max: 20
+    help: How many of the latest articles to show from parent section
+    when:
+      selectionMode: latest
+    
+  onlyWithImages:
+    label: Only Articles with Images
+    type: toggle
+    default: true
+    help: When auto-selecting, only include articles that have featured images
+    
+  initialScroll:
+    label: Initial Scroll Position
+    type: number
+    default: 0
+    min: 0
+    help: Starting scroll position for the carousel (in pixels)

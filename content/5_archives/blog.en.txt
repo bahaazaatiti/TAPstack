@@ -1,0 +1,17 @@
+Title: Archives
+
+----
+
+Header: [{"content":{"logolight":["file://6mnvswiucrxjrtnh"],"logodark":["file://ydknwavegcs9owf6"],"logotext":"TAP","shownavigation":"true","languages":[{"value":"en","label":"English"},{"value":"ar","label":"العربية"}],"defaultlanguage":"en","showthemetoggle":"true","showlanguageselector":"true","showusermenu":"true","logo":["file://pn0tebstfpgwsgst"]},"id":"93f2a0f1-d679-466a-b400-c99786e0bb63","isHidden":false,"type":"comp582"}]
+
+----
+
+Blocks: [{"content":{"icon":[],"subtitle":"Archives","title":"Our History","description":"Explore our comprehensive digital archive dedicated to Alawite history, culture, and heritage. This curated collection features scholarly research, historical manuscripts, personal narratives, and rare documents spanning centuries of Alawite experience. \n\nOur open-access library includes academic studies, religious texts, community chronicles, and firsthand accounts that illuminate the rich tapestry of Alawite identity and contributions to regional history. All materials are freely available for viewing, downloading, and sharing to support education, research, and cultural preservation. Whether you're a scholar, student, or simply curious about Alawite heritage, discover invaluable resources that have been carefully preserved and made accessible for future generations."},"id":"3aca027a-de3f-4ca4-9978-b582829f1cc8","isHidden":false,"type":"textblock"},{"content":{"title":"Featured Documents","articles":["page://7ha9mrqm964kmikz","page://2eu2f2kgqbttev30","page://dg1nmhgfwbw2kjfo"]},"id":"123f381f-163d-42a9-b817-ee88548023f3","isHidden":false,"type":"featuredblog"},{"content":{"title":"Latest articles","buttontext":"View all articles","articles":[]},"id":"22fd7555-1e21-4ba9-91b6-8ef1f3a62e7a","isHidden":false,"type":"latestblog"}]
+
+----
+
+Footer: [{"content":{"name":"","logo":[],"columns":[],"copyright":"© 2025 The Alawite Project. All Rights Reserved","policies":[],"showmodetoggle":"true"},"id":"6d6e668b-9a4d-4a67-8f83-139c705984d1","isHidden":false,"type":"footer"}]
+
+----
+
+Uuid: 97bpxkowsm6aso86

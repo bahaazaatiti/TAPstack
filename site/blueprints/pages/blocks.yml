@@ -1,5 +1,16 @@
 title: Blocks Page
 
+# Authors cannot access block pages at all
+options:
+  create:
+    author: false
+  read:
+    author: false
+  update:
+    author: false
+  delete:
+    author: false
+  
 fields:
   header:
     type: blocks
@@ -11,10 +22,15 @@ fields:
   blocks:
     type: blocks
     fieldsets:
-      - navbar
-      - hero
-      - navbar04
-      - comp582
+      - blog
+      - latestblog
+      - featuredblog
+      - features03
+      - wavyhero
+      - bentogrid
+      - applecarousel
+      - authorbox
+      - textblock
     label: Content Blocks
     
   footer:

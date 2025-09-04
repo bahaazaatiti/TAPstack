@@ -1,0 +1,22 @@
+name: Blog
+icon: newspaper
+fields:
+  title:
+    label: Blog Section Title
+    type: text
+    default: "Posts"
+  showCategories:
+    label: Show Categories Sidebar
+    type: toggle
+    default: true
+  postsPerPage:
+    label: Posts per Page
+    type: number
+    default: 20
+    min: 1
+    max: 50
+  blogPage:
+    label: Blog Page
+    type: pages
+    query: site.find('blog')
+    help: Select the main blog page that contains articles

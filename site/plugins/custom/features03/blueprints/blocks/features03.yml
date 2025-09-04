@@ -1,0 +1,123 @@
+name: Features 03 (Design & Engage)
+icon: blocks
+info: "Multi-column feature cards with images, icons, descriptions, and call-to-action buttons"
+fields:
+  title:
+    label: Main Title
+    type: text
+    placeholder: "Design and Engage:"
+    help: Main heading text (can include line breaks)
+  subtitle:
+    label: Subtitle
+    type: text
+    placeholder: "Build Smarter Spaces and Strategies"
+    help: Secondary heading text
+  cards:
+    label: Feature Cards
+    type: structure
+    fields:
+      title:
+        label: Card Title
+        type: text
+        placeholder: "Card Title"
+        required: true
+        help: Title for this feature card
+      image:
+        label: Card Image
+        type: files
+        multiple: false
+        accept:
+          - image/*
+        help: Upload an image for this card (optional)
+      features:
+        label: Features
+        type: structure
+        fields:
+          icon:
+            label: Icon
+            type: select
+            options:
+              settings2: Settings2
+              blocks: Blocks
+              arrowright: ArrowRight
+              home: Home
+              user: User
+              star: Star
+              heart: Heart
+              check: Check
+              plus: Plus
+              minus: Minus
+            default: settings2
+            help: Lucide icon for this feature
+          text:
+            label: Feature Text
+            type: textarea
+            placeholder: "Description of this feature..."
+            help: Description text for this feature
+        help: List of features for this card
+      buttontext:
+        label: Button Text
+        type: text
+        placeholder: "Learn more"
+        help: Text for the call-to-action button
+      buttonurl:
+        label: Button URL
+        type: text
+        placeholder: "#"
+        help: URL for the button link
+      buttonexternal:
+        label: Button External
+        type: toggle
+        default: false
+        help: Open link in new window
+    default:
+      - title: "Plan Smarter"
+        features:
+          - icon: settings2
+            text: "Design your space with drag-and-drop simplicity—create grids, lists, or galleries in seconds."
+          - icon: blocks
+            text: "Embed polls, quizzes, or forms to keep your audience engaged."
+        buttontext: "Build your strategy"
+        buttonurl: "#"
+        buttonexternal: false
+      - title: "Engage Better"
+        features:
+          - icon: star
+            text: "Track engagement with real-time analytics and insights."
+          - icon: heart
+            text: "Build stronger connections with your audience through interactive content."
+        buttontext: "Start engaging"
+        buttonurl: "#"
+        buttonexternal: false
+    help: Add multiple feature cards - desktop layout will alternate left/right automatically
+  faqsection:
+    label: FAQ Section
+    type: group
+    fields:
+      showfaq:
+        label: Show FAQ Section
+        type: toggle
+        default: true
+        help: Show/hide the FAQ section below the cards
+      faqtitle:
+        label: FAQ Section Title
+        type: text
+        default: "Frequently Asked Questions"
+        help: Title for the FAQ section
+      faqs:
+        label: FAQ Items
+        type: structure
+        fields:
+          question:
+            label: Question
+            type: text
+            required: true
+            placeholder: "What is your question?"
+            help: The question text
+          answer:
+            label: Answer
+            type: textarea
+            required: true
+            placeholder: "Provide a detailed answer..."
+            help: The answer text
+        help: Add FAQ items one at a time

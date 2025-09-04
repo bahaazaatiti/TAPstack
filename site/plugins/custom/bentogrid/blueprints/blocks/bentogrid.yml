@@ -1,0 +1,20 @@
+name: Bento Grid
+icon: grid
+fields:
+  title:
+    label: Section Title
+    type: text
+    default: Featured Articles
+    help: Title displayed above the bento grid
+    
+  articles:
+    label: Articles
+    type: pages
+    multiple: true
+    min: 0
+    max: 6
+    query: site.index.filterBy('template', 'article').listed
+    info: "{{ page.title }} - {{ page.date.toDate('M j, Y') }}"
+    help: "Select up to 6 articles from anywhere on the site. Leave empty to auto-select articles."
+    empty: "No articles found on the site."
+    

@@ -1,3 +1,6 @@
+/* always use OKLCH color space values */
+
+
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -118,6 +121,81 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Article Prose Styling - Custom implementation since prose classes aren't working */
+@layer base {
+  article h1 {
+    @apply text-3xl font-bold mb-6 mt-8 first:mt-0 text-foreground leading-tight;
+  }
+  
+  article h2 {
+    @apply text-2xl font-semibold mb-4 mt-8 first:mt-0 text-foreground leading-tight;
+  }
+  
+  article h3 {
+    @apply text-xl font-medium mb-3 mt-6 first:mt-0 text-foreground leading-tight;
+  }
+  
+  article h4 {
+    @apply text-lg font-medium mb-2 mt-4 first:mt-0 text-foreground leading-tight;
+  }
+  
+  article p {
+    @apply mb-6 text-foreground leading-relaxed;
+  }
+  
+  article p:last-child {
+    @apply mb-0;
+  }
+  
+  article a {
+    @apply text-primary no-underline hover:underline transition-colors;
+  }
+  
+  article strong {
+    @apply font-semibold text-foreground;
+  }
+  
+  article em {
+    @apply italic;
+  }
+  
+  article code {
+    @apply bg-muted px-1.5 py-0.5 rounded text-sm font-mono;
+  }
+  
+  article ul {
+    @apply mb-6 pl-6 space-y-2;
+  }
+  
+  article ol {
+    @apply mb-6 pl-6 space-y-2;
+  }
+  
+  article li {
+    @apply text-foreground leading-relaxed;
+  }
+  
+  article ul li {
+    @apply list-disc;
+  }
+  
+  article ol li {
+    @apply list-decimal;
+  }
+  
+  article blockquote {
+    @apply border-l-4 border-primary pl-4 my-6 italic text-muted-foreground;
+  }
+  
+  article img {
+    @apply rounded-lg my-6 w-full h-auto;
+  }
+  
+  article hr {
+    @apply border-border my-8;
+  }
+}
 /* */
 /* //FIXME: still doesnt work 
 not sure if implimentation here, or there isa better way with tailwind 
@@ -129,6 +207,28 @@ BUT IF I REMOVE .RTL ALL BREAKS
 /* RTL Language Support - Following Kirby's official guide */
 body.rtl {
   direction: rtl !important;
+}
+
+
+
+/* tabs alignment */
+body.rtl {
+  --tabs-direction: row-reverse;
+}
+body.rtl [data-slot="tabs-content"] {
+  direction: rtl;
+}
+
+body.rtl [data-slot="tabs-content"] table {
+  direction: rtl;
+}
+
+body.rtl [data-slot="tabs-content"] .flex {
+  direction: rtl;
+}
+
+body.rtl [data-slot="table-cell"] {
+  text-align: right;
 }
 /* a fix for navigation menu, since it has a direction set to ltr by default by radix */
 .rtl [type="button"],

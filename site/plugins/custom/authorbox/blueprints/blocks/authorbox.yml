@@ -1,0 +1,24 @@
+name: Author Box
+icon: user
+info: "Display author information with avatar, bio, and social links"
+fields:
+  author:
+    label: Author
+    type: users
+    multiple: false
+    help: Select an author to display their information
+  showbio:
+    label: Show Biography
+    type: toggle
+    default: true
+    help: Show/hide the author biography
+  showsocial:
+    label: Show Social Links
+    type: toggle
+    default: true
+    help: Show/hide the social media links
+  customtitle:
+    label: Custom Title (Optional)
+    type: text
+    placeholder: "About the Author"
+    help: Optional custom title to display above the author box

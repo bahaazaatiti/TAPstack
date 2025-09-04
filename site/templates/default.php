@@ -1,7 +1,10 @@
 <?php snippet('header') ?>
 
-<h1><?= $page->title() ?></h1>
-
-<p>This is a regular Kirby page. Use the "blocks" template for block-based pages.</p>
+<main>
+  <?= $page->header()->toBlocks() ?>
+  <?= $page->blocks()->toBlocks() ?>
+  <br><br><br><br>
+  <?= $page->footer()->toBlocks() ?>
+</main>
 
 <?php snippet('footer') ?>
