@@ -30,6 +30,7 @@ const FooterSection: React.FC<FooterSectionProps> = (props) => {
     policies = [],
     showModeToggle = true,
     className = "",
+    translations = {},
   } = props
 
   return (
@@ -45,9 +46,9 @@ const FooterSection: React.FC<FooterSectionProps> = (props) => {
               </DialogTrigger>
               <DialogContent className="sm:max-w-md">
                 <DialogHeader>
-                  <DialogTitle>Quick Actions</DialogTitle>
+                  <DialogTitle>{translations.quick_actions || "Quick Actions"}</DialogTitle>
                   <DialogDescription>
-                    Choose an action below
+                    {translations.choose_action || "Choose an action below"}
                   </DialogDescription>
                 </DialogHeader>
                 <div className="flex flex-col gap-4 py-4">
@@ -62,8 +63,8 @@ const FooterSection: React.FC<FooterSectionProps> = (props) => {
                   >
                     <Github className="size-6 shrink-0" />
                     <div className="flex flex-col items-start text-start">
-                      <span className="font-medium text-base">GitHub</span>
-                      <span className="text-sm text-muted-foreground">Report bugs here!</span>
+                      <span className="font-medium text-base">{translations.github || "GitHub"}</span>
+                      <span className="text-sm text-muted-foreground">{translations.report_bugs || "Report bugs here!"}</span>
                     </div>
                   </Button>
                   
@@ -78,8 +79,8 @@ const FooterSection: React.FC<FooterSectionProps> = (props) => {
                   >
                     <LogIn className="size-6 shrink-0" />
                     <div className="flex flex-col items-start text-start">
-                      <span className="font-medium text-base">Login</span>
-                      <span className="text-sm opacity-75">Access admin panel</span>
+                      <span className="font-medium text-base">{translations.login || "Login"}</span>
+                      <span className="text-sm opacity-75">{translations.access_panel || "Access admin panel"}</span>
                     </div>
                   </Button>
                 </div>
@@ -101,7 +102,7 @@ const FooterSection: React.FC<FooterSectionProps> = (props) => {
                 onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
               >
                 <ArrowUp className="size-4" />
-                Back to top
+                {translations.back_to_top || "Back to top"}
               </Button>
               {(showModeToggle === true || showModeToggle === 'true') && <ThemeToggle />}
             </div>

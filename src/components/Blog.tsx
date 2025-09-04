@@ -61,6 +61,7 @@ interface BlogProps {
   articles?: Article[];
   searchQuery?: string;
   blogParam?: string; // For parent-specific blog search
+  blogParamTitle?: string; // For displaying the localized blog title
   [key: string]: any;
 }
 
@@ -95,15 +96,6 @@ const categoryIcons = {
   Sports: { icon: Bike, background: "bg-cyan-500", color: "text-cyan-500" },
 };
 
-const sortOptions = [
-  { value: "date-desc", label: "Newest First", key: "date", order: "desc" },
-  { value: "date-asc", label: "Oldest First", key: "date", order: "asc" },
-  { value: "readtime-asc", label: "Quick Reads", key: "readTime", order: "asc" },
-  { value: "readtime-desc", label: "Long Reads", key: "readTime", order: "desc" },
-  { value: "title-asc", label: "A to Z", key: "title", order: "asc" },
-  { value: "title-desc", label: "Z to A", key: "title", order: "desc" },
-];
-
 const Blog: React.FC<BlogProps> = (props) => {
   const {
     title = "Posts",
@@ -112,7 +104,19 @@ const Blog: React.FC<BlogProps> = (props) => {
     articles: articleData = [],
     searchQuery: initialSearchQuery = "",
     blogParam = "",
+    blogParamTitle = "",
+    translations = {},
   } = props;
+
+  // Dynamic sort options using translations
+  const sortOptions = [
+    { value: "date-desc", label: translations.newest_first || "Newest First", key: "date", order: "desc" },
+    { value: "date-asc", label: translations.oldest_first || "Oldest First", key: "date", order: "asc" },
+    { value: "readtime-asc", label: translations.quick_reads || "Quick Reads", key: "readTime", order: "asc" },
+    { value: "readtime-desc", label: translations.long_reads || "Long Reads", key: "readTime", order: "desc" },
+    { value: "title-asc", label: translations.a_to_z || "A to Z", key: "title", order: "asc" },
+    { value: "title-desc", label: translations.z_to_a || "Z to A", key: "title", order: "desc" },
+  ];
 
   // State for search and pagination
   const [searchQuery, setSearchQuery] = useState(initialSearchQuery);
@@ -321,14 +325,14 @@ const Blog: React.FC<BlogProps> = (props) => {
               </AvatarFallback>
             </Avatar>
           ) : null}
-          <span>By {article.author}</span>
+          <span>{translations.by || "By"} {article.author}</span>
         </div>
-        <span>{article.readTime} min read</span>
+        <span>{article.readTime} {translations.min_read || "min read"} </span>
       </div>
       
       <div className="pt-2">
         <Button asChild size="sm" className="w-full">
-          <a href={article.url}>Read Article</a>
+          <a href={article.url}>{translations.read_article || "Read Article"}</a>
         </Button>
       </div>
     </div>
@@ -338,7 +342,7 @@ const Blog: React.FC<BlogProps> = (props) => {
   const copyArticleLink = (url: string, title: string) => {
     const fullUrl = url.startsWith('http') ? url : `${window.location.origin}${url}`;
     navigator.clipboard.writeText(fullUrl).then(() => {
-      toast.success(`Link copied: ${title}`);
+      toast.success(`${translations.link_copied || "Link copied:"} ${title}`);
     });
   };
 
@@ -355,7 +359,7 @@ const Blog: React.FC<BlogProps> = (props) => {
   };
 
   const bookmarkArticle = (title: string) => {
-    toast.success(`Bookmarked: ${title}`);
+    toast.success(`${translations.bookmarked || "Bookmarked:"} ${title}`);
   };
 
   const openInNewTab = (url: string) => {
@@ -381,11 +385,11 @@ const Blog: React.FC<BlogProps> = (props) => {
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div className="flex flex-col gap-1">
               <h2 className="text-3xl font-bold tracking-tight">
-                {blogParam ? `${title} - ${blogParam}` : title}
+                {blogParamTitle ? `${title} - ${blogParamTitle}` : title}
               </h2>
-              {blogParam && (
+              {blogParamTitle && (
                 <p className="text-sm text-muted-foreground">
-                  Searching within {blogParam} blog
+                  {translations.searching_within || "Searching within"} {blogParamTitle}
                 </p>
               )}
             </div>
@@ -400,21 +404,21 @@ const Blog: React.FC<BlogProps> = (props) => {
                     aria-expanded={isSearchOpen}
                     className="flex-1 sm:w-80 justify-between"
                   >
-                    {searchQuery || "Search articles..."}
+                    {searchQuery || (translations.search_articles || "Search articles...")}
                     <SearchIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-80 p-0" align="end">
                   <Command>
                     <CommandInput 
-                      placeholder="Search articles..." 
+                      placeholder={translations.search_articles || "Search articles..."} 
                       value={searchQuery}
                       onValueChange={setSearchQuery}
                     />
                     <CommandList>
-                      <CommandEmpty>No articles found.</CommandEmpty>
+                      <CommandEmpty>{translations.no_articles_found || "No articles found."}</CommandEmpty>
                       {searchSuggestions.length > 0 && (
-                        <CommandGroup heading="Suggestions">
+                        <CommandGroup heading={translations.suggestions || "Suggestions"}>
                           {searchSuggestions.map((suggestion) => (
                             <CommandItem
                               key={suggestion}
@@ -465,7 +469,7 @@ const Blog: React.FC<BlogProps> = (props) => {
                         onClick={clearDateFilter}
                         className="w-full"
                       >
-                        Clear Date Filter
+                        {translations.clear_date_filter || "Clear Date Filter"}
                       </Button>
                     </div>
                   )}
@@ -482,7 +486,7 @@ const Blog: React.FC<BlogProps> = (props) => {
                 <PopoverContent className="w-80" align="end">
                   <div className="space-y-4">
                     <div>
-                      <h4 className="font-medium mb-3">Categories</h4>
+                      <h4 className="font-medium mb-3">{translations.categories || "Categories"}</h4>
                       <div className="grid grid-cols-2 gap-2">
                         {categories.map((category) => (
                           <div key={category.name} className="flex items-center space-x-2">
@@ -507,7 +511,7 @@ const Blog: React.FC<BlogProps> = (props) => {
                     <Separator />
                     
                     <div>
-                      <h4 className="font-medium mb-3">Sort By</h4>
+                      <h4 className="font-medium mb-3">{translations.sort_by || "Sort By"}</h4>
                       <RadioGroup value={sortOption} onValueChange={setSortOption}>
                         {sortOptions.map((option) => (
                           <div key={option.value} className="flex items-center space-x-2">
@@ -530,7 +534,7 @@ const Blog: React.FC<BlogProps> = (props) => {
                           className="w-full"
                         >
                           <X className="h-4 w-4 mr-2" />
-                          Clear All Filters
+                          {translations.clear_all_filters || "Clear All Filters"}
                         </Button>
                       </>
                     )}
@@ -543,10 +547,10 @@ const Blog: React.FC<BlogProps> = (props) => {
           {/* Active Filters Display */}
           {hasActiveFilters && (
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-sm text-muted-foreground">Active filters:</span>
+              <span className="text-sm text-muted-foreground">{translations.active_filters || "Active filters:"}</span>
               {searchQuery && (
                 <Badge variant="secondary" className="gap-1">
-                  Search: "{searchQuery}"
+                  {translations.search_label || "Search:"} "{searchQuery}"
                   <X 
                     className="h-3 w-3 cursor-pointer" 
                     onClick={() => setSearchQuery("")}
@@ -564,7 +568,7 @@ const Blog: React.FC<BlogProps> = (props) => {
               ))}
               {(selectedDateRange?.from || selectedDateRange?.to) && (
                 <Badge variant="secondary" className="gap-1">
-                  Date: {selectedDateRange?.from?.toLocaleDateString()}
+                  {translations.date_label || "Date:"} {selectedDateRange?.from?.toLocaleDateString()}
                   {selectedDateRange?.to && ` - ${selectedDateRange.to.toLocaleDateString()}`}
                   <X 
                     className="h-3 w-3 cursor-pointer" 
@@ -574,7 +578,7 @@ const Blog: React.FC<BlogProps> = (props) => {
               )}
               {sortOption !== "date-desc" && (
                 <Badge variant="secondary" className="gap-1">
-                  Sort: {sortOptions.find(opt => opt.value === sortOption)?.label}
+                  {translations.sort_label || "Sort:"} {sortOptions.find(opt => opt.value === sortOption)?.label}
                   <X 
                     className="h-3 w-3 cursor-pointer" 
                     onClick={() => setSortOption("date-desc")}
@@ -589,22 +593,22 @@ const Blog: React.FC<BlogProps> = (props) => {
         <div className="mt-6 text-sm text-muted-foreground">
           {hasActiveFilters ? (
             <>
-              Showing {filteredArticles.length} of {allArticles.length} articles
+              {translations.showing || "Showing"} {filteredArticles.length} {translations.of || "of"} {allArticles.length} {translations.articles || "articles"}
               {searchQuery && (
-                <span> for "{searchQuery}"</span>
+                <span> {translations.for_search || "for"} "{searchQuery}"</span>
               )}
               {selectedCategories.length > 0 && (
-                <span> in {selectedCategories.join(", ")}</span>
+                <span> {translations.in_categories || "in"} {selectedCategories.join(", ")}</span>
               )}
-              {blogParam && (
-                <span> from {blogParam} blog</span>
+              {blogParamTitle && (
+                <span> {translations.from_blog || "from"} {blogParamTitle} </span>
               )}
             </>
           ) : (
             <>
-              Showing {allArticles.length} articles
-              {blogParam && (
-                <span> from {blogParam} blog</span>
+              {translations.showing || "Showing"} {allArticles.length} {translations.articles || "articles"}
+              {blogParamTitle && (
+                <span> {translations.from_blog || "from"} {blogParamTitle}</span>
               )}
             </>
           )}
@@ -663,10 +667,10 @@ const Blog: React.FC<BlogProps> = (props) => {
                                       ) : (
                                         <Skeleton className="h-5 w-5 rounded-full" />
                                       )}
-                                      <span>By {article.author}</span>
+                                      <span>{translations.by || "By"} {article.author}</span>
                                     </div>
                                     <div className="flex items-center gap-2">
-                                      <ClockIcon className="h-4 w-4" /> {article.readTime} min read
+                                      <ClockIcon className="h-4 w-4" /> {article.readTime} {translations.min_read || "min read"} 
                                     </div>
                                     <div className="flex items-center gap-2">
                                       <CalendarIcon className="h-4 w-4" /> {formatDate(article.date)}
@@ -677,9 +681,9 @@ const Blog: React.FC<BlogProps> = (props) => {
                             </DrawerTrigger>
                             <DrawerContent>
                               <DrawerHeader>
-                                <DrawerTitle>Article Preview</DrawerTitle>
+                                <DrawerTitle>{translations.article_preview || "Article Preview"}</DrawerTitle>
                                 <DrawerDescription>
-                                  Quick preview of {article.title}
+                                  {translations.quick_preview_of || "Quick preview of"} {article.title}
                                 </DrawerDescription>
                               </DrawerHeader>
                               <div className="px-4 pb-4 overflow-y-auto max-h-[70vh]">
@@ -687,7 +691,7 @@ const Blog: React.FC<BlogProps> = (props) => {
                               </div>
                               <DrawerFooter>
                                 <DrawerClose asChild>
-                                  <Button variant="outline">Close</Button>
+                                  <Button variant="outline">{translations.close || "Close"}</Button>
                                 </DrawerClose>
                               </DrawerFooter>
                             </DrawerContent>
@@ -739,10 +743,10 @@ const Blog: React.FC<BlogProps> = (props) => {
                                       ) : (
                                         <Skeleton className="h-5 w-5 rounded-full" />
                                       )}
-                                      <span>By {article.author}</span>
+                                      <span>{translations.by || "By"} {article.author}</span>
                                     </div>
                                     <div className="flex items-center gap-2">
-                                      <ClockIcon className="h-4 w-4" /> {article.readTime} min read
+                                      <ClockIcon className="h-4 w-4" /> {article.readTime} {translations.min_read || "min read"} 
                                     </div>
                                     <div className="flex items-center gap-2">
                                       <CalendarIcon className="h-4 w-4" /> {formatDate(article.date)}
@@ -765,21 +769,21 @@ const Blog: React.FC<BlogProps> = (props) => {
                       className="cursor-pointer"
                     >
                       <Copy className="mr-2 h-4 w-4" />
-                      Copy Link
+                      {translations.copy_link || "Copy Link"}
                     </ContextMenuItem>
                     <ContextMenuItem 
                       onClick={() => shareArticle(article.url, article.title)}
                       className="cursor-pointer"
                     >
                       <Share2 className="mr-2 h-4 w-4" />
-                      Share Article
+                      {translations.share_article || "Share Article"}
                     </ContextMenuItem>
                     <ContextMenuItem 
                       onClick={() => bookmarkArticle(article.title)}
                       className="cursor-pointer"
                     >
                       <Bookmark className="mr-2 h-4 w-4" />
-                      Bookmark
+                      {translations.bookmark || "Bookmark"}
                     </ContextMenuItem>
                     <ContextMenuSeparator />
                     <ContextMenuItem 
@@ -787,7 +791,7 @@ const Blog: React.FC<BlogProps> = (props) => {
                       className="cursor-pointer"
                     >
                       <ExternalLink className="mr-2 h-4 w-4" />
-                      Open in New Tab
+                      {translations.open_in_new_tab || "Open in New Tab"}
                     </ContextMenuItem>
                   </ContextMenuContent>
                 </ContextMenu>
@@ -802,11 +806,11 @@ const Blog: React.FC<BlogProps> = (props) => {
                 <SearchIcon className="h-12 w-12 text-muted-foreground" />
               </div>
               <AlertDescription className="space-y-2">
-                <h3 className="text-lg font-medium text-foreground">No results found</h3>
+                <h3 className="text-lg font-medium text-foreground">{translations.no_results_found || "No results found"}</h3>
                 <p className="text-muted-foreground">
                   {hasActiveFilters 
-                    ? "Try adjusting your search or filter criteria."
-                    : "No articles are available at the moment."
+                    ? (translations.try_adjusting_search || "Try adjusting your search or filter criteria.")
+                    : (translations.no_articles_available || "No articles are available at the moment.")
                   }
                 </p>
               </AlertDescription>
@@ -852,7 +856,7 @@ const Blog: React.FC<BlogProps> = (props) => {
       
       {showCategories && categories.length > 0 && (
         <aside className="sticky top-8 shrink-0 lg:max-w-sm w-full">
-          <h3 className="text-xl font-semibold tracking-tight mb-4">Browse by Category</h3>
+          <h3 className="text-xl font-semibold tracking-tight mb-4">{translations.cat_browser || "Browse by Category"}</h3>
           <div className="space-y-2">
             {categories.map((category) => {
               const IconComponent = category.icon;
@@ -888,7 +892,7 @@ const Blog: React.FC<BlogProps> = (props) => {
                 className="w-full"
               >
                 <X className="h-4 w-4 mr-2" />
-                Clear All Filters
+                {translations.clear_all_filters || "Clear All Filters"}
               </Button>
             </div>
           )}

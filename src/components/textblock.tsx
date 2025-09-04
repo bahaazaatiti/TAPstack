@@ -16,6 +16,7 @@ import {
   Copy,
   Share2
 } from "lucide-react"
+// TODO: toast broken here
 import { toast } from "sonner"
 
 interface TextBlockProps {
@@ -36,7 +37,8 @@ const TextBlock: React.FC<TextBlockProps> = (props) => {
     icon = null,
     subtitle = '',
     title = '',
-    description = ''
+    description = '',
+    translations = {}
   } = props;
 
   const [isExpanded, setIsExpanded] = useState(false);
@@ -54,7 +56,7 @@ const TextBlock: React.FC<TextBlockProps> = (props) => {
   // Actions
   const copyContent = () => {
     navigator.clipboard.writeText(description).then(() => {
-      toast.success('Content copied to clipboard');
+      toast.success(translations.content_copied || 'Content copied to clipboard');
     });
   };
 
@@ -168,12 +170,12 @@ const TextBlock: React.FC<TextBlockProps> = (props) => {
                               {isExpanded ? (
                                 <>
                                   <ChevronUp className="mr-2 h-4 w-4" />
-                                  Show Less
+                                  {translations.show_less || "Show Less"}
                                 </>
                               ) : (
                                 <>
                                   <ChevronDown className="mr-2 h-4 w-4" />
-                                  Read More
+                                  {translations.read_more || "Read More"}
                                 </>
                               )}
                             </Button>

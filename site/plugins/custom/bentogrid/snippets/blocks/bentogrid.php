@@ -80,6 +80,30 @@ $blockData = [
   'articles' => $articles,
   'gridStyle' => $block->gridStyle()->isNotEmpty() ? $block->gridStyle()->value() : 'default'
 ];
+
+// Add translations for current language (same as pass-block-data.php) if pass block data cant be merged, either copy them as demonstarted below, or make it a snippet?
+// $blockData['translations'] = [
+//   'search' => t('search'),
+//   'back_to_top' => t('back_to_top'),
+//   'hero_progress' => t('hero_progress'),
+//   'search_dialog' => t('search_dialog'),
+//   'pages' => t('pages'),
+//   'navigation' => t('navigation'),
+//   'read_more' => t('read_more'),
+//   'search_result' => t('search_result'),
+//   'cat_browser' => t('cat_browser'),
+//   'min_read' => t('min_read'),
+//   'by' => t('by'),
+//   'read_article' => t('read_article'),
+//   'author' => t('author'),
+//   'article_info' => t('article_info'),
+//   'files' => t('files'),
+//   'about_author' => t('about_author'),
+//   'available_downloads' => t('available_downloads'),
+//   'article_shared' => t('article_shared'),
+//   'url_copied' => t('url_copied'),
+//   'copy_failed' => t('copy_failed')
+// ];
 ?>
 
 <div id="bentogrid-<?= $block->id() ?>" class="bentogrid-container"></div>

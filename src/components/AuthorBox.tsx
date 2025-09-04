@@ -616,7 +616,7 @@ const AuthorBox: React.FC<AuthorBoxProps> = ({
               ) : (
                 <Sheet>
                   <SheetTrigger asChild>
-                    <Button size="sm" variant="outline" className="ml-auto">
+                    <Button size="sm" variant="outline" className="me-auto">
                       <User className="w-4 h-4 mr-2" />
                       View Profile
                     </Button>

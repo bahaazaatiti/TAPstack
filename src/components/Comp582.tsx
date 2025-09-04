@@ -54,6 +54,7 @@ const Comp582: React.FC<Comp582Props> = (props) => {
     shownavigation = true,
     showthemetoggle = true,
     showlanguageselector = true,
+    translations = {},
   } = props
 
   // Debug logging
@@ -174,14 +175,14 @@ const Comp582: React.FC<Comp582Props> = (props) => {
           <div className="space-y-2">
             <h4 className="text-sm font-semibold">{logotext}</h4>
             <p className="text-sm text-muted-foreground">
-              Click to return to the homepage
+              {translations.home_tooltip || "Click to return to the homepage"}
             </p>
             {(hasLightLogo || hasDarkLogo) && (
               <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                <span>Logo assets:</span>
-                {hasLightLogo && <span>Light mode</span>}
+                <span>{translations.logo_assets || "Logo assets:"}</span>
+                {hasLightLogo && <span>{translations.light_mode || "Light mode"}</span>}
                 {hasLightLogo && hasDarkLogo && <span>•</span>}
-                {hasDarkLogo && <span>Dark mode</span>}
+                {hasDarkLogo && <span>{translations.dark_mode || "Dark mode"}</span>}
               </div>
             )}
           </div>
@@ -251,7 +252,7 @@ const Comp582: React.FC<Comp582Props> = (props) => {
                             className="text-muted-foreground"
                             aria-hidden="true"
                           />
-                          <span>{page.title || `Page ${index + 1}`}</span>
+                          <span>{page.title || `${translations.page || "Page"} ${index + 1}`}</span>
                         </NavigationMenuLink>
                       </NavigationMenuItem>
                     ))}
@@ -265,7 +266,7 @@ const Comp582: React.FC<Comp582Props> = (props) => {
             <a 
               href={getHomeUrl()} 
               className="text-primary hover:text-primary/90 transition-colors"
-              aria-label="Go to home page"
+              aria-label={translations.go_home || "Go to home page"}
             >
               <LogoComponent />
             </a>
@@ -281,7 +282,7 @@ const Comp582: React.FC<Comp582Props> = (props) => {
                         href={page.url || '#'}
                         className="flex items-center"
                       >
-                        {page.title || `Page ${index + 1}`}
+                        {page.title || `${translations.page || "Page"} ${index + 1}`}
                       </a>
                     </MenubarTrigger>
                     {page.submenu && page.submenu.length > 0 && (
@@ -292,7 +293,7 @@ const Comp582: React.FC<Comp582Props> = (props) => {
                               href={subpage.url || '#'}
                               className="flex items-center w-full"
                             >
-                              {subpage.title || `Subpage ${subIndex + 1}`}
+                              {subpage.title || `${translations.subpage || "Subpage"} ${subIndex + 1}`}
                             </a>
                           </MenubarItem>
                         ))}
@@ -311,6 +312,7 @@ const Comp582: React.FC<Comp582Props> = (props) => {
             sitepages={sitepages} 
             currentLanguage={currentLanguage}
             defaultLanguage={defaultlanguage}
+            translations={props.translations || {}}
           />
           {/* Theme toggle */}
           {(showthemetoggle === true || showthemetoggle === 'true') && (
@@ -322,7 +324,7 @@ const Comp582: React.FC<Comp582Props> = (props) => {
               <SelectTrigger
                 id={`language-${id}`}
                 className="[&>svg]:text-muted-foreground/80 hover:bg-accent hover:text-accent-foreground h-8 border-none px-2 shadow-none [&>svg]:shrink-0"
-                aria-label="Select language"
+                aria-label={translations.select_language || "Select language"}
               >
                 <GlobeIcon size={16} aria-hidden="true" />
                 <SelectValue className="hidden sm:inline-flex" />
@@ -331,7 +333,7 @@ const Comp582: React.FC<Comp582Props> = (props) => {
                 {languages.map((lang: any, index: number) => (
                   <SelectItem key={lang.value || index} value={lang.value || 'en'}>
                     <span className="flex items-center gap-2">
-                      <span className="truncate">{lang.label || 'Language'}</span>
+                      <span className="truncate">{lang.label || translations.language || 'Language'}</span>
                     </span>
                   </SelectItem>
                 ))}

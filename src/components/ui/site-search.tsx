@@ -25,12 +25,20 @@ interface SiteSearchProps {
   }>
   currentLanguage?: string
   defaultLanguage?: string
+  // TODO: this does not seem necessary, we send the data in navbar through translations={props.translations || {}} 
+  translations?: {
+    search?: string
+    search_dialog?: string
+    pages?: string
+    [key: string]: any
+  }
 }
 
 export default function SiteSearch({ 
   sitepages = [], 
   currentLanguage,
-  defaultLanguage = 'en'
+  defaultLanguage = 'en',
+  translations = {},
 }: SiteSearchProps) {
   const [open, setOpen] = React.useState(false)
   const [searchQuery, setSearchQuery] = React.useState("")
@@ -109,7 +117,7 @@ export default function SiteSearch({
             size={14}
             aria-hidden="true"
           />
-          <span className="text-muted-foreground/70 font-normal hidden sm:inline">Search</span>
+          <span className="text-muted-foreground/70 font-normal hidden sm:inline">{translations.search || 'Search'}</span>
         </span>
         <kbd className="bg-background text-muted-foreground/70 ms-2 -me-1 hidden md:inline-flex h-5 max-h-full items-center rounded border px-1 font-[inherit] text-[0.625rem] font-medium">
           ⌘K
@@ -117,7 +125,7 @@ export default function SiteSearch({
       </button>
       <CommandDialog open={open} onOpenChange={setOpen}>
         <CommandInput 
-          placeholder="Search pages and content..." 
+          placeholder={translations.search_dialog || "Search pages and content..."} 
           value={searchQuery}
           onValueChange={setSearchQuery}
         />
@@ -153,7 +161,7 @@ export default function SiteSearch({
           )}
 
           {filteredPages.length > 0 && (
-            <CommandGroup heading="Pages">
+            <CommandGroup heading={translations.pages || "Pages"}>
               {filteredPages.map((page, index) => (
                 <CommandItem 
                   key={index}
@@ -176,7 +184,7 @@ export default function SiteSearch({
           )}
 
           {!searchQuery && sitepages.length > 0 && (
-            <CommandGroup heading="Navigation">
+            <CommandGroup heading={translations.navigation || "Navigation"}>
               {sitepages.slice(0, 5).map((page, index) => (
                 <CommandItem 
                   key={index}

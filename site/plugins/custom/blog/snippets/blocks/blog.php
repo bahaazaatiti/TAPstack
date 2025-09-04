@@ -6,6 +6,7 @@
 $isSearchPage = $page->intendedTemplate()->name() === 'search';
 $searchQuery = '';
 $blogParam = '';
+$blogParamTitle = ''; // Add this to store the localized title
 
 if ($isSearchPage) {
   // Get search query from URL parameters
@@ -17,6 +18,9 @@ if ($isSearchPage) {
     // Search within a specific blog (parent-specific search)
     $blogPage = page($blogParam);
     if ($blogPage) {
+      // Get the localized title of the blog page
+      $blogParamTitle = $blogPage->title()->value();
+      
       if ($searchQuery) {
         // Search within the specific blog with query
         $articlePages = $blogPage->children()
@@ -118,5 +122,6 @@ foreach ($articlePages as $article) {
   'postsPerPage' => $block->postsPerPage()->isNotEmpty() ? (int)$block->postsPerPage()->value() : 20,
   'articles' => $articles,
   'searchQuery' => $searchQuery,
-  'blogParam' => $blogParam
+  'blogParam' => $blogParam,
+  'blogParamTitle' => $blogParamTitle
 ]]) ?>

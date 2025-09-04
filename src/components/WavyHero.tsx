@@ -80,7 +80,8 @@ const WavyHero: React.FC<WavyHeroProps> = (props) => {
     speed = 'fast',
     waveWidth = 50,
     blur = 10,
-    waveOpacity = 0.5
+    waveOpacity = 0.5,
+    translations = {},
   } = props;
 
   // Use whichever version has a value
@@ -102,7 +103,7 @@ const WavyHero: React.FC<WavyHeroProps> = (props) => {
       {isLoading && (
         <div className="absolute inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center">
           <div className="text-center space-y-4">
-            <div className="text-lg font-medium">Loading hero content...</div>
+            <div className="text-lg font-medium">{translations.hero_progress || "Loading Hero Content..."}</div>
             <Progress value={loadingProgress} className="w-64" />
             <div className="text-sm text-muted-foreground">{Math.round(loadingProgress)}%</div>
           </div>
