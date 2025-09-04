@@ -1,0 +1,19 @@
+Title:
+
+المعرض
+
+----
+
+Header: [{"content":{"logolight":["file://6mnvswiucrxjrtnh"],"logodark":["file://ydknwavegcs9owf6"],"logotext":"تاپ","shownavigation":"true","languages":[{"value":"en","label":"English"},{"value":"ar","label":"العربية"}],"defaultlanguage":"en","showthemetoggle":"true","showlanguageselector":"true","showusermenu":"true","logo":["file://pn0tebstfpgwsgst"]},"id":"350d2f4e-cb93-46db-9262-cffc54cdfd56","isHidden":false,"type":"comp582"}]
+
+----
+
+Blocks:
+
+[{"content":{"title":"المعرض","selectionmode":"latest","articles":[],"latestcount":10,"onlywithimages":"true","initialscroll":0},"id":"37b15aea-fc4e-4198-ae6b-17d4b391744d","isHidden":false,"type":"applecarousel"}]
+
+----
+
+Footer:
+
+[{"content":{"name":"","logo":[],"columns":[],"copyright":"© 2025 المشروع العلوي. كافة الحقوق محفوظة","policies":[],"showmodetoggle":"true"},"id":"44e676d9-801b-43e7-bae7-6b02153ecd66","isHidden":false,"type":"footer"}]

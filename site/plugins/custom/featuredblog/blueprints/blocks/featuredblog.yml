@@ -7,7 +7,7 @@ fields:
     default: Latest articles
     help: Title displayed above the featured articles
     
-  featuredArticles:
+  articles:
     label: Featured Articles
     type: pages
     multiple: true

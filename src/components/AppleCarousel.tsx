@@ -1,5 +1,8 @@
 import React from "react";
 import { Carousel, Card } from "./ui/apple-cards-carousel";
+import { Card as UICard, CardContent } from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { AlertCircle } from "lucide-react";
 
 interface AppleCarouselProps {
   title?: string;
@@ -77,21 +80,28 @@ const AppleCarousel: React.FC<AppleCarouselProps> = (props) => {
     title: article.title,
     category: article.category,
     content: (
-      <div className="bg-card rounded-lg overflow-hidden border">
-        {/* Blog Category and Title Header */}
-
-
-        {/* Featured Image - Full Size */}
-        {article.featuredImage && (
-          <div className="w-full">
-            <img
-              src={article.featuredImage.url}
-              alt={article.featuredImage.alt}
-              className="w-full h-auto object-cover"
-            />
-          </div>
-        )}
-      </div>
+      <UICard className="overflow-hidden border">
+        <CardContent className="p-0">
+          {/* Featured Image - Full Size */}
+          {article.featuredImage && (
+            <div className="w-full">
+              <img
+                src={article.featuredImage.url}
+                alt={article.featuredImage.alt}
+                className="w-full h-auto object-cover"
+              />
+            </div>
+          )}
+          {/* Description under the photo */}
+          {article.description && typeof article.description === 'string' && article.description.trim() !== '' && (
+            <div className="p-4">
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                {article.description}
+              </p>
+            </div>
+          )}
+        </CardContent>
+      </UICard>
     ),
   }));
 
@@ -101,17 +111,20 @@ const AppleCarousel: React.FC<AppleCarouselProps> = (props) => {
         <h2 className="text-2xl font-bold text-foreground mb-4">
           {title}
         </h2>
-        <p className="text-muted-foreground">
-          No articles with featured images found.
-        </p>
+        <Alert>
+          <AlertCircle className="h-4 w-4" />
+          <AlertDescription>
+            No articles with featured images found.
+          </AlertDescription>
+        </Alert>
       </div>
     );
   }
 
   return (
-    <div className="w-full py-10 lg:py-16">
+    <div className="w-full py-6 lg:py-12">
       <div className="px-6 xl:px-10">
-        <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-foreground mb-8 max-w-xl">
+        <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-foreground max-w-xl">
           {title}
         </h2>
       </div>

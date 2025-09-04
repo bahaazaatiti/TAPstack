@@ -1,6 +1,6 @@
 <?php
 
-Kirby::plugin('blogsite/textblock-block', [
+Kirby::plugin('custom/textblock', [
   'blueprints' => [
     'blocks/textblock' => __DIR__ . '/blueprints/blocks/textblock.yml'
   ],

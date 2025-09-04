@@ -90,3 +90,34 @@ fields:
         buttonurl: "#"
         buttonexternal: false
     help: Add multiple feature cards - desktop layout will alternate left/right automatically
+  faqsection:
+    label: FAQ Section
+    type: group
+    fields:
+      showfaq:
+        label: Show FAQ Section
+        type: toggle
+        default: true
+        help: Show/hide the FAQ section below the cards
+      faqtitle:
+        label: FAQ Section Title
+        type: text
+        default: "Frequently Asked Questions"
+        help: Title for the FAQ section
+      faqs:
+        label: FAQ Items
+        type: structure
+        fields:
+          question:
+            label: Question
+            type: text
+            required: true
+            placeholder: "What is your question?"
+            help: The question text
+          answer:
+            label: Answer
+            type: textarea
+            required: true
+            placeholder: "Provide a detailed answer..."
+            help: The answer text
+        help: Add FAQ items one at a time

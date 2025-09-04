@@ -33,11 +33,25 @@ foreach ($block->cards()->toStructure() as $card) {
     ];
 }
 
+// Extract FAQ data
+$faqs = [];
+if ($block->faqs()->isNotEmpty()) {
+    foreach ($block->faqs()->toStructure() as $faq) {
+        $faqs[] = [
+            'question' => $faq->question()->value(),
+            'answer' => $faq->answer()->value()
+        ];
+    }
+}
+
 // Prepare block data
 $blockData = [
     'title' => $block->title()->value(),
     'subtitle' => $block->subtitle()->value(),
-    'cards' => $cards
+    'cards' => $cards,
+    'showfaq' => $block->showfaq()->toBool(),
+    'faqtitle' => $block->faqtitle()->value(),
+    'faqs' => $faqs
 ];
 ?>
 

@@ -15,10 +15,22 @@ import {
   NavigationMenuList,
 } from "@/components/ui/navigation-menu"
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+  MenubarTrigger,
+} from "@/components/ui/menubar"
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card"
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible"
 import {
   Select,
   SelectContent,
@@ -42,6 +54,7 @@ const Comp582: React.FC<Comp582Props> = (props) => {
     shownavigation = true,
     showthemetoggle = true,
     showlanguageselector = true,
+    translations = {},
   } = props
 
   // Debug logging
@@ -49,6 +62,7 @@ const Comp582: React.FC<Comp582Props> = (props) => {
 
   const id = useId()
   const [currentLanguage, setCurrentLanguage] = useState(defaultlanguage)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   useEffect(() => {
     // Get current language from URL or default
@@ -114,46 +128,66 @@ const Comp582: React.FC<Comp582Props> = (props) => {
     const hasAnyLogo = hasLightLogo || hasDarkLogo
     
     return (
-      <div className="flex items-center gap-2">
-        {hasAnyLogo && (
-          <div className="relative h-8 w-auto">
-            {/* Light mode logo */}
-            {hasLightLogo && (
-              <img 
-                src={logolightData.url} 
-                alt={logolightData.alt || logotext}
-                className="h-8 w-auto dark:hidden"
-              />
+      <HoverCard>
+        <HoverCardTrigger asChild>
+          <div className="flex items-center gap-2 cursor-pointer">
+            {hasAnyLogo && (
+              <div className="relative h-8 w-auto">
+                {/* Light mode logo */}
+                {hasLightLogo && (
+                  <img 
+                    src={logolightData.url} 
+                    alt={logolightData.alt || logotext}
+                    className="h-8 w-auto dark:hidden"
+                  />
+                )}
+                {/* Dark mode logo */}
+                {hasDarkLogo && (
+                  <img 
+                    src={logodarkData.url} 
+                    alt={logodarkData.alt || logotext}
+                    className="h-8 w-auto hidden dark:block"
+                  />
+                )}
+                {/* Fallback: if only one logo is provided, show it in both modes */}
+                {hasLightLogo && !hasDarkLogo && (
+                  <img 
+                    src={logolightData.url} 
+                    alt={logolightData.alt || logotext}
+                    className="h-8 w-auto hidden dark:block"
+                  />
+                )}
+                {!hasLightLogo && hasDarkLogo && (
+                  <img 
+                    src={logodarkData.url} 
+                    alt={logodarkData.alt || logotext}
+                    className="h-8 w-auto dark:hidden"
+                  />
+                )}
+              </div>
             )}
-            {/* Dark mode logo */}
-            {hasDarkLogo && (
-              <img 
-                src={logodarkData.url} 
-                alt={logodarkData.alt || logotext}
-                className="h-8 w-auto hidden dark:block"
-              />
-            )}
-            {/* Fallback: if only one logo is provided, show it in both modes */}
-            {hasLightLogo && !hasDarkLogo && (
-              <img 
-                src={logolightData.url} 
-                alt={logolightData.alt || logotext}
-                className="h-8 w-auto hidden dark:block"
-              />
-            )}
-            {!hasLightLogo && hasDarkLogo && (
-              <img 
-                src={logodarkData.url} 
-                alt={logodarkData.alt || logotext}
-                className="h-8 w-auto dark:hidden"
-              />
+            {logotext && (
+              <span className="text-xl font-bold">{logotext}</span>
             )}
           </div>
-        )}
-        {logotext && (
-          <span className="text-xl font-bold">{logotext}</span>
-        )}
-      </div>
+        </HoverCardTrigger>
+        <HoverCardContent className="w-80">
+          <div className="space-y-2">
+            <h4 className="text-sm font-semibold">{logotext}</h4>
+            <p className="text-sm text-muted-foreground">
+              {translations.home_tooltip || "Click to return to the homepage"}
+            </p>
+            {(hasLightLogo || hasDarkLogo) && (
+              <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                <span>{translations.logo_assets || "Logo assets:"}</span>
+                {hasLightLogo && <span>{translations.light_mode || "Light mode"}</span>}
+                {hasLightLogo && hasDarkLogo && <span>•</span>}
+                {hasDarkLogo && <span>{translations.dark_mode || "Dark mode"}</span>}
+              </div>
+            )}
+          </div>
+        </HoverCardContent>
+      </HoverCard>
     )
   }
 
@@ -163,12 +197,17 @@ const Comp582: React.FC<Comp582Props> = (props) => {
         {/* Left side */}
         <div className="flex flex-1 items-center gap-2">
           {/* Mobile menu trigger */}
-          <Popover>
-            <PopoverTrigger asChild>
+          <Collapsible 
+            open={mobileMenuOpen} 
+            onOpenChange={setMobileMenuOpen}
+            className="md:hidden"
+          >
+            <CollapsibleTrigger asChild>
               <Button
-                className="group size-8 md:hidden"
+                className="group size-8"
                 variant="ghost"
                 size="icon"
+                aria-expanded={mobileMenuOpen}
               >
                 <svg
                   className="pointer-events-none"
@@ -196,61 +235,85 @@ const Comp582: React.FC<Comp582Props> = (props) => {
                   />
                 </svg>
               </Button>
-            </PopoverTrigger>
-            <PopoverContent align="start" className="w-36 p-1 md:hidden">
-              <NavigationMenu className="max-w-none *:w-full">
-                <NavigationMenuList className="flex-col items-start gap-0 md:gap-2">
-                  {shownavigation && sitepages.map((page: any, index: number) => (
-                    <NavigationMenuItem key={index} className="w-full">
-                      <NavigationMenuLink
-                        href={page.url || '#'}
-                        className="flex-row items-center gap-2 py-1.5"
-                      >
-                        <HomeIcon
-                          size={16}
-                          className="text-muted-foreground"
-                          aria-hidden="true"
-                        />
-                        <span>{page.title || `Page ${index + 1}`}</span>
-                      </NavigationMenuLink>
-                    </NavigationMenuItem>
-                  ))}
-                </NavigationMenuList>
-              </NavigationMenu>
-            </PopoverContent>
-          </Popover>
+            </CollapsibleTrigger>
+            <CollapsibleContent className="absolute top-16 left-0 right-0 z-50 bg-background border-b shadow-lg">
+              <div className="container mx-auto p-4">
+                <NavigationMenu className="max-w-none *:w-full">
+                  <NavigationMenuList className="flex-col items-start gap-2">
+                    {shownavigation && sitepages.map((page: any, index: number) => (
+                      <NavigationMenuItem key={index} className="w-full">
+                        <NavigationMenuLink
+                          href={page.url || '#'}
+                          className="flex items-center gap-2 py-2 px-3 rounded-md hover:bg-accent"
+                          onClick={() => setMobileMenuOpen(false)}
+                        >
+                          <HomeIcon
+                            size={16}
+                            className="text-muted-foreground"
+                            aria-hidden="true"
+                          />
+                          <span>{page.title || `${translations.page || "Page"} ${index + 1}`}</span>
+                        </NavigationMenuLink>
+                      </NavigationMenuItem>
+                    ))}
+                  </NavigationMenuList>
+                </NavigationMenu>
+              </div>
+            </CollapsibleContent>
+          </Collapsible>
           <div className="flex items-center gap-6">
             {/* Logo */}
             <a 
               href={getHomeUrl()} 
               className="text-primary hover:text-primary/90 transition-colors"
-              aria-label="Go to home page"
+              aria-label={translations.go_home || "Go to home page"}
             >
               <LogoComponent />
             </a>
-            {/* Desktop navigation - text labels */}
+            {/* Desktop navigation - enhanced with Menubar */}
             {shownavigation && (
-              <NavigationMenu className="max-md:hidden">
-                <NavigationMenuList className="gap-2">
-                  {sitepages.map((page: any, index: number) => (
-                    <NavigationMenuItem key={index}>
-                      <NavigationMenuLink
+              <Menubar className="max-md:hidden border-none bg-transparent">
+                {sitepages.map((page: any, index: number) => (
+                  <MenubarMenu key={index}>
+                    <MenubarTrigger 
+                      className={`text-muted-foreground hover:text-primary font-medium cursor-pointer ${page.isActive ? 'text-primary' : ''}`}
+                    >
+                      <a
                         href={page.url || '#'}
-                        className={`text-muted-foreground hover:text-primary py-1.5 font-medium ${page.isActive ? 'text-primary' : ''}`}
+                        className="flex items-center"
                       >
-                        {page.title || `Page ${index + 1}`}
-                      </NavigationMenuLink>
-                    </NavigationMenuItem>
-                  ))}
-                </NavigationMenuList>
-              </NavigationMenu>
+                        {page.title || `${translations.page || "Page"} ${index + 1}`}
+                      </a>
+                    </MenubarTrigger>
+                    {page.submenu && page.submenu.length > 0 && (
+                      <MenubarContent>
+                        {page.submenu.map((subpage: any, subIndex: number) => (
+                          <MenubarItem key={subIndex}>
+                            <a
+                              href={subpage.url || '#'}
+                              className="flex items-center w-full"
+                            >
+                              {subpage.title || `${translations.subpage || "Subpage"} ${subIndex + 1}`}
+                            </a>
+                          </MenubarItem>
+                        ))}
+                      </MenubarContent>
+                    )}
+                  </MenubarMenu>
+                ))}
+              </Menubar>
             )}
           </div>
         </div>
         {/* Right side */}
         <div className="flex items-center gap-2">
           {/* Search */}
-          <SiteSearch sitepages={sitepages} />
+          <SiteSearch 
+            sitepages={sitepages} 
+            currentLanguage={currentLanguage}
+            defaultLanguage={defaultlanguage}
+            translations={props.translations || {}}
+          />
           {/* Theme toggle */}
           {(showthemetoggle === true || showthemetoggle === 'true') && (
             <ThemeToggle />
@@ -261,7 +324,7 @@ const Comp582: React.FC<Comp582Props> = (props) => {
               <SelectTrigger
                 id={`language-${id}`}
                 className="[&>svg]:text-muted-foreground/80 hover:bg-accent hover:text-accent-foreground h-8 border-none px-2 shadow-none [&>svg]:shrink-0"
-                aria-label="Select language"
+                aria-label={translations.select_language || "Select language"}
               >
                 <GlobeIcon size={16} aria-hidden="true" />
                 <SelectValue className="hidden sm:inline-flex" />
@@ -270,17 +333,13 @@ const Comp582: React.FC<Comp582Props> = (props) => {
                 {languages.map((lang: any, index: number) => (
                   <SelectItem key={lang.value || index} value={lang.value || 'en'}>
                     <span className="flex items-center gap-2">
-                      <span className="truncate">{lang.label || 'Language'}</span>
+                      <span className="truncate">{lang.label || translations.language || 'Language'}</span>
                     </span>
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
           )}
-          {/* User menu */}
-          {/* {(showusermenu === true || showusermenu === 'true') && (
-            <UserMenu />
-          )} */}
         </div>
       </div>
     </header>

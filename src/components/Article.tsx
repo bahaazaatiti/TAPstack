@@ -1,18 +1,33 @@
 import React, { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Progress } from '@/components/ui/progress'
+import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList } from '@/components/ui/breadcrumb'
+import { toast } from '@/components/ui/sonner'
+import AuthorBox from './AuthorBox'
 import { 
   Clock, 
   Calendar, 
   Download, 
   Share2, 
-  ArrowLeft, 
   User, 
   ExternalLink, 
   Twitter, 
   Linkedin, 
   Facebook, 
-  FileText 
+  FileText,
+  Copy,
+  BarChart3,
+  BookOpen,
+  Eye,
+  Maximize,
+  ChevronDown
 } from 'lucide-react'
 
 interface Author {
@@ -28,6 +43,29 @@ interface Author {
   twitter?: string
   linkedin?: string
   facebook?: string
+  email?: string
+  expertise?: string[]
+  articles?: Array<{
+    title: string
+    url: string
+    date: string
+    dateFormatted: string
+    category: string
+    description: string
+    readTime: string
+    featuredImage?: {
+      url: string
+      alt: string
+    }
+  }>
+  publicationStats?: {
+    totalArticles: number
+    recentArticles: number
+    categoriesCount: number
+    averageReadTime: number
+    firstPublication?: string
+    lastPublication?: string
+  }
 }
 
 interface ArticleProps {
@@ -80,6 +118,10 @@ const Article: React.FC<ArticleProps> = ({
   const [tocItems, setTocItems] = useState<Array<{ id: string; text: string; level: number }>>([])
   const [activeTocItem, setActiveTocItem] = useState<string>('')
   const [isScrollingToSection, setIsScrollingToSection] = useState(false)
+  const [readingProgress, setReadingProgress] = useState(0)
+  const [wordCount, setWordCount] = useState(0)
+  const [selectedPdf, setSelectedPdf] = useState<string>('')
+  const [isPdfDialogOpen, setIsPdfDialogOpen] = useState(false)
 
   useEffect(() => {
     // Parse content and generate TOC
@@ -87,6 +129,11 @@ const Article: React.FC<ArticleProps> = ({
       // Create a temporary div to parse the HTML content
       const tempDiv = document.createElement('div')
       tempDiv.innerHTML = content
+      
+      // Calculate word count
+      const textContent = tempDiv.textContent || tempDiv.innerText || ''
+      const words = textContent.trim().split(/\s+/).filter(word => word.length > 0)
+      setWordCount(words.length)
       
       const headings = tempDiv.querySelectorAll('h1, h2, h3, h4, h5, h6')
       const tocData: Array<{ id: string; text: string; level: number }> = []
@@ -117,8 +164,33 @@ const Article: React.FC<ArticleProps> = ({
     }
 
     generateTableOfContents()
+    
+    // Auto-select first PDF if available
+    if (pdfFiles.length > 0 && !selectedPdf) {
+      setSelectedPdf(pdfFiles[0].url)
+    }
+    
     setMounted(true)
-  }, [content])
+  }, [content, pdfFiles, selectedPdf])
+
+  // Reading progress tracking
+  useEffect(() => {
+    if (!mounted) return
+
+    const handleScroll = () => {
+      const articleElement = document.querySelector('.article-content')
+      if (!articleElement) return
+
+      const scrollTop = window.pageYOffset
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight
+      const scrollProgress = (scrollTop / docHeight) * 100
+      
+      setReadingProgress(Math.min(Math.max(scrollProgress, 0), 100))
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [mounted])
 
   // Separate useEffect for intersection observer
   useEffect(() => {
@@ -150,6 +222,34 @@ const Article: React.FC<ArticleProps> = ({
     return () => observer.disconnect()
   }, [mounted, tocItems, isScrollingToSection])
 
+  // Share functionality
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: title,
+          text: description,
+          url: currentUrl,
+        })
+        toast.success('Article shared successfully!')
+      } catch (err) {
+        // User cancelled the share
+      }
+    } else {
+      // Fallback: copy to clipboard
+      await handleCopyUrl()
+    }
+  }
+
+  const handleCopyUrl = async () => {
+    try {
+      await navigator.clipboard.writeText(currentUrl)
+      toast.success('URL copied to clipboard!')
+    } catch (err) {
+      toast.error('Failed to copy URL')
+    }
+  }
+
   const handleTocClick = (id: string) => {
     const element = document.getElementById(id)
     if (element) {
@@ -166,27 +266,16 @@ const Article: React.FC<ArticleProps> = ({
     }
   }
 
-  const handleShare = async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: title,
-          text: description,
-          url: currentUrl,
-        })
-      } catch (err) {
-        console.log('Error sharing:', err)
-      }
-    } else {
-      // Fallback: copy to clipboard
-      navigator.clipboard.writeText(currentUrl)
-      // You could show a toast notification here
-      alert('Link copied to clipboard!')
-    }
-  }
-
   return (
     <>
+      {/* Reading Progress Indicator */}
+      <div className="fixed top-0 start-0 end-0 z-50 h-1 bg-muted">
+        <Progress 
+          value={readingProgress} 
+          className="h-1 rounded-none border-none"
+        />
+      </div>
+
       {/* Hero Section */}
       <div className="relative h-[80vh] min-h-[600px] w-full overflow-hidden">
         {/* Background Image or Fallback */}
@@ -216,11 +305,18 @@ const Article: React.FC<ArticleProps> = ({
           <div className="container mx-auto max-w-6xl px-4 md:px-6 lg:px-8">
             <div className={`max-w-4xl mx-auto space-y-3 md:space-y-4 lg:space-y-6 ${featuredImage ? 'text-primary-foreground' : 'text-foreground'} text-center drop-shadow-lg`}>
               {/* Breadcrumb */}
-              <nav className={`flex items-center justify-center gap-2 text-sm ${featuredImage ? 'text-primary-foreground/80' : 'text-muted-foreground'}`}>
-                <a href={parentUrl} className={`${featuredImage ? 'hover:text-primary-foreground' : 'hover:text-foreground'} transition-colors`}>
-                  {parentTitle}
-                </a>
-              </nav>
+              <Breadcrumb className={`flex items-center justify-center ${featuredImage ? 'text-primary-foreground/80' : 'text-muted-foreground'}`}>
+                <BreadcrumbList>
+                  <BreadcrumbItem>
+                    <BreadcrumbLink 
+                      href={parentUrl} 
+                      className={`${featuredImage ? 'hover:text-primary-foreground' : 'hover:text-foreground'} transition-colors`}
+                    >
+                      {parentTitle}
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                </BreadcrumbList>
+              </Breadcrumb>
               
               {/* Meta Information */}
               <div className={`flex flex-wrap items-center justify-center gap-3 md:gap-4 text-sm ${featuredImage ? 'text-primary-foreground/90' : 'text-muted-foreground'}`}>
@@ -316,194 +412,300 @@ const Article: React.FC<ArticleProps> = ({
           {/* Content Area */}
           <div className="flex w-full xl:max-w-[40rem] max-w-4xl mx-auto flex-col gap-10">
             
-            {/* Author Info at Top */}
-            {author && (
-              <div className="flex items-center gap-2.5">
-                {/* Author Avatar */}
-                {author.avatar ? (
-                  <span className="relative flex shrink-0 overflow-hidden rounded-full size-12 border">
-                    <img
-                      src={author.avatar.url}
-                      alt={author.avatar.alt}
-                      className="aspect-square size-full"
-                    />
-                  </span>
-                ) : (
-                  <span className="relative flex shrink-0 overflow-hidden rounded-full size-12 border bg-primary/10 items-center justify-center">
-                    <User className="w-5 h-5 text-primary" />
-                  </span>
-                )}
-                
-                {/* Author Info */}
-                <div>
-                  <div className="text-sm font-medium leading-normal">{author.name}</div>
-                  {(author.position || author.affiliation) && (
-                    <div className="text-muted-foreground text-sm font-normal leading-normal">
-                      {author.position}
-                      {author.position && author.affiliation && ' & '}
-                      {author.affiliation}
-                    </div>
-                  )}
-                </div>
+            {/* Article Actions Bar */}
+            <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleShare}
+                  className="gap-2"
+                >
+                  <Share2 className="h-4 w-4" />
+                  Share
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleCopyUrl}
+                  className="gap-2"
+                >
+                  <Copy className="h-4 w-4" />
+                  Copy URL
+                </Button>
               </div>
+              <div className="text-sm text-muted-foreground">
+                <Eye className="h-4 w-4 inline me-1" />
+                {Math.ceil(readingProgress)}% read
+              </div>
+            </div>
+
+            {/* PDF Viewer Section */}
+            {pdfFiles.length > 0 && (
+              <Card className="w-full">
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="flex items-center gap-2">
+                      <FileText className="h-5 w-5" />
+                      PDF Viewer
+                    </CardTitle>
+                    <div className="flex items-center gap-2 line-clamp-1">
+                      <Select value={selectedPdf} onValueChange={setSelectedPdf}>
+                        <SelectTrigger className="w-12 md:w-64 [&>svg]:hidden md:[&>svg]:block">
+                          <SelectValue placeholder="Select a PDF to view" className="hidden md:block" />
+                          <div className="md:hidden flex items-center justify-center">
+                            <ChevronDown className="h-4 w-4" />
+                          </div>
+                        </SelectTrigger>
+                        <SelectContent>
+                          {pdfFiles.map((pdf, index) => (
+                            <SelectItem key={index} value={pdf.url}>
+                              {pdf.title} ({pdf.size})
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      
+                      {selectedPdf && (
+                        <Dialog open={isPdfDialogOpen} onOpenChange={setIsPdfDialogOpen}>
+                          <DialogTrigger asChild>
+                            <Button variant="outline" size="sm" className="gap-2">
+                              <Maximize className="h-4 w-4" />
+                              <span className="hidden md:inline">Fullscreen</span>
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent className=" max-h-[90vh] h-[90vh] p-0 sm:max-w-2xl">
+                            <DialogHeader className="p-4 pb-2">
+                              <DialogTitle className="flex items-center gap-2">
+                                <FileText className="h-5 w-5" />
+                                {pdfFiles.find(pdf => pdf.url === selectedPdf)?.title || 'PDF Viewer'}
+                              </DialogTitle>
+                            </DialogHeader>
+                            <div className="flex-1 p-4 pt-0">
+                              <div className="w-full h-[calc(90vh-120px)] border rounded-lg overflow-hidden">
+                                <iframe
+                                  src={`${selectedPdf}#toolbar=1&navpanes=1&scrollbar=1&view=FitH`}
+                                  className="w-full h-full border-0"
+                                  title="PDF Viewer - Fullscreen"
+                                  loading="lazy"
+                                >
+                                  <p className="p-4 text-center text-muted-foreground">
+                                    Your browser does not support PDFs. 
+                                    <a 
+                                      href={selectedPdf} 
+                                      target="_blank" 
+                                      rel="noopener noreferrer"
+                                      className="text-primary hover:underline ms-1"
+                                    >
+                                      Download the PDF
+                                    </a>
+                                  </p>
+                                </iframe>
+                              </div>
+                            </div>
+                          </DialogContent>
+                        </Dialog>
+                      )}
+                    </div>
+                  </div>
+                </CardHeader>
+                {selectedPdf && (
+                  <CardContent className="p-0">
+                    <div className="w-full h-[600px] border rounded-b-lg overflow-hidden">
+                      <iframe
+                        src={`${selectedPdf}#toolbar=1&navpanes=1&scrollbar=1&view=FitH`}
+                        className="w-full h-full border-0"
+                        title="PDF Viewer"
+                        loading="lazy"
+                      >
+                        <p className="p-4 text-center text-muted-foreground">
+                          Your browser does not support PDFs. 
+                          <a 
+                            href={selectedPdf} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="text-primary hover:underline ms-1"
+                          >
+                            Download the PDF
+                          </a>
+                        </p>
+                      </iframe>
+                    </div>
+                  </CardContent>
+                )}
+                {!selectedPdf && pdfFiles.length > 0 && (
+                  <CardContent>
+                    <div className="text-center py-8 text-muted-foreground">
+                      <FileText className="h-12 w-12 mx-auto mb-2 opacity-50" />
+                      <p>Select a PDF from the dropdown above to view it here</p>
+                    </div>
+                  </CardContent>
+                )}
+              </Card>
             )}
-            
+
+            {/* Enhanced Article Metadata */}
+            <Tabs defaultValue="author" className="w-full">
+              <TabsList className="flex w-full">
+                <TabsTrigger 
+                  value="info" 
+                  className="flex-1"
+                >
+                  Article Info
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="author" 
+                  className="flex-1"
+                >
+                  Author
+                </TabsTrigger>
+                {pdfFiles.length > 0 && (
+                  <TabsTrigger 
+                    value="files" 
+                    className="flex-1"
+                  >
+                    Files
+                  </TabsTrigger>
+                )}
+              </TabsList>
+              
+              <TabsContent value="info" className="space-y-4">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <BarChart3 className="h-5 w-5" />
+                      Article Statistics
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <Table>
+                      <TableBody>
+                        <TableRow>
+                          <TableCell className="font-medium text-start">Published</TableCell>
+                          <TableCell className="text-start">{date}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell className="font-medium text-start">Reading Time</TableCell>
+                          <TableCell className="text-start">{readTime} minutes</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell className="font-medium text-start">Word Count</TableCell>
+                          <TableCell className="text-start">{wordCount.toLocaleString()} words</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell className="font-medium text-start">Category</TableCell>
+                          <TableCell className="text-start">
+                            <Badge variant="secondary">{category}</Badge>
+                          </TableCell>
+                        </TableRow>
+                        {tags.length > 0 && (
+                          <TableRow>
+                            <TableCell className="font-medium text-start">Tags</TableCell>
+                            <TableCell className="text-start">
+                              <div className="flex flex-wrap gap-1">
+                                {tags.map((tag, index) => (
+                                  <Badge key={index} variant="outline" className="text-xs">
+                                    {tag}
+                                  </Badge>
+                                ))}
+                              </div>
+                            </TableCell>
+                          </TableRow>
+                        )}
+                      </TableBody>
+                    </Table>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="author" className="space-y-4">
+                {author && (
+                  <AuthorBox 
+                    author={author}
+                    showbio={true}
+                    showsocial={true}
+                    customtitle="About the Author"
+                    articles={author.articles}
+                    publicationStats={author.publicationStats}
+                  />
+                )}
+              </TabsContent>
+
+              {pdfFiles.length > 0 && (
+                <TabsContent value="files" className="space-y-4">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <FileText className="h-5 w-5" />
+                        Available Downloads
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-3">
+                        {pdfFiles.map((pdf, index) => (
+                          <div key={index} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                            <div className="flex items-center gap-3">
+                              <FileText className="w-6 h-6 text-red-600" />
+                              <div>
+                                <div className="font-medium">{pdf.title}</div>
+                                <div className="text-sm text-muted-foreground">{pdf.size}</div>
+                              </div>
+                            </div>
+                            <Button variant="outline" size="sm" asChild>
+                              <a href={pdf.url} download>
+                                <Download className="w-4 h-4 me-1" />
+                                Download
+                              </a>
+                            </Button>
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+              )}
+            </Tabs>
+
             {/* Article Content */}
             <article className="article-content">
               {/* Content will be inserted here by useEffect */}
             </article>
 
-            {/* PDF Files Section */}
-            {pdfFiles.length > 0 && (
-              <div className="space-y-6">
-                <h3 className="text-xl font-semibold">Documents</h3>
-                {pdfFiles.map((pdf, index) => (
-                  <div key={index} className="border rounded-lg p-4 bg-muted/50">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center gap-3">
-                        <FileText className="w-8 h-8 text-red-600" />
-                        <div>
-                          <div className="font-medium">{pdf.title}</div>
-                          <div className="text-sm text-muted-foreground">{pdf.size}</div>
-                        </div>
-                      </div>
-                      <Button asChild>
-                        <a 
-                          href={pdf.url} 
-                          target="_blank" 
-                          rel="noopener noreferrer"
+            {/* Enhanced Table of Contents for Mobile */}
+            {tocItems.length > 0 && (
+              <div className="xl:hidden">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <BookOpen className="h-5 w-5" />
+                      Table of Contents
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <nav className="space-y-1">
+                      {tocItems.map((item) => (
+                        <Button
+                          key={item.id}
+                          variant={activeTocItem === item.id ? "default" : "ghost"}
+                          size="sm"
+                          onClick={() => handleTocClick(item.id)}
+                          className={`w-full justify-start text-sm transition-colors h-auto min-h-8 py-2 whitespace-normal text-start leading-relaxed ${
+                            activeTocItem === item.id 
+                              ? 'bg-primary text-primary-foreground' 
+                              : 'text-muted-foreground hover:text-foreground'
+                          }`}
+                          style={{ paddingInlineStart: `${(item.level - 1) * 16 + 16}px` }}
                         >
-                          <Download className="w-4 h-4" />
-                          Download
-                        </a>
-                      </Button>
-                    </div>
-                    
-                    {/* PDF Embed */}
-                    <div className="w-full h-96 border rounded bg-white">
-                      <embed 
-                        src={`${pdf.url}#toolbar=1&navpanes=1&scrollbar=1`}
-                        type="application/pdf" 
-                        width="100%" 
-                        height="100%"
-                        className="rounded"
-                      />
-                    </div>
-                  </div>
-                ))}
+                          <span className="break-words hyphens-auto">
+                            {item.text}
+                          </span>
+                        </Button>
+                      ))}
+                    </nav>
+                  </CardContent>
+                </Card>
               </div>
             )}
-
-            {/* Author Details Box at Bottom */}
-            {author && (
-              <div className="bg-muted rounded-lg p-5">
-                <div className="flex items-center gap-2.5 mb-4">
-                  {/* Author Avatar */}
-                  {author.avatar ? (
-                    <span className="relative flex shrink-0 overflow-hidden rounded-full size-12 border">
-                      <img
-                        src={author.avatar.url}
-                        alt={author.avatar.alt}
-                        className="aspect-square size-full"
-                      />
-                    </span>
-                  ) : (
-                    <span className="relative flex shrink-0 overflow-hidden rounded-full size-12 border bg-primary/10 items-center justify-center">
-                      <User className="w-5 h-5 text-primary" />
-                    </span>
-                  )}
-                  
-                  {/* Author Info */}
-                  <div>
-                    <div className="text-sm font-medium leading-normal">{author.name}</div>
-                    {(author.position || author.affiliation) && (
-                      <div className="text-muted-foreground text-sm font-normal leading-normal">
-                        {author.position}
-                        {author.position && author.affiliation && ' & '}
-                        {author.affiliation}
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                {author.bio && (
-                  <p className="mb-4">{author.bio}</p>
-                )}
-
-                {/* Social Links */}
-                <div className="flex items-center gap-2.5">
-                  {author.website && (
-                    <Button asChild size="icon">
-                      <a 
-                        href={author.website} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        title="Website"
-                      >
-                        <ExternalLink className="w-4 h-4" />
-                      </a>
-                    </Button>
-                  )}
-
-                  {author.twitter && (
-                    <Button asChild size="icon">
-                      <a 
-                        href={`https://twitter.com/${author.twitter}`}
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        title="Twitter/X"
-                      >
-                        <Twitter className="w-4 h-4" />
-                      </a>
-                    </Button>
-                  )}
-
-                  {author.linkedin && (
-                    <Button asChild size="icon">
-                      <a 
-                        href={author.linkedin}
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        title="LinkedIn"
-                      >
-                        <Linkedin className="w-4 h-4" />
-                      </a>
-                    </Button>
-                  )}
-
-                  {author.facebook && (
-                    <Button asChild size="icon">
-                      <a 
-                        href={author.facebook}
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        title="Facebook"
-                      >
-                        <Facebook className="w-4 h-4" />
-                      </a>
-                    </Button>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* Navigation */}
-            <div className="flex items-center justify-between pt-8 border-t">
-              {/* Back to blog */}
-              <Button asChild variant="ghost">
-                <a href={parentUrl}>
-                  <ArrowLeft className="h-4 w-4 rtl:rotate-180" />
-                  Back to {parentTitle}
-                </a>
-              </Button>
-              
-              {/* Share button */}
-              <Button onClick={handleShare}>
-                <Share2 className="h-4 w-4" />
-                Share
-              </Button>
-            </div>
-            
           </div>
         </div>
       </div>

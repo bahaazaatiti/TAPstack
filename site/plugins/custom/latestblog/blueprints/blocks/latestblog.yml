@@ -11,18 +11,15 @@ fields:
     label: Button Text
     type: text
     default: View all articles
-    help: Text displayed on the "view more" button
+    help: Text displayed on the "view more" button that links to this blog's search page
     
-  buttonUrl:
-    label: Button URL
-    type: url
-    default: /
-    help: URL the button links to (defaults to home page)
-    
-  maxArticles:
-    label: Maximum Articles
-    type: number
-    default: 8
-    min: 1
-    max: 12
-    help: Number of articles to display (maximum 8 recommended for layout)
+  articles:
+    label: Articles
+    type: pages
+    multiple: true
+    min: 0
+    max: 8
+    query: site.index.filterBy('template', 'article').listed.sortBy('date', 'desc')
+    info: "{{ page.title }} - {{ page.date.toDate('M j, Y') }}"
+    help: "Select up to 8 articles from anywhere on the site. Leave empty to auto-select latest articles."
+    empty: "No articles found on the site."

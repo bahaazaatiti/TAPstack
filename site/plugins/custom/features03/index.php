@@ -1,6 +1,6 @@
 <?php
 
-Kirby::plugin('blogsite/features03-block', [
+Kirby::plugin('custom/features03', [
   'blueprints' => [
     'blocks/features03' => __DIR__ . '/blueprints/blocks/features03.yml'
   ],

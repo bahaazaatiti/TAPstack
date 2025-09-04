@@ -1,0 +1,15 @@
+Title: بحث
+
+----
+
+Header: [{"content":{"logolight":[],"logodark":[],"logotext":"TAP","shownavigation":"true","languages":[{"value":"en","label":"English"},{"value":"ar","label":"العربية"}],"defaultlanguage":"en","showthemetoggle":"true","showlanguageselector":"true","showusermenu":"true","logo":[]},"id":"351afe36-c8fd-4fba-963d-3b6df6239bf1","isHidden":false,"type":"comp582"}]
+
+----
+
+Blocks: [{"content":{"title":"نتائج البحث","showcategories":"true","postsperpage":20,"blogpage":[]},"id":"fa3c560e-ded5-4d9e-b15b-240d37f8d686","isHidden":false,"type":"blog"}]
+
+----
+
+Footer:
+
+[{"content":{"name":"","logo":[],"columns":[],"copyright":"© 2025 المشروع العلوي. كافة الحقوق محفوظة","policies":[],"showmodetoggle":"true"},"id":"47f0f301-7753-4afb-8b37-8eec24a07cb3","isHidden":false,"type":"footer"}]

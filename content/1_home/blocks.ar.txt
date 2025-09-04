@@ -1,0 +1,17 @@
+Title: الرئيسية
+
+----
+
+Header: [{"content":{"logolight":["file://6mnvswiucrxjrtnh"],"logodark":["file://ydknwavegcs9owf6"],"logotext":"تاپ","shownavigation":"true","languages":[{"value":"en","label":"English"},{"value":"ar","label":"العربية"}],"defaultlanguage":"en","showthemetoggle":"true","showlanguageselector":"true","showusermenu":"true","logo":["file://pn0tebstfpgwsgst"]},"id":"5b3bdef2-ba38-46de-b6f1-530b370b636c","isHidden":false,"type":"comp582"}]
+
+----
+
+Blocks:
+
+[{"content":{"title":" المشروع العلوي","subtitle":"مبادرة عالمية مكرَّسة لفهم ودعم وتمكين المجتمعات العلوية في جميع أنحاء العالم.","buttontext":"من نحن","buttonurl":"http://localhost:8888/ar/about","buttonexternal":"false","wavecolors":[{"color":"#065a1e"},{"color":"#004109"},{"color":"#002400"},{"color":"#3b4029"},{"color":"#1e2601"}],"speed":"fast","wavewidth":50,"blur":10,"waveopacity":0.5,"textcolor":"white","customtextcolor":""},"id":"a21d09e8-1acd-4517-8793-5bc6867a2f44","isHidden":false,"type":"wavyhero"},{"content":{"title":"المعرض","selectionmode":"manual","articles":["page://jdzrljmwmgkuafbu","page://me8fpjhvcs6eycwg","page://l4k4lszuuu9yfmxj","page://tnkpepepegww58ow","page://qejwkmm9nxtn4lmc"],"latestcount":"","onlywithimages":"true","initialscroll":0},"id":"0702532c-ba2b-4b71-b585-1362ff4a5f3b","isHidden":false,"type":"applecarousel"},{"content":{"title":"المقالات المميزة","articles":["page://eaib7y8knntpvwzk","page://twinfvmnfcrmfejf","page://fllonznhlhyyg5km","page://4k4n30lm8ddjdaea","page://bmdeq060vveqlo7w","page://2eu2f2kgqbttev30"],"gridstyle":""},"id":"167d3fee-e11b-439e-96e4-a36f67c3d169","isHidden":false,"type":"bentogrid"}]
+
+----
+
+Footer:
+
+[{"content":{"name":"","logo":[],"columns":[],"copyright":"© 2025 المشروع العلوي. كافة الحقوق محفوظة","policies":[],"showmodetoggle":"true"},"id":"faeac603-8776-4582-9a24-372e766f201e","isHidden":false,"type":"footer"}]
