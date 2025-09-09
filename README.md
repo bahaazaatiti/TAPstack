@@ -30,16 +30,18 @@ Integration:   Block system + pass-block-data utility
 - Hot module replacement for both PHP templates and React components
 
 ### Interactive Components
-- 3D globe visualization using Three.js
 - Responsive navigation with mobile support
 - Theme management with dark/light/system modes
 - Multi-language support with RTL layout handling
+- Search functionality with advanced filtering
+- Context menu integration for content actions
 
 ### Development Environment
 - Sub-second hot reload during development
 - Component library integration with shadcn/ui
 - Tailwind CSS 4 with OKLCH color system
 - End-to-end TypeScript coverage
+- RTL language support with automatic direction switching
 
 ## Requirements
 
@@ -120,6 +122,9 @@ Features:
 - Site context injection (navigation, languages, current page)
 - Type conversion from Kirby field types to JavaScript-compatible formats
 - Debug logging for development troubleshooting
+- Automatic translation injection for multi-language support
+- Article collection and processing for blog-related components
+- Author relationship resolution with publication statistics
 
 ### React Component Integration
 
@@ -157,10 +162,6 @@ const Hero: React.FC<HeroProps> = ({
 - Configurable user menu integration
 - Logo support for image and text combinations
 
-#### navbar/navbar04 - Navigation Variants  
-- Internal/external link handling with target control
-- Mobile menu with smooth animations
-- Style variants (default, dark, light)
 
 #### hero - Landing Page Sections
 - Call-to-action buttons with external link support
@@ -179,6 +180,12 @@ const Hero: React.FC<HeroProps> = ({
 - Category sidebar with dynamic filtering and post counts
 - Featured image processing and optimization
 - Article metadata display (author, date, read time, tags)
+- Advanced search with suggestions and query persistence
+- Date range filtering with calendar interface
+- Sort options (newest, oldest, read time, alphabetical)
+- Context menu actions (copy, share, bookmark)
+- Mobile-responsive design with drawer previews
+- Parent-specific search for blog sections
 
 #### latestblog - Latest Articles Grid
 - Displays 8 most recent articles
@@ -188,13 +195,6 @@ const Hero: React.FC<HeroProps> = ({
 #### featuredblog - Featured Content
 - Curated article selection
 - Large format article presentation
-
-#### blogglobe - 3D Geographic Visualization
-- Three.js-powered 3D earth visualization  
-- Article mapping by geographic coordinates
-- Category-based color coding for article dots
-- Dynamic statistics display
-- Auto-rotating globe with user controls
 
 #### textblock - Simple Text Content
 - Icon, subtitle, title, and description fields
@@ -207,6 +207,27 @@ const Hero: React.FC<HeroProps> = ({
 - Dynamic feature lists with icon + text pairs
 - Call-to-action buttons with external link support
 - Mobile-responsive with placeholder media areas
+
+#### authorbox - Author Information
+- Comprehensive author profile display with avatar
+- Biography and expertise tag management
+- Social media link integration (website, twitter, linkedin, facebook)
+- Publication statistics and article counts
+- Recent articles timeline with thumbnails
+- Category breakdown and publication metrics
+- Mobile and desktop responsive layouts
+
+#### bentogrid - Content Grid Layout
+- Flexible grid system for featured content
+- Responsive breakpoint management
+- Featured image and content preview
+- Click-through functionality to articles
+
+#### applecarousel - Article Carousel
+- Interactive article carousel with Apple-style design
+- Smooth scroll navigation with touch support
+- Featured image display with fallback handling
+- Article metadata and category badges
 
 ## Creating Custom Blocks
 
@@ -433,6 +454,11 @@ return [
   --radius-sm: calc(var(--radius) - 4px);
   --radius-lg: var(--radius);
 }
+
+/* RTL Language Support */
+body.rtl {
+  direction: rtl !important;
+}
 ```
 
 Features:
@@ -440,10 +466,20 @@ Features:
 - Dark mode with system preference detection
 - Mobile-first responsive design
 - CSS custom properties for theming
+- RTL layout support with direction inheritance
+- Component-specific RTL overrides for Radix UI elements
+<!-- (TODO: temporary until all components are edited to support dynamic classnames and not inheriet direction from radix, already achieved for most components) -->
 
 ### Component Library
 
-shadcn/ui components with consistent styling:
+shadcn/ui components imported via CLI with consistent styling:
+
+```bash
+# Install shadcn/ui components
+npx shadcn@latest add button
+npx shadcn@latest add navigation-menu
+npx shadcn@latest add theme-toggle
+```
 
 ```typescript
 import { Button } from "@/components/ui/button"
@@ -451,11 +487,11 @@ import { NavigationMenu } from "@/components/ui/navigation-menu"
 import { ThemeToggle } from "@/components/ui/theme-toggle"
 ```
 
-Available components include navigation menus, buttons, forms, popovers, dropdowns, dialogs, theme toggle, and responsive layout components.
+Available components include navigation menus, buttons, forms, popovers, dropdowns, dialogs, theme toggle, responsive layout components, data tables, calendars, carousels, and specialized components like site-search and user-menu.
 
 ### Theme Management
 
-Global theme system with localStorage persistence:
+Global theme system with localStorage persistence and automatic RTL detection:
 
 ```typescript
 // Automatic system preference detection
@@ -468,6 +504,13 @@ themeManager.setTheme('dark' | 'light' | 'system')
 <ThemeToggle />
 ```
 
+Features:
+- System preference detection with prefers-color-scheme
+- Persistent theme storage in localStorage
+- Body class management for CSS cascade
+- RTL direction detection based on current language
+- Smooth theme transitions without flash
+
 ## Internationalization
 
 ### Multi-language Support
@@ -479,15 +522,35 @@ return [
   'code' => 'en',
   'default' => true,
   'direction' => 'ltr',
-  'name' => 'English'
+  'name' => 'English',
+  'translations' => [
+    'search' => 'Search',
+    'articles' => 'Articles',
+    'categories' => 'Categories',
+    // Additional translations...
+  ]
 ];
 
 // site/languages/ar.php  
 return [
   'code' => 'ar',
   'direction' => 'rtl',
-  'name' => 'العربية'
+  'name' => 'العربية',
+  'translations' => [
+    'search' => 'بحث',
+    'articles' => 'المقالات', 
+    'categories' => 'الفئات',
+    // Additional translations...
+  ]
 ];
+```
+
+Translation access in components:
+```typescript
+// Translations automatically injected via pass-block-data.php
+const MyComponent = ({ translations = {} }) => {
+  return <button>{translations.search || 'Search'}</button>
+}
 ```
 
 ### RTL Support
@@ -498,7 +561,20 @@ body.rtl {
   direction: rtl !important;
 }
 
-.rtl [data-slot="navigation-menu"] {
+/* Component-specific RTL overrides */ 
+ /* TODO: REMOVE THESE BY USING DYNAMIC CLASSNAMES INSTEAD */
+body.rtl [data-slot="tabs-content"] {
+  direction: rtl;
+}
+
+body.rtl [data-slot="table-cell"] {
+  text-align: right;
+}
+
+/* Radix UI navigation menu RTL fix */
+.rtl [type="button"],
+.rtl [data-slot="navigation-menu"],
+.rtl [data-slot="navigation-menu-list"] {
   direction: inherit !important;
 }
 ```
@@ -506,8 +582,10 @@ body.rtl {
 Features:
 - Automatic URL routing with language prefixes (/en/page, /ar/page)
 - Context-aware language selector with current language detection
-- Complete right-to-left layout for Arabic
+- Complete right-to-left layout for Arabic with component inheritance
 - Automatic language switching preserves current page
+- RTL-aware component positioning and text alignment
+- Tailwind CSS RTL utilities integration
 
 ## Performance
 
@@ -516,18 +594,22 @@ Features:
 - Smart reloading: kirby-vite watches PHP templates for full-page reloads
 - Intelligent mounting: MutationObserver detects dynamic content changes
 - Code splitting: automatic bundle optimization with Vite
+- Translation hot reload: language changes trigger component updates
 
 ### Production
 - Asset optimization: minification, compression, and file hashing
 - CSS purging: Tailwind removes unused styles automatically
 - Bundle analysis: built-in code splitting for optimal loading
 - CDN ready: hashed filenames for effective caching strategies
+- RTL-aware bundle generation for language-specific optimizations
 
 ### State Management
 - Server-driven state: data flows from Kirby through props
 - Component isolation: each block manages its own local state
 - Persistent preferences: theme and language stored in localStorage
 - URL state: navigation and language state managed through URLs
+- Translation state: automatic language detection and switching
+- Search state: query persistence across navigation
 
 ## Development Notes
 
@@ -563,13 +645,31 @@ const variants = {
 <?php
 // Enable detailed logging in development
 error_log("Block data: " . json_encode($blockData));
+
+// pass-block-data.php automatic debug output
+if (option('debug')) {
+  error_log("Processing block: $blockType with ID: $blockId");
+  error_log("File resolution: " . json_encode($fileResolutionLog));
+}
 ?>
 
 <script>
 // Client-side block data inspection
 console.log('Block data:', window.blockData);
+
+// Monitor block mounting performance
+console.time('block-mount');
+// Block mounting code
+console.timeEnd('block-mount');
 </script>
 ```
+
+Debug features:
+- Automatic block data logging with structure validation
+- File UUID resolution debugging with fallback tracking
+- Component mounting performance monitoring
+- Translation key validation and missing key reporting
+- RTL direction detection logging
 
 ## Deployment
 
@@ -726,6 +826,8 @@ When debug mode is enabled in Kirby configuration:
 - Block data logging with automatic logging of block data structures  
 - File resolution logs showing detailed image/file resolution attempts
 - Hot reloading with enhanced file watching for development
+- Translation validation with missing key detection
+- RTL direction switching debug information
 
 Performance debugging:
 ```javascript
@@ -745,10 +847,10 @@ npm run build -- --analyze
 - [React Documentation](https://react.dev)
 - [Tailwind CSS Documentation](https://tailwindcss.com/docs)
 - [Vite Documentation](https://vitejs.dev)
+- [shadcn/ui Documentation](https://ui.shadcn.com)
 
 ### Advanced Features  
-- [Three.js Manual](https://threejs.org/manual/)
-- [React Three Fiber Documentation](https://docs.pmnd.rs/react-three-fiber)
+
 - [TypeScript Handbook](https://www.typescriptlang.org/docs/)
 - [PHP 8.3 Release Notes](https://php.net/releases/8.3/en.php)
 
@@ -818,8 +920,6 @@ Built with:
 - [React](https://react.dev) - User interface library
 - [Vite](https://vitejs.dev) - Frontend build tool
 - [Tailwind CSS](https://tailwindcss.com) - Utility-first CSS framework
-- [shadcn/ui](https://ui.shadcn.com) - Component library
-- [Three.js](https://threejs.org) - 3D graphics library
+- [shadcn/ui](https://ui.shadcn.com) - React component library
 - [TypeScript](https://typescriptlang.org) - JavaScript with types
-
-Special thanks to arnoson for the kirby-vite plugin, Johann Schopplich for Kirby ecosystem contributions, and the Kirby team.
+- [Radix UI](https://radix-ui.com) - Headless UI primitives
