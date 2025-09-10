@@ -18,6 +18,26 @@ options:
     author: false
 
 tabs:
+  
+  settings:
+    label: Page Settings
+    fields:
+      navicon:
+        label: Navigation Icon
+        type: select
+        default: BookOpen
+        help: Icon to display in navigation menus
+        options:
+          BookOpen: BookOpen (Book/Blog)
+          Newspaper: Newspaper (News/Articles)
+          PenTool: PenTool (Writing/Content)
+          FileText: FileText (Documents)
+          Users: Users (Community)
+          MessageSquare: MessageSquare (Discussion)
+          Calendar: Calendar (Events)
+          Archive: Archive (Archive/History)
+          Bookmark: Bookmark (Featured)
+          Tag: Tag (Categories)
 
   articles:
     label: Articles

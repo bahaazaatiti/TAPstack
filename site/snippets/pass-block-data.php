@@ -331,7 +331,8 @@ foreach (site()->children()->listed() as $page) {
         'title' => $page->title()->toString(),
         'url' => $page->url(),
         'slug' => $page->slug(),
-        'isActive' => $page->isActive()
+        'isActive' => $page->isActive(),
+        'icon' => $page->navicon()->isNotEmpty() ? $page->navicon()->toString() : 'Home'
     ];
 }
 

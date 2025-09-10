@@ -3,6 +3,25 @@ import { useId } from "react"
 import {
   GlobeIcon,
   HomeIcon,
+  BookOpenIcon,
+  NewspaperIcon,
+  PenToolIcon,
+  FileTextIcon,
+  UsersIcon,
+  MessageSquareIcon,
+  CalendarIcon,
+  ArchiveIcon,
+  BookmarkIcon,
+  TagIcon,
+  LayoutIcon,
+  InfoIcon,
+  MailIcon,
+  ImageIcon,
+  MapPinIcon,
+  SettingsIcon,
+  BriefcaseIcon,
+  HeartIcon,
+  StarIcon,
 } from "lucide-react"
 
 import ThemeToggle from "@/components/ui/theme-toggle"
@@ -59,6 +78,35 @@ const Comp582: React.FC<Comp582Props> = (props) => {
 
   // Debug logging
   console.log('Comp582 props:', props)
+
+  // Function to get icon component by name
+  const getIconComponent = (iconName: string) => {
+    const iconMap: Record<string, any> = {
+      Home: HomeIcon,
+      BookOpen: BookOpenIcon,
+      Newspaper: NewspaperIcon,
+      PenTool: PenToolIcon,
+      FileText: FileTextIcon,
+      Users: UsersIcon,
+      MessageSquare: MessageSquareIcon,
+      Calendar: CalendarIcon,
+      Archive: ArchiveIcon,
+      Bookmark: BookmarkIcon,
+      Tag: TagIcon,
+      Layout: LayoutIcon,
+      Info: InfoIcon,
+      Mail: MailIcon,
+      Image: ImageIcon,
+      MapPin: MapPinIcon,
+      Globe: GlobeIcon,
+      Settings: SettingsIcon,
+      Briefcase: BriefcaseIcon,
+      Heart: HeartIcon,
+      Star: StarIcon,
+    }
+    
+    return iconMap[iconName] || HomeIcon // Fallback to HomeIcon if not found
+  }
 
   const id = useId()
   const [currentLanguage, setCurrentLanguage] = useState(defaultlanguage)
@@ -240,22 +288,25 @@ const Comp582: React.FC<Comp582Props> = (props) => {
               <div className="container mx-auto p-4">
                 <NavigationMenu className="max-w-none *:w-full">
                   <NavigationMenuList className="flex-col items-start gap-2">
-                    {shownavigation && sitepages.map((page: any, index: number) => (
-                      <NavigationMenuItem key={index} className="w-full">
-                        <NavigationMenuLink
-                          href={page.url || '#'}
-                          className="flex items-center gap-2 py-2 px-3 rounded-md hover:bg-accent"
-                          onClick={() => setMobileMenuOpen(false)}
-                        >
-                          <HomeIcon
-                            size={16}
-                            className="text-muted-foreground"
-                            aria-hidden="true"
-                          />
-                          <span>{page.title || `${translations.page || "Page"} ${index + 1}`}</span>
-                        </NavigationMenuLink>
-                      </NavigationMenuItem>
-                    ))}
+                    {shownavigation && sitepages.map((page: any, index: number) => {
+                      const IconComponent = getIconComponent(page.icon)
+                      return (
+                        <NavigationMenuItem key={index} className="w-full">
+                          <NavigationMenuLink
+                            href={page.url || '#'}
+                            className="flex flex-row items-center py-2 px-3 rounded-md hover:bg-accent w-full relative"
+                            onClick={() => setMobileMenuOpen(false)}
+                          >
+                            <IconComponent
+                              size={16}
+                              className="text-muted-foreground absolute start-3"
+                              aria-hidden="true"
+                            />
+                            <span className="flex-1 text-center">{page.title || `${translations.page || "Page"} ${index + 1}`}</span>
+                          </NavigationMenuLink>
+                        </NavigationMenuItem>
+                      )
+                    })}
                   </NavigationMenuList>
                 </NavigationMenu>
               </div>

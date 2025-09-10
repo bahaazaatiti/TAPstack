@@ -2,6 +2,10 @@ Title: Home
 
 ----
 
+Navicon: Image
+
+----
+
 Header: [{"content":{"logolight":["file://6mnvswiucrxjrtnh"],"logodark":["file://ydknwavegcs9owf6"],"logotext":"TAP","shownavigation":"true","languages":[{"value":"en","label":"English"},{"value":"ar","label":"العربية"}],"defaultlanguage":"en","showthemetoggle":"true","showlanguageselector":"true","showusermenu":"true","logo":["file://pn0tebstfpgwsgst"]},"id":"5b3bdef2-ba38-46de-b6f1-530b370b636c","isHidden":false,"type":"comp582"}]
 
 ----
