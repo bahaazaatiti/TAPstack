@@ -740,7 +740,10 @@ rsync -avz --exclude node_modules --exclude .git \
   --exclude src --exclude .env \
   ./ user@server:/path/to/site/
 ```
-
+#### static deployment
+put public folder stuff outside, and changer header to import built assets
+add config.php
+and fix index.php to point to correct directory(since moved out of public)
 ## Troubleshooting
 
 ### Block Not Mounting

@@ -1,0 +1,10 @@
+name: World Map Hero
+icon: globe
+info: "Hero section with world map showing dots on Lebanon, Argentina, United States, and Syria"
+fields:
+  title:
+    label: Title
+    type: text
+    placeholder: "Welcome to our global network"
+    default: "Connected Across Continents"
+    help: The main heading text for the hero section
