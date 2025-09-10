@@ -31,6 +31,7 @@ interface Features03Props {
       height: number;
     } | null;
     features: Array<{
+      title: string;
       icon: string;
       text: string;
     }>;
@@ -60,10 +61,12 @@ const Features03: React.FC<Features03Props> = (props) => {
         image: null,
         features: [
           {
+            title: "Drag & Drop Design",
             icon: "settings2",
             text: "Design your space with drag-and-drop simplicity—create grids, lists, or galleries in seconds."
           },
           {
+            title: "Interactive Elements",
             icon: "blocks", 
             text: "Embed polls, quizzes, or forms to keep your audience engaged."
           }
@@ -77,10 +80,12 @@ const Features03: React.FC<Features03Props> = (props) => {
         image: null,
         features: [
           {
+            title: "Real-time Analytics",
             icon: "star",
             text: "Track engagement with real-time analytics and insights."
           },
           {
+            title: "Audience Connection",
             icon: "heart",
             text: "Build stronger connections with your audience through interactive content."
           }
@@ -179,7 +184,7 @@ const Features03: React.FC<Features03Props> = (props) => {
                       </span>
 
                       {/* Enhanced Features with Collapsible Details */}
-                      <ScrollArea className="mt-6 max-h-64">
+                      <ScrollArea className="mt-6 max-h-96">
                         <ul className="space-y-4">
                           {card.features.map((feature, index) => (
                             <li key={index}>
@@ -191,15 +196,27 @@ const Features03: React.FC<Features03Props> = (props) => {
                                   <div className="flex items-start gap-3 flex-1">
                                     {getIcon(feature.icon)}
                                     <p className="-mt-0.5 font-medium">
-                                      {feature.text.split('\n')[0]}
+                                      {feature.title}
                                     </p>
                                   </div>
                                   <ChevronDown className={`h-4 w-4 transition-transform ${openFeatures[`${cardIndex}-${index}`] ? 'rotate-180' : ''}`} />
                                 </CollapsibleTrigger>
                                 <CollapsibleContent className="ps-9 pt-2">
-                                  <p className="text-sm text-muted-foreground">
-                                    {feature.text.includes('\n') ? feature.text.split('\n').slice(1).join('\n').trim() : 'Learn more about this feature and how it can benefit your workflow.'}
-                                  </p>
+                                  <div className="text-sm text-muted-foreground space-y-2">
+                                    {(() => {
+                                      const parts = feature.text.split(/[-•]\s+/);
+                                      if (parts.length > 1) {
+                                        return parts.slice(1).map((part, idx) => (
+                                          <p key={idx} className="leading-relaxed">
+                                            • {part.trim()}
+                                          </p>
+                                        ));
+                                      } else if (parts[0] && parts[0].trim()) {
+                                        return <p className="leading-relaxed">{parts[0].trim()}</p>;
+                                      }
+                                      return <p className="leading-relaxed">Learn more about this feature and how it can benefit your workflow.</p>;
+                                    })()}
+                                  </div>
                                 </CollapsibleContent>
                               </Collapsible>
                             </li>
@@ -290,15 +307,27 @@ const Features03: React.FC<Features03Props> = (props) => {
                                 <div className="flex items-start gap-3 flex-1">
                                   {getIcon(feature.icon)}
                                   <p className="-mt-0.5 font-medium">
-                                    {feature.text.split('\n')[0]}
+                                    {feature.title}
                                   </p>
                                 </div>
                                 <ChevronDown className={`h-4 w-4 transition-transform ${openFeatures[`${cardIndex}-${index}`] ? 'rotate-180' : ''}`} />
                               </CollapsibleTrigger>
                               <CollapsibleContent className="ps-9 pt-2">
-                                <p className="text-sm text-muted-foreground">
-                                  {feature.text.includes('\n') ? feature.text.split('\n').slice(1).join('\n').trim() : 'Learn more about this feature and how it can benefit your workflow.'}
-                                </p>
+                                <div className="text-sm text-muted-foreground space-y-2">
+                                  {(() => {
+                                    const parts = feature.text.split(/[-•]\s+/);
+                                    if (parts.length > 1) {
+                                      return parts.slice(1).map((part, idx) => (
+                                        <p key={idx} className="leading-relaxed">
+                                          • {part.trim()}
+                                        </p>
+                                      ));
+                                    } else if (parts[0] && parts[0].trim()) {
+                                      return <p className="leading-relaxed">{parts[0].trim()}</p>;
+                                    }
+                                    return <p className="leading-relaxed">Learn more about this feature and how it can benefit your workflow.</p>;
+                                  })()}
+                                </div>
                               </CollapsibleContent>
                             </Collapsible>
                           </li>

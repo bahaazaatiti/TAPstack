@@ -19,6 +19,7 @@ foreach ($block->cards()->toStructure() as $card) {
     foreach ($card->features()->toStructure() as $feature) {
         $features[] = [
             'icon' => $feature->icon()->value(),
+            'title' => $feature->title()->value(),
             'text' => $feature->text()->value()
         ];
     }

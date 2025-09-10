@@ -33,6 +33,12 @@ fields:
         label: Features
         type: structure
         fields:
+          title:
+            label: Feature Title
+            type: text
+            placeholder: "Feature Title"
+            required: true
+            help: Title/header for this feature
           icon:
             label: Icon
             type: select
@@ -53,7 +59,7 @@ fields:
             label: Feature Text
             type: textarea
             placeholder: "Description of this feature..."
-            help: Description text for this feature
+            help: Description text for this feature (supports rich text with dashes for bullet points)
         help: List of features for this card
       buttontext:
         label: Button Text
@@ -73,18 +79,22 @@ fields:
     default:
       - title: "Plan Smarter"
         features:
-          - icon: settings2
+          - title: "Drag & Drop Design"
+            icon: settings2
             text: "Design your space with drag-and-drop simplicity—create grids, lists, or galleries in seconds."
-          - icon: blocks
+          - title: "Interactive Elements"
+            icon: blocks
             text: "Embed polls, quizzes, or forms to keep your audience engaged."
         buttontext: "Build your strategy"
         buttonurl: "#"
         buttonexternal: false
       - title: "Engage Better"
         features:
-          - icon: star
+          - title: "Real-time Analytics"
+            icon: star
             text: "Track engagement with real-time analytics and insights."
-          - icon: heart
+          - title: "Audience Connection"
+            icon: heart
             text: "Build stronger connections with your audience through interactive content."
         buttontext: "Start engaging"
         buttonurl: "#"
