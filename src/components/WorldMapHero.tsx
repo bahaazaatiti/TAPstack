@@ -22,7 +22,8 @@ import globeData from "@/data/globe.json";
 
 interface WorldMapHeroProps {
   title?: string;
-  [key: string]: any;
+  subtitle?: string;
+  bottomtext?: string;
 }
 
 interface CountryData {
@@ -105,7 +106,8 @@ const getCountryCoordinates = (countryName: string): number[][] => {
 
 const WorldMapHero: React.FC<WorldMapHeroProps> = ({
   title = "Connected Across Continents",
-  ...props
+  subtitle = "Our presence spans across continents.",
+  bottomtext = "For a United Assembly of Alawites worldwide.",
 }) => {
   const map = new DottedMap({ height: 100, grid: "diagonal" });
 
@@ -192,8 +194,8 @@ const WorldMapHero: React.FC<WorldMapHeroProps> = ({
     }, 
   ];
 
-  const dotColor = "#0ea5e9";
-  const highlightColor = "#f59e0b"; // Amber color for highlights
+  const dotColor = "#4b7346";
+  const highlightColor = "#fadc5e"; // Amber color for highlights
 
   // Function to generate dots based on actual country boundaries
   const generateCountryDots = (countryName: string, count: number = 100) => {
@@ -274,7 +276,7 @@ const WorldMapHero: React.FC<WorldMapHeroProps> = ({
             {title}
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Our presence spans across continents.
+            {subtitle}
           </p>
         </div>
 
@@ -416,7 +418,7 @@ const WorldMapHero: React.FC<WorldMapHeroProps> = ({
                       <div>
                         <div className="flex items-center gap-2 mb-2">
                           <Building className="h-4 w-4 text-muted-foreground" />
-                          <span className="text-sm font-medium">Partner Organizations</span>
+                          <span className="text-sm font-medium">Alawite Organizations</span>
                         </div>
                         <div className="flex flex-wrap gap-1">
                           {location.associations.map((org, index) => (
@@ -481,7 +483,7 @@ const WorldMapHero: React.FC<WorldMapHeroProps> = ({
         {/* Optional subtitle or call-to-action */}
         <div className="text-center mt-8">
           <p className="text-sm text-muted-foreground">
-            For a United Assembly of Alawites worldwide.
+            {bottomtext}
           </p>
         </div>
       </div>

@@ -8,3 +8,15 @@ fields:
     placeholder: "Welcome to our global network"
     default: "Connected Across Continents"
     help: The main heading text for the hero section
+  subtitle:
+    label: Subtitle
+    type: text
+    placeholder: "Our presence spans across continents."
+    default: "Our presence spans across continents."
+    help: The subtitle text below the main title
+  bottomtext:
+    label: Bottom Text
+    type: text
+    placeholder: "For a United Assembly of Alawites worldwide."
+    default: "For a United Assembly of Alawites worldwide."
+    help: The text displayed at the bottom of the component
