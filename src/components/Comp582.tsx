@@ -13,6 +13,7 @@ import {
 import ThemeToggle from "@/components/ui/theme-toggle"
 import SiteSearch from "@/components/ui/site-search"
 import { Button } from "@/components/ui/button"
+import LogoMain from "@/components/logos/logo"
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -27,10 +28,10 @@ import {
   MenubarTrigger,
 } from "@/components/ui/menubar"
 import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/ui/hover-card"
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 import {
   Collapsible,
   CollapsibleContent,
@@ -146,10 +147,10 @@ const Comp582: React.FC<Comp582Props> = (props) => {
     const hasAnyLogo = hasLightLogo || hasDarkLogo
     
     return (
-      <HoverCard>
-        <HoverCardTrigger asChild>
+      <Tooltip>
+        <TooltipTrigger asChild>
           <div className="flex items-center gap-2 cursor-pointer">
-            {hasAnyLogo && (
+            {hasAnyLogo ? (
               <div className="relative h-8 w-auto">
                 {/* Light mode logo */}
                 {hasLightLogo && (
@@ -183,29 +184,24 @@ const Comp582: React.FC<Comp582Props> = (props) => {
                   />
                 )}
               </div>
+            ) : (
+              /* Fallback to LogoMain when no custom logo is provided */
+              <div className="h-8 w-auto">
+                <LogoMain className="h-8 w-auto" />
+              </div>
             )}
             {logotext && (
               <span className="text-xl font-bold">{logotext}</span>
             )}
           </div>
-        </HoverCardTrigger>
-        <HoverCardContent className="w-80">
-          <div className="space-y-2">
+        </TooltipTrigger>
+        <TooltipContent>
+          <div className="space-y-1">
             <h4 className="text-sm font-semibold">{logotext}</h4>
-            <p className="text-sm text-muted-foreground">
-              {translations.home_tooltip || "Click to return to the homepage"}
-            </p>
-            {(hasLightLogo || hasDarkLogo) && (
-              <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                <span>{translations.logo_assets || "Logo assets:"}</span>
-                {hasLightLogo && <span>{translations.light_mode || "Light mode"}</span>}
-                {hasLightLogo && hasDarkLogo && <span>•</span>}
-                {hasDarkLogo && <span>{translations.dark_mode || "Dark mode"}</span>}
-              </div>
-            )}
+            <p>{translations.home_tooltip || "Click to return to the homepage"}</p>
           </div>
-        </HoverCardContent>
-      </HoverCard>
+        </TooltipContent>
+      </Tooltip>
     )
   }
 

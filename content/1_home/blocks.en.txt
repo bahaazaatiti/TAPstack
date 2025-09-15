@@ -6,7 +6,7 @@ Navicon: Brain
 
 ----
 
-Header: [{"content":{"logolight":["file://6mnvswiucrxjrtnh"],"logodark":["file://ydknwavegcs9owf6"],"logotext":"TAP","shownavigation":"true","languages":[{"value":"en","label":"English"},{"value":"ar","label":"العربية"}],"defaultlanguage":"en","showthemetoggle":"true","showlanguageselector":"true","showusermenu":"true","logo":["file://pn0tebstfpgwsgst"]},"id":"5b3bdef2-ba38-46de-b6f1-530b370b636c","isHidden":false,"type":"comp582"}]
+Header: [{"content":{"logolight":[],"logodark":[],"logotext":"TAP","shownavigation":"true","languages":[{"value":"en","label":"English"},{"value":"ar","label":"العربية"}],"defaultlanguage":"en","showthemetoggle":"true","showlanguageselector":"true","showusermenu":"true","logo":["file://pn0tebstfpgwsgst"]},"id":"5b3bdef2-ba38-46de-b6f1-530b370b636c","isHidden":false,"type":"comp582"}]
 
 ----
 
@@ -14,7 +14,7 @@ Blocks: [{"content":{"title":"The Alawite Project","subtitle":"A global initiati
 
 ----
 
-Footer: [{"content":{"name":"","logo":[],"columns":[],"copyright":"© 2025 The Alawite Project. All Rights Reserved","policies":[],"showmodetoggle":"true"},"id":"faeac603-8776-4582-9a24-372e766f201e","isHidden":false,"type":"footer"}]
+Footer: [{"content":{"copyright":"© 2025 The Alawite Project. All Rights Reserved","socials":[],"showmodetoggle":"true","name":"","logo":[],"columns":[],"policies":[]},"id":"faeac603-8776-4582-9a24-372e766f201e","isHidden":false,"type":"footer"}]
 
 ----
 
