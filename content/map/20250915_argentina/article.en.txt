@@ -1,0 +1,45 @@
+Title: Argentina
+
+----
+
+Text: 
+
+----
+
+Date: 2025-09-15
+
+----
+
+Category: Map
+
+----
+
+Author: - user://ce0b9kJC
+
+----
+
+Tags: Asociacion La Union Alauita de Beneficencia, Asociacion Civil y Cultural APAIB, Asociacion Islamica Alauita de Beneficencia, Mosque Maulana ALI RIDA
+
+----
+
+Description: 180 Thousand
+
+----
+
+Readtime: 5
+
+----
+
+Featuredimage: 
+
+----
+
+Latitude: -34.6118
+
+----
+
+Longitude: -63.396
+
+----
+
+Uuid: vyafgzqfa2a8dffk

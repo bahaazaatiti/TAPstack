@@ -118,49 +118,48 @@ tabs:
           - status
           - category
 
-      # earth_articles:
-      #   type: pages
-      #   headline: Earth Articles
-      #   parent: site.find("earth")
-      #   template: article
-      #   layout: table
-      #   columns:
-      #     title:
-      #       label: Title
-      #       width: 3/6
-      #     author:
-      #       label: Author
-      #       type: users
-      #       query: page.author
-      #       text: "{{ user.name }}"
-      #       width: 1/6
-      #     category:
-      #       label: Category
-      #       text: "{{ page.category }}"
-      #       width: 1/6
-      #     created:
-      #       label: Created
-      #       type: date
-      #       value: "{{ page.date }}"
-      #       width: 1/6
-      #     status:
-      #       label: Status
-      #       text: "{{ page.status }}"
-      #       width: 1/6
-      #   sortBy: date desc
-      #   create:
-      #     template: article
-      #   empty: "No earth articles yet. Create your first article!"
-      #   search: true
-      #   filters:
-      #     - status
-      #     - category
+      map_articles:
+        type: pages
+        headline: Map Articles
+        parent: site.find("map")
+        template: article
+        layout: table
+        columns:
+          title:
+            label: Title
+            width: 1/6
+          tags:
+            label: Tags
+            text: "{{ page.tags }}"
+            width: 3/6
+          description:
+            label: Description
+            text: "{{ page.description }}"
+            width: 1/6
+          created:
+            label: Created
+            type: date
+            value: "{{ page.date }}"
+            width: 1/6
+          status:
+            label: Status
+            text: "{{ page.status }}"
+            width: 1/6
+        sortBy: date desc
+        create:
+          template: article
+        empty: "No earth articles yet. Create your first article!"
+        search: true
+        filters:
+          - status
+          - category
 
   pages:
     label: Pages
     sections:
       pages:
         type: pages
+        query: site.children.filterBy('slug', '!=', 'map')
         headline: Pages
         layout: pages
         sortBy: num asc
@@ -182,13 +181,10 @@ tabs:
 
       tech:
         type: pages
+        query: site.children.filterBy('intendedTemplate', 'not in', ['blog', 'blocks', 'article']).add(site.children.filterBy('slug', '==', 'map'))
         headline: Tech Pages
         layout: pages
         sortBy: num asc
-        templatesIgnore:
-          - blog
-          - blocks
-          - article
         columns:
           title:
             label: Title

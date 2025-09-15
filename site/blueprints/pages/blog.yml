@@ -97,6 +97,7 @@ tabs:
               - applecarousel
               - authorbox
               - textblock
+              - worldmaphero
             label: Content Blocks
             
           footer:

@@ -18,96 +18,32 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Users, Building } from "lucide-react";
-import globeData from "@/data/globe.json";
 
 interface WorldMapHeroProps {
   title?: string;
   subtitle?: string;
   bottomtext?: string;
+  articles?: ArticleLocation[];
 }
 
-interface CountryData {
+interface ArticleLocation {
   lat: number;
   lng: number;
   label: string;
   population: string;
   associations: string[];
+  url: string;
+  author: string;
+  category: string;
+  date: string;
+  readTime: number;
 }
-
-// GeoJSON types
-interface GeoJSONFeature {
-  type: 'Feature';
-  properties: {
-    admin: string;
-    name: string;
-    continent: string;
-  };
-  geometry: {
-    type: 'Polygon' | 'MultiPolygon';
-    coordinates: number[][][] | number[][][][];
-  };
-}
-
-interface GeoJSONData {
-  type: 'FeatureCollection';
-  features: GeoJSONFeature[];
-}
-
-// Helper function to extract coordinates from GeoJSON geometry
-const extractCoordinatesFromGeometry = (geometry: GeoJSONFeature['geometry']): number[][] => {
-  let allCoords: number[][] = [];
-  
-  if (geometry.type === 'Polygon') {
-    // For Polygon, coordinates is number[][][]
-    const coords = geometry.coordinates as number[][][];
-    allCoords = coords[0]; // Take outer ring
-  } else if (geometry.type === 'MultiPolygon') {
-    // For MultiPolygon, coordinates is number[][][][]
-    const coords = geometry.coordinates as number[][][][];
-    // Take the largest polygon (usually the main landmass)
-    let largestPolygon = coords[0][0];
-    for (const polygon of coords) {
-      if (polygon[0].length > largestPolygon.length) {
-        largestPolygon = polygon[0];
-      }
-    }
-    allCoords = largestPolygon;
-  }
-  
-  return allCoords;
-};
-
-// Function to get country boundary coordinates from globe.json
-const getCountryCoordinates = (countryName: string): number[][] => {
-  const geoData = globeData as GeoJSONData;
-  
-  // Map display names to admin names in the data
-  const countryMapping: Record<string, string> = {
-    'Lebanon': 'Lebanon',
-    'Argentina': 'Argentina', 
-    'United States': 'United States of America',
-    'Syria': 'Syria',
-    'Australia': 'Australia',
-    'Canada': 'Canada',
-    'Germany': 'Germany',
-    'France': 'France',
-  };
-  
-  const adminName = countryMapping[countryName] || countryName;
-  const feature = geoData.features.find(f => f.properties.admin === adminName);
-  
-  if (!feature) {
-    console.warn(`Country ${countryName} not found in globe data`);
-    return [];
-  }
-  
-  return extractCoordinatesFromGeometry(feature.geometry);
-};
 
 const WorldMapHero: React.FC<WorldMapHeroProps> = ({
   title = "Connected Across Continents",
   subtitle = "Our presence spans across continents.",
   bottomtext = "For a United Assembly of Alawites worldwide.",
+  articles: articleData = [],
 }) => {
   const map = new DottedMap({ height: 100, grid: "diagonal" });
 
@@ -134,138 +70,23 @@ const WorldMapHero: React.FC<WorldMapHeroProps> = ({
     return { x, y };
   };
 
-  // Static locations for Lebanon, Argentina, United States, and Syria with detailed info
-  const locations: CountryData[] = [
+  // Use articles from props, with fallback to static data for demo
+  const locations: ArticleLocation[] = articleData.length > 0 ? articleData : [
     { 
       lat: 33.82, 
       lng: 35.48, 
       label: "Lebanon",
       population: "150 Thousand",
-      associations: ["Alawite Islamic Charity Association"]
+      associations: ["Alawite Islamic Charity Association"],
+      url: "/lebanon",
+      author: "Demo Author",
+      category: "Geography",
+      date: "Nov 20, 2024",
+      readTime: 5
     },
-    { 
-      lat: -34.6118, 
-      lng: -63.3960, 
-      label: "Argentina",
-      population: "180 Thousand", 
-      associations: ["Asociacion La Union Alauita de Beneficencia", "Asociacion Civil y Cultural APAIB", "Asociacion Islamica Alauita de Beneficencia", "Mosque Maulana ALI RIDA"]
-    },
-    { 
-      lat: 39.8283, 
-      lng: -98.5795, 
-      label: "United States",
-      population: "Major Community",
-      associations: ["Alawites Association of the United States"]
-    },
-    { 
-      lat: 34.8149, 
-      lng: 39.2765, 
-      label: "Syria",
-      population: "2-3 million",
-      associations: ["Soon"]
-    },
-    { 
-      lat: -20.2744, 
-      lng: 133.7751, 
-      label: "Australia",
-      population: "43 Thousand",
-      associations: ["Islamic Alawi Centre of Tasmania", "Alawi Islamic Social Centre", "Alawi Islamic Association of Victoria", "Al Sadiq College", "Muslim Alawi Youth Movement","Moslem Alawite Society"]
-    },
-    { 
-      lat: 56.1304, 
-      lng: -106.3468, 
-      label: "Canada",
-      population: "Major Community",
-      associations: ["Alawi Islamic Culturals Assoc of Windsor", "Alawite Association in Canada"]
-    },
-    { 
-      lat: 51.1657, 
-      lng: 10.4515, 
-      label: "Germany",
-      population: "70 Thousand",
-      associations: ["Avrupa Arap Alevileri Federasyonu", "Iassist the Alawite League in Europe"]
-    },
-    { 
-      lat: 46.6034, 
-      lng: 1.8883, 
-      label: "France",
-      population: "Major Community",
-      associations: ["M.O.D. Moyen d'orient diversifié"]
-    }, 
   ];
 
   const dotColor = "#4b7346";
-  const highlightColor = "#fadc5e"; // Amber color for highlights
-
-  // Function to generate dots based on actual country boundaries
-  const generateCountryDots = (countryName: string, count: number = 100) => {
-    const boundaryCoords = getCountryCoordinates(countryName);
-    
-    if (boundaryCoords.length === 0) {
-      console.warn(`No boundary data found for ${countryName}`);
-      return [];
-    }
-    
-    const dots = [];
-    
-    // Calculate bounding box of the country
-    const lngs = boundaryCoords.map(coord => coord[0]);
-    const lats = boundaryCoords.map(coord => coord[1]);
-    const minLng = Math.min(...lngs);
-    const maxLng = Math.max(...lngs);
-    const minLat = Math.min(...lats);
-    const maxLat = Math.max(...lats);
-    
-    // Function to check if point is inside polygon using ray casting
-    const isPointInPolygon = (lat: number, lng: number): boolean => {
-      let inside = false;
-      for (let i = 0, j = boundaryCoords.length - 1; i < boundaryCoords.length; j = i++) {
-        const xi = boundaryCoords[i][0], yi = boundaryCoords[i][1];
-        const xj = boundaryCoords[j][0], yj = boundaryCoords[j][1];
-        
-        if (((yi > lat) !== (yj > lat)) && (lng < (xj - xi) * (lat - yi) / (yj - yi) + xi)) {
-          inside = !inside;
-        }
-      }
-      return inside;
-    };
-    
-    // Generate random points within country boundaries
-    let attempts = 0;
-    const maxAttempts = count * 10; // Prevent infinite loop
-    
-    while (dots.length < count && attempts < maxAttempts) {
-      const randomLng = minLng + Math.random() * (maxLng - minLng);
-      const randomLat = minLat + Math.random() * (maxLat - minLat);
-      
-      if (isPointInPolygon(randomLat, randomLng)) {
-        dots.push({ lat: randomLat, lng: randomLng });
-      }
-      attempts++;
-    }
-    
-    // If we couldn't generate enough points inside the polygon, 
-    // fill remaining with points near the boundary
-    while (dots.length < count) {
-      const randomIndex = Math.floor(Math.random() * boundaryCoords.length);
-      const [lng, lat] = boundaryCoords[randomIndex];
-      
-      // Add small random offset
-      const offsetLat = lat + (Math.random() - 0.5) * 0.5;
-      const offsetLng = lng + (Math.random() - 0.5) * 0.5;
-      
-      dots.push({ lat: offsetLat, lng: offsetLng });
-    }
-    
-    return dots;
-  };
-
-  // Generate country-based dots for each location using actual boundary data
-  const countryRegions = locations.map((location, index) => ({
-    ...location,
-    nearbyDots: generateCountryDots(location.label),
-    index
-  }));
 
   return (
     <section className="w-full py-16 lg:px-4 bg-background">
@@ -312,8 +133,8 @@ const WorldMapHero: React.FC<WorldMapHeroProps> = ({
                 <stop offset="100%" stopColor={dotColor} stopOpacity="0.6" />
               </linearGradient>
               <linearGradient id="highlight-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor={highlightColor} stopOpacity="1" />
-                <stop offset="100%" stopColor={highlightColor} stopOpacity="0.6" />
+                <stop offset="0%" stopColor="#fadc5e" stopOpacity="1" />
+                <stop offset="100%" stopColor="#fadc5e" stopOpacity="0.6" />
               </linearGradient>
             </defs>
 
@@ -322,22 +143,6 @@ const WorldMapHero: React.FC<WorldMapHeroProps> = ({
               const point = projectPoint(location.lat, location.lng);
               return (
                 <g key={`location-${i}`}>
-                  {/* Country region dots - hidden by default, shown on parent hover */}
-                  {countryRegions[i].nearbyDots.map((dot, dotIndex) => {
-                    const dotPoint = projectPoint(dot.lat, dot.lng);
-                    return (
-                      <circle
-                        key={`nearby-${i}-${dotIndex}`}
-                        cx={dotPoint.x}
-                        cy={dotPoint.y}
-                        r="2"
-                        fill={highlightColor}
-                        className="opacity-0 transition-opacity duration-300"
-                        data-country={i}
-                      />
-                    );
-                  })}
-                  
                   {/* Main dot */}
                   <circle
                     cx={point.x}
@@ -382,27 +187,20 @@ const WorldMapHero: React.FC<WorldMapHeroProps> = ({
                         transform: 'translate(-50%, -50%)'
                       }}
                       onMouseEnter={() => {
-                        // Show nearby dots for this country
-                        const nearbyDots = document.querySelectorAll(`[data-country="${i}"]`);
-                        nearbyDots.forEach(dot => {
-                          (dot as SVGElement).style.opacity = '0.7';
-                          if (dot.getAttribute('data-main') === 'true') {
-                            (dot as SVGElement).setAttribute('r', '5');
-                            (dot as SVGElement).setAttribute('fill', 'url(#highlight-gradient)');
-                          }
-                        });
+                        // Highlight main dot
+                        const mainDot = document.querySelector(`[data-country="${i}"][data-main="true"]`);
+                        if (mainDot) {
+                          (mainDot as SVGElement).setAttribute('r', '5');
+                          (mainDot as SVGElement).setAttribute('fill', 'url(#highlight-gradient)');
+                        }
                       }}
                       onMouseLeave={() => {
-                        // Hide nearby dots for this country
-                        const nearbyDots = document.querySelectorAll(`[data-country="${i}"]`);
-                        nearbyDots.forEach(dot => {
-                          if (dot.getAttribute('data-main') !== 'true') {
-                            (dot as SVGElement).style.opacity = '0';
-                          } else {
-                            (dot as SVGElement).setAttribute('r', '4');
-                            (dot as SVGElement).setAttribute('fill', 'url(#dot-gradient)');
-                          }
-                        });
+                        // Reset main dot
+                        const mainDot = document.querySelector(`[data-country="${i}"][data-main="true"]`);
+                        if (mainDot) {
+                          (mainDot as SVGElement).setAttribute('r', '4');
+                          (mainDot as SVGElement).setAttribute('fill', 'url(#dot-gradient)');
+                        }
                       }}
                     />
                   </HoverCardTrigger>
@@ -412,7 +210,7 @@ const WorldMapHero: React.FC<WorldMapHeroProps> = ({
                         <h4 className="text-lg font-semibold leading-none">{location.label}</h4>
                         <div className="flex items-center gap-2 mt-2">
                           <Users className="h-4 w-4 text-muted-foreground" />
-                          <span className="text-sm text-muted-foreground">{location.population}</span>
+                          <span className="text-sm text-muted-foreground">Population: {location.population}</span>
                         </div>
                       </div>
                       <div>
@@ -421,12 +219,17 @@ const WorldMapHero: React.FC<WorldMapHeroProps> = ({
                           <span className="text-sm font-medium">Alawite Organizations</span>
                         </div>
                         <div className="flex flex-wrap gap-1">
-                          {location.associations.map((org, index) => (
+                          {location.associations.map((tag: string, index: number) => (
                             <Badge key={index} variant="secondary" className="text-xs">
-                              {org}
+                              {tag}
                             </Badge>
                           ))}
                         </div>
+                      </div>
+                      <div className="pt-2">
+                        <Button asChild size="sm" className="w-full">
+                          <a href={location.url}>Read Article</a>
+                        </Button>
                       </div>
                     </div>
                   </HoverCardContent>
@@ -456,18 +259,21 @@ const WorldMapHero: React.FC<WorldMapHeroProps> = ({
                         <div className="mb-4">
                           <div className="flex items-center gap-2 mb-3">
                             <Building className="h-4 w-4 text-muted-foreground" />
-                            <span className="text-sm font-medium">Partner Organizations</span>
+                            <span className="text-sm font-medium">Alawite Organizations</span>
                           </div>
                           <div className="space-y-2">
-                            {location.associations.map((org, index) => (
+                            {location.associations.map((tag: string, index: number) => (
                               <Badge key={index} variant="outline" className="mr-2">
-                                {org}
+                                {tag}
                               </Badge>
                             ))}
                           </div>
                         </div>
                       </div>
                       <DrawerFooter>
+                        <Button asChild>
+                          <a href={location.url}>Read Article</a>
+                        </Button>
                         <DrawerClose asChild>
                           <Button variant="outline">Close</Button>
                         </DrawerClose>

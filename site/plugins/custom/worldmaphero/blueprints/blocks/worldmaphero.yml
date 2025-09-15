@@ -1,6 +1,6 @@
 name: World Map Hero
 icon: globe
-info: "Hero section with world map showing dots on Lebanon, Argentina, United States, and Syria"
+info: "Hero section with world map showing article locations"
 fields:
   title:
     label: Title
@@ -20,3 +20,61 @@ fields:
     placeholder: "For a United Assembly of Alawites worldwide."
     default: "For a United Assembly of Alawites worldwide."
     help: The text displayed at the bottom of the component
+    
+  selectionMode:
+    label: Article Selection Mode
+    type: select
+    default: manual
+    options:
+      manual: Manual Selection (Pick articles)
+      latest: Latest from Parent Section
+      category: Latest from Category
+    help: Choose how to select articles for the map
+    
+  articles:
+    label: Articles
+    type: pages
+    multiple: true
+    min: 0
+    max: 20
+    query: site.index.filterBy('template', 'article').listed
+    info: "{{ page.title }} - {{ page.date.toDate('M j, Y') }}"
+    help: "Select articles to display on the map. Only articles with coordinates will be shown."
+    empty: "No articles found on the site."
+    when:
+      selectionMode: manual
+    
+  latestCount:
+    label: Number of Latest Articles
+    type: number
+    default: 10
+    min: 1
+    max: 20
+    help: How many of the latest articles to show from parent section
+    when:
+      selectionMode: latest
+    
+  filterCategory:
+    label: Category
+    type: select
+    options:
+      Map: Map
+    help: Select which category to filter articles by
+    when:
+      selectionMode: category
+    
+  categoryCount:
+    label: Number of Articles from Category
+    type: number
+    default: 10
+    min: 1
+    max: 20
+    help: How many articles to show from the selected category
+    when:
+      selectionMode: category
+    
+  onlyWithCoordinates:
+    label: Only Articles with Coordinates
+    type: toggle
+    default: true
+    help: When auto-selecting, only include articles that have latitude and longitude coordinates
