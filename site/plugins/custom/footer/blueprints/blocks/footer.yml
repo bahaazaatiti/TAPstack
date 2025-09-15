@@ -1,50 +1,32 @@
 name: Footer
 icon: layout
 fields:
-  name:
-    label: Footer Name
-    type: text
-    # default: "Launch UI"
-    help: The brand or site name to display
-  logo:
-    label: Logo Image
-    type: files
-    multiple: false
-    help: Upload a logo image (optional)
-  columns:
-    label: Columns
-    type: structure
-    fields:
-      title:
-        label: Column Title
-        type: text
-      links:
-        label: Links
-        type: structure
-        fields:
-          text:
-            label: Link Text
-            type: text
-          href:
-            label: Link URL
-            type: url
-    help: Add columns with links
   copyright:
     label: Copyright Text
     type: text
     default: "© 2025 The Alawite Project. All rights reserved"
     help: Text to display in the footer
-  policies:
-    label: Policy Links
+  socials:
+    label: Social Media Links
     type: structure
     fields:
-      text:
-        label: Link Text
-        type: text
+      platform:
+        label: Platform
+        type: select
+        options:
+          twitter: Twitter/X
+          facebook: Facebook
+          instagram: Instagram
+          tiktok: TikTok
+          youtube: YouTube
       href:
-        label: Link URL
+        label: Profile URL
         type: url
-    help: Add policy links (e.g. Privacy Policy, Terms)
+      label:
+        label: Custom Label (optional)
+        type: text
+        help: Override default label for accessibility
+    help: Add social media profile links
   showModeToggle:
     label: Show Mode Toggle
     type: toggle

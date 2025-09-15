@@ -474,7 +474,8 @@ $siteData['translations'] = [
     'view_all_articles' => t('view_all_articles'),
     'untitled' => t('untitled'),
     'no_description_available' => t('no_description_available'),
-    'article_image' => t('article_image')
+    'article_image' => t('article_image'),
+    'toggle_theme' => t('toggle_theme')
 ];
 
 // Merge site data with block data

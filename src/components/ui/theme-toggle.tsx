@@ -2,8 +2,19 @@ import { Moon, Sun } from "lucide-react"
 import { useState, useEffect } from "react"
 
 import { Toggle } from "@/components/ui/toggle"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 
-export default function ThemeToggle() {
+interface ThemeToggleProps {
+  translations?: {
+    [key: string]: string;
+  };
+}
+
+export default function ThemeToggle({ translations = {} }: ThemeToggleProps) {
   const [isDark, setIsDark] = useState(false)
 
   useEffect(() => {
@@ -51,17 +62,24 @@ export default function ThemeToggle() {
   }
 
   return (
-    <Toggle 
-      pressed={isDark}
-      onPressedChange={toggleTheme}
-      variant="outline" 
-      size="sm"
-      className="size-8 rounded-full border-none shadow-none"
-      aria-label="Toggle theme"
-    >
-      <Sun className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
-      <Moon className="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
-      <span className="sr-only">Toggle theme</span>
-    </Toggle>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Toggle 
+          pressed={isDark}
+          onPressedChange={toggleTheme}
+          variant="outline" 
+          size="sm"
+          className="size-8 rounded-full border-none shadow-none"
+          aria-label="Toggle theme"
+        >
+          <Sun className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
+          <Moon className="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
+          <span className="sr-only">Toggle theme</span>
+        </Toggle>
+      </TooltipTrigger>
+      <TooltipContent>
+        <p>{translations.toggle_theme || "Toggle theme"}</p>
+      </TooltipContent>
+    </Tooltip>
   )
 }

@@ -111,6 +111,7 @@ return [
     'untitled' => 'Untitled',
     'no_description_available' => 'No description available',
     'article_image' => 'Article image',
+    'toggle_theme' => 'Toggle Theme',
     ],
   'locale'  => 'en_US',
   'url'     => '/',

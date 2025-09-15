@@ -337,7 +337,7 @@ const Comp582: React.FC<Comp582Props> = (props) => {
           />
           {/* Theme toggle */}
           {(showthemetoggle === true || showthemetoggle === 'true') && (
-            <ThemeToggle />
+            <ThemeToggle translations={translations} />
           )}
           {/* Language selector */}
           {(showlanguageselector === true || showlanguageselector === 'true') && languages.length > 0 && (

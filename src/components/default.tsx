@@ -3,7 +3,8 @@ import { cn } from "../lib/utils"
 import ThemeToggle from "@/components/ui/theme-toggle"
 import { Separator } from "./ui/separator"
 import { Button } from "./ui/button"
-import { ArrowUp, Github, LogIn, ChevronDown } from "lucide-react"
+import { ArrowUp, Github, LogIn } from "lucide-react"
+import Socials from "@/components/ui/socials"
 import {
   Footer,
   FooterBottom,
@@ -26,8 +27,8 @@ const FooterSection: React.FC<FooterSectionProps> = (props) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   
   const {
-    copyright = "© 2025 ta. All rights reserved",
-    policies = [],
+    copyright = "© 2025. All rights reserved",
+    socials = [],
     showModeToggle = true,
     className = "",
     translations = {},
@@ -86,15 +87,18 @@ const FooterSection: React.FC<FooterSectionProps> = (props) => {
                 </div>
               </DialogContent>
             </Dialog>
-            <div className="flex items-center gap-4">
-              {Array.isArray(policies) && policies.map((policy: any, index: number) => (
-                <a key={index} href={policy.href}>
-                  {policy.text}
-                </a>
-              ))}
-              {/* Separator and action buttons 
-              //TODO: seperator not working*/}
-              <Separator orientation="vertical" className="h-6 mx-2 w-px bg-gray-300" />
+            
+        {/* Socials + Action buttons */}
+            <div className="flex items-center gap-2 sm:gap-4">
+              {/* Socials: normal flow on mobile, absolutely centered on md+ */}
+              <div className="flex items-center md:absolute md:left-1/2 md:-translate-x-1/2">
+                <Socials socials={socials} />
+              </div>
+
+              {/* Separator - only show on desktop */}
+              <Separator orientation="vertical" className="h-6 mx-2 w-px bg-gray-300 hidden md:block" />
+
+              {/* Action buttons */}
               <Button
                 variant="outline"
                 size="sm"
@@ -104,7 +108,7 @@ const FooterSection: React.FC<FooterSectionProps> = (props) => {
                 <ArrowUp className="size-4" />
                 {translations.back_to_top || "Back to top"}
               </Button>
-              {(showModeToggle === true || showModeToggle === 'true') && <ThemeToggle />}
+              {(showModeToggle === true || showModeToggle === 'true') && <ThemeToggle translations={translations} />}
             </div>
           </FooterBottom>
         </Footer>

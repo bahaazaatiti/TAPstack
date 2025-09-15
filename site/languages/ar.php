@@ -111,6 +111,7 @@ return [
     'untitled' => 'بدون عنوان',
     'no_description_available' => 'لا يوجد وصف متاح',
     'article_image' => 'صورة المقال',
+    'toggle_theme' => 'تبديل المظهر',
   ],
   'locale'  => 'ar_EG',
   'url'     => '/ar',

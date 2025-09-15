@@ -14,7 +14,7 @@ Blocks: [{"content":{"title":"The Alawite Project","subtitle":"About Us","cards"
 
 ----
 
-Footer: [{"content":{"name":"","logo":[],"columns":[],"copyright":"© 2025 The Alawite Project. All Rights Reserved","policies":[],"showmodetoggle":"true"},"id":"57b4b33d-2c5e-4604-8e6a-80d7f5dab780","isHidden":false,"type":"footer"}]
+Footer: [{"content":{"copyright":"© 2025 The Alawite Project. All Rights Reserved","socials":[{"platform":"twitter","href":"https://google.com","label":""},{"platform":"facebook","href":"https://google.com","label":""},{"platform":"instagram","href":"https://google.com","label":""},{"platform":"tiktok","href":"https://google.com","label":""},{"platform":"youtube","href":"https://google.com","label":""}],"showmodetoggle":"true","name":"","logo":["file://mmmahawfouap4atf"],"columns":[{"title":"sd","links":[{"text":"sdaf","href":"https://google.com"}]}],"policies":[{"text":"sdaf","href":"https://google.com"}]},"id":"57b4b33d-2c5e-4604-8e6a-80d7f5dab780","isHidden":false,"type":"footer"}]
 
 ----
 
