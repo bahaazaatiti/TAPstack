@@ -14,6 +14,7 @@ fields:
     options:
       manual: Manual Selection (Pick 10 articles)
       latest: Latest from Parent Section
+      category: Latest from Category
     help: Choose how to select articles for the carousel
     
   articles:
@@ -38,6 +39,28 @@ fields:
     help: How many of the latest articles to show from parent section
     when:
       selectionMode: latest
+    
+  filterCategory:
+    label: Category
+    type: select
+    options:
+      Religious: Religious
+      Historic: Historic
+      Cultural: Cultural
+      Symbolic: Symbolic
+    help: Select which category to filter articles by
+    when:
+      selectionMode: category
+    
+  categoryCount:
+    label: Number of Articles from Category
+    type: number
+    default: 10
+    min: 1
+    max: 20
+    help: How many articles to show from the selected category
+    when:
+      selectionMode: category
     
   onlyWithImages:
     label: Only Articles with Images

@@ -33,15 +33,8 @@ import { cn } from "@/lib/utils";
 import { DateRange } from "react-day-picker";
 import { toast } from "sonner";
 import {
-  BadgeDollarSign,
-  Bike,
-  BookHeart,
-  BriefcaseBusiness,
   Calendar as CalendarIcon,
   ClockIcon,
-  Cpu,
-  FlaskRound,
-  HeartPulse,
   Scale,
   SearchIcon,
   SlidersHorizontal,
@@ -51,6 +44,15 @@ import {
   Copy,
   Share2,
   Bookmark,
+  TrendingUp,
+  Palette,
+  Scroll,
+  MapPin,
+  Church,
+  Archive,
+  Users,
+  Map,
+  Eye,
 } from "lucide-react";
 
 interface BlogProps {
@@ -86,14 +88,16 @@ interface Article {
 }
 
 const categoryIcons = {
-  Technology: { icon: Cpu, background: "bg-indigo-500", color: "text-indigo-500" },
-  Business: { icon: BriefcaseBusiness, background: "bg-amber-500", color: "text-amber-500" },
-  Finance: { icon: BadgeDollarSign, background: "bg-emerald-500", color: "text-emerald-500" },
-  Health: { icon: HeartPulse, background: "bg-rose-500", color: "text-rose-500" },
-  Lifestyle: { icon: BookHeart, background: "bg-cyan-500", color: "text-cyan-500" },
-  Politics: { icon: Scale, background: "bg-teal-500", color: "text-teal-500" },
-  Science: { icon: FlaskRound, background: "bg-purple-500", color: "text-purple-500" },
-  Sports: { icon: Bike, background: "bg-cyan-500", color: "text-cyan-500" },
+  Economy: { icon: TrendingUp, background: "bg-emerald-500", color: "text-emerald-500" },
+  Politics: { icon: Scale, background: "bg-blue-500", color: "text-blue-500" },
+  Culture: { icon: Palette, background: "bg-purple-500", color: "text-purple-500" },
+  History: { icon: Scroll, background: "bg-amber-500", color: "text-amber-500" },
+  Geography: { icon: MapPin, background: "bg-teal-500", color: "text-teal-500" },
+  Religious: { icon: Church, background: "bg-rose-500", color: "text-rose-500" },
+  Historic: { icon: Archive, background: "bg-orange-500", color: "text-orange-500" },
+  Cultural: { icon: Users, background: "bg-indigo-500", color: "text-indigo-500" },
+  Symbolic: { icon: Eye, background: "bg-pink-500", color: "text-pink-500" },
+  Map: { icon: Map, background: "bg-slate-500", color: "text-slate-500" },
 };
 
 const Blog: React.FC<BlogProps> = (props) => {

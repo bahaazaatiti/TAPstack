@@ -3,25 +3,11 @@ import { useId } from "react"
 import {
   GlobeIcon,
   HomeIcon,
-  BookOpenIcon,
-  NewspaperIcon,
-  PenToolIcon,
-  FileTextIcon,
-  UsersIcon,
-  MessageSquareIcon,
-  CalendarIcon,
-  ArchiveIcon,
-  BookmarkIcon,
-  TagIcon,
-  LayoutIcon,
-  InfoIcon,
-  MailIcon,
-  ImageIcon,
-  MapPinIcon,
-  SettingsIcon,
-  BriefcaseIcon,
-  HeartIcon,
-  StarIcon,
+  Brain,
+  Info,
+  BookOpen,
+  Images,
+  DatabaseZap,
 } from "lucide-react"
 
 import ThemeToggle from "@/components/ui/theme-toggle"
@@ -82,27 +68,11 @@ const Comp582: React.FC<Comp582Props> = (props) => {
   // Function to get icon component by name
   const getIconComponent = (iconName: string) => {
     const iconMap: Record<string, any> = {
-      Home: HomeIcon,
-      BookOpen: BookOpenIcon,
-      Newspaper: NewspaperIcon,
-      PenTool: PenToolIcon,
-      FileText: FileTextIcon,
-      Users: UsersIcon,
-      MessageSquare: MessageSquareIcon,
-      Calendar: CalendarIcon,
-      Archive: ArchiveIcon,
-      Bookmark: BookmarkIcon,
-      Tag: TagIcon,
-      Layout: LayoutIcon,
-      Info: InfoIcon,
-      Mail: MailIcon,
-      Image: ImageIcon,
-      MapPin: MapPinIcon,
-      Globe: GlobeIcon,
-      Settings: SettingsIcon,
-      Briefcase: BriefcaseIcon,
-      Heart: HeartIcon,
-      Star: StarIcon,
+      Brain: Brain,
+      info: Info,
+      BookOpen: BookOpen,
+      Images: Images,
+      DatabaseZap: DatabaseZap
     }
     
     return iconMap[iconName] || HomeIcon // Fallback to HomeIcon if not found

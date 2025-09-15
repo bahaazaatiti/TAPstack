@@ -2,7 +2,7 @@ Title: About
 
 ----
 
-Navicon: 
+Navicon: Info
 
 ----
 

@@ -5,6 +5,8 @@ $selectionMode = $block->selectionMode()->value() ?: 'manual';
 $selectedArticles = $block->articles()->toPages();
 $onlyWithImages = $block->onlyWithImages()->toBool();
 $latestCount = (int)($block->latestCount()->value() ?: 10);
+$filterCategory = $block->filterCategory()->value();
+$categoryCount = (int)($block->categoryCount()->value() ?: 10);
 
 // Determine articles based on selection mode
 if ($selectionMode === 'latest') {
@@ -27,6 +29,25 @@ if ($selectionMode === 'latest') {
     $selectedArticles = $articlesWithImages->limit($latestCount);
   } else {
     $selectedArticles = $parentArticles->limit($latestCount);
+  }
+} elseif ($selectionMode === 'category') {
+  // Get latest articles from specific category
+  $categoryArticles = site()->index()->filterBy('template', 'article')->listed();
+  
+  if ($filterCategory) {
+    $categoryArticles = $categoryArticles->filterBy('category', $filterCategory);
+  }
+  
+  $categoryArticles = $categoryArticles->sortBy('date', 'desc');
+  
+  if ($onlyWithImages) {
+    // Filter to only articles with featured images
+    $articlesWithImages = $categoryArticles->filter(function($article) {
+      return $article->featuredImage()->isNotEmpty() || $article->images()->count() > 0;
+    });
+    $selectedArticles = $articlesWithImages->limit($categoryCount);
+  } else {
+    $selectedArticles = $categoryArticles->limit($categoryCount);
   }
 } elseif ($selectionMode === 'manual' && $selectedArticles->count() === 0) {
   // Manual mode but no articles selected - auto-select from site as fallback
@@ -74,7 +95,7 @@ foreach ($selectedArticles as $article) {
     $articles[] = [
       'title' => $article->title()->value(),
       'description' => $article->description()->isNotEmpty() ? $article->description()->value() : $article->text()->excerpt(200),
-      'category' => $article->parent() ? $article->parent()->title()->value() : 'Articles',
+      'category' => $article->category()->value() ?: 'Article',
       'date' => $article->date()->toDate('M j, Y'),
       'readTime' => $article->readTime()->isNotEmpty() ? (int)$article->readTime()->value() : 5,
       'url' => $article->url(),

@@ -2,11 +2,15 @@ Title: Gallery
 
 ----
 
+Navicon: Images
+
+----
+
 Header: [{"content":{"logolight":["file://6mnvswiucrxjrtnh"],"logodark":["file://ydknwavegcs9owf6"],"logotext":"TAP","shownavigation":"true","languages":[{"value":"en","label":"English"},{"value":"ar","label":"العربية"}],"defaultlanguage":"en","showthemetoggle":"true","showlanguageselector":"true","showusermenu":"true","logo":["file://pn0tebstfpgwsgst"]},"id":"d3fa8ce1-5927-4471-82b6-2746e155e566","isHidden":false,"type":"comp582"}]
 
 ----
 
-Blocks: [{"content":{"title":"Gallery","selectionmode":"latest","articles":[],"latestcount":10,"onlywithimages":"true","initialscroll":0},"id":"37b15aea-fc4e-4198-ae6b-17d4b391744d","isHidden":false,"type":"applecarousel"}]
+Blocks: [{"content":{"title":"Gallery","selectionmode":"category","articles":[],"latestcount":10,"filtercategory":"Symbolic","categorycount":6,"onlywithimages":"true","initialscroll":0},"id":"37b15aea-fc4e-4198-ae6b-17d4b391744d","isHidden":false,"type":"applecarousel"}]
 
 ----
 

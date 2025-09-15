@@ -37,14 +37,19 @@ columns:
             label: Category
             type: select
             options:
-              Technology: Technology
-              Business: Business
-              Finance: Finance
-              Health: Health
-              Lifestyle: Lifestyle
+              "--- Gallery ---": ""
+              Religious: Religious
+              Historic: Historic
+              Cultural: Cultural
+              Symbolic: Symbolic
+              "--- Articles ---": ""
+              History: History
+              Geography: Geography
               Politics: Politics
-              Science: Science
-              Sports: Sports
+              Economy: Economy
+              Culture: Culture
+              "--- Misc ---": ""
+              Map: Map
             required: true
           author:
             label: Author

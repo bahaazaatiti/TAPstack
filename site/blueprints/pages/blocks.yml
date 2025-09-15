@@ -18,19 +18,12 @@ fields:
     default: Layout
     help: Icon to display in navigation menus
     options:
-      Layout: Layout (Pages/Templates)
-      Home: Home (Homepage)
-      Info: Info (About/Information)
-      Users: Users (People/Team)
-      Mail: Mail (Contact)
-      Image: Image (Gallery/Portfolio)
-      MapPin: MapPin (Locations)
-      Globe: Globe (Global/International)
-      Settings: Settings (Services/Tools)
-      Briefcase: Briefcase (Business/Work)
-      Heart: Heart (Community/Support)
-      Star: Star (Featured/Special)
-      
+      Brain: Brain
+      Info: Info
+      BookOpen: BookOpen
+      Images: Images
+      DatabaseZap: DatabaseZap
+
   header:
     type: blocks
     fieldsets:
