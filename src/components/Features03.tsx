@@ -147,7 +147,22 @@ const Features03: React.FC<Features03Props> = (props) => {
           {title} <br />
           {subtitle}
         </h2>
-        
+        {/* Dynamic FAQ/Information Accordion Section */}
+        {showfaq && faqs.length > 0 && (
+          <div className="mt-6">
+            <h3 className="text-2xl font-bold tracking-tight mb-2">{faqtitle}</h3>
+            <Accordion type="single" collapsible className="w-full">
+              {faqs.map((faq, index) => (
+                <AccordionItem key={index} value={`item-${index}`}>
+                  <AccordionTrigger>{faq.question}</AccordionTrigger>
+                  <AccordionContent>
+                    {faq.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </div>
+        )}
         {/* Enhanced Dynamic Cards with FAQ Section */}
         <div className="mt-8 space-y-12">
           {/* Main Feature Cards */}
@@ -349,22 +364,7 @@ const Features03: React.FC<Features03Props> = (props) => {
           })}
           </div>
 
-          {/* Dynamic FAQ/Information Accordion Section */}
-          {showfaq && faqs.length > 0 && (
-            <div className="mt-16">
-              <h3 className="text-2xl font-bold tracking-tight mb-6">{faqtitle}</h3>
-              <Accordion type="single" collapsible className="w-full">
-                {faqs.map((faq, index) => (
-                  <AccordionItem key={index} value={`item-${index}`}>
-                    <AccordionTrigger>{faq.question}</AccordionTrigger>
-                    <AccordionContent>
-                      {faq.answer}
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
-            </div>
-          )}
+
         </div>
       </div>
     </div>

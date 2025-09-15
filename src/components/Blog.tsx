@@ -703,7 +703,9 @@ const Blog: React.FC<BlogProps> = (props) => {
                         ) : (
                           <HoverCard>
                             <HoverCardTrigger asChild>
-                              <div className="flex flex-col sm:flex-row sm:items-center overflow-hidden transition-colors rounded-lg p-2 -m-2 cursor-pointer">
+                              <a 
+                                href={article.url}
+                                className="flex flex-col sm:flex-row sm:items-center overflow-hidden transition-colors hover:text-primary rounded-lg p-2 -m-2 cursor-pointer">
                                 <div className="px-0 sm:p-0 flex-shrink-0 pb-2">
                                   {article.featuredImage ? (
                                     <div className="aspect-video  sm:w-56 sm:aspect-square bg-muted rounded-lg overflow-hidden">
@@ -725,9 +727,7 @@ const Blog: React.FC<BlogProps> = (props) => {
                                   </div>
 
                                   <h3 className="mt-4 text-2xl font-semibold tracking-tight hover:text-primary transition-colors">
-                                    <a href={article.url} className="hover:text-primary transition-colors">
-                                      {article.title}
-                                    </a>
+                                    {article.title}
                                   </h3>
                                   <p className="mt-2 text-muted-foreground line-clamp-3 text-ellipsis">
                                     {article.description}
@@ -757,7 +757,7 @@ const Blog: React.FC<BlogProps> = (props) => {
                                     </div>
                                   </div>
                                 </div>
-                              </div>
+                              </a>
                             </HoverCardTrigger>
                               <HoverCardContent className="w-80" side="top">
                               <ArticlePreview article={article} />

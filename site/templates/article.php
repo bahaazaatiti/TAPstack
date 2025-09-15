@@ -161,7 +161,13 @@
       "logo": [],
       "columns": [],
       "copyright": "© 2025 The Alawite Project. All rights reserved",
-      "policies": [],
+      "socials":[
+        {"platform":"twitter","href":"https://google.com","label":""},
+        {"platform":"facebook","href":"https://google.com","label":""},
+        {"platform":"instagram","href":"https://google.com","label":""},
+        {"platform":"tiktok","href":"https://google.com","label":""},
+        {"platform":"youtube","href":"https://google.com","label":""}
+      ],
       "showmodetoggle": "true"
     };
   </script>

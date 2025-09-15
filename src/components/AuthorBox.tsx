@@ -410,7 +410,7 @@ const AuthorBox: React.FC<AuthorBoxProps> = (props) => {
       
       {/* Author Details Box */}
       <Card className="bg-muted">
-        <CardContent className="pt-6">
+        <CardContent>
           <div className="flex items-center gap-1 mb-4">
             {/* Author Avatar with Hover Card */}
             <HoverCard>

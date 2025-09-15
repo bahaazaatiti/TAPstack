@@ -410,7 +410,7 @@ const Article: React.FC<ArticleProps> = ({
           )}
           
           {/* Content Area */}
-          <div className="flex w-full xl:max-w-[40rem] max-w-4xl mx-auto flex-col gap-10">
+          <div className="flex w-full xl:max-w-[40rem] max-w-4xl mx-auto flex-col gap-2">
             
             {/* Article Actions Bar */}
             <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
@@ -545,7 +545,7 @@ const Article: React.FC<ArticleProps> = ({
             )}
 
             {/* Enhanced Article Metadata */}
-            <Tabs defaultValue="author" className="w-full">
+            <Tabs defaultValue="" className="w-full">
               <TabsList className="flex w-full">
                 <TabsTrigger 
                   value="info" 
@@ -619,16 +619,17 @@ const Article: React.FC<ArticleProps> = ({
               </TabsContent>
 
               <TabsContent value="author" className="space-y-4">
-                {author && (
-                  <AuthorBox 
-                    author={author}
-                    showbio={true}
-                    showsocial={true}
-                    customtitle="About the Author"
-                    articles={author.articles}
-                    publicationStats={author.publicationStats}
-                  />
-                )}
+                <Card>
+                  {author && (
+                    <AuthorBox 
+                      author={author}
+                      showbio={true}
+                      showsocial={true}
+                      articles={author.articles}
+                      publicationStats={author.publicationStats}
+                    />
+                  )}
+                </Card>
               </TabsContent>
 
               {pdfFiles.length > 0 && (
@@ -665,12 +666,7 @@ const Article: React.FC<ArticleProps> = ({
                 </TabsContent>
               )}
             </Tabs>
-
-            {/* Article Content */}
-            <article className="article-content">
-              {/* Content will be inserted here by useEffect */}
-            </article>
-
+            
             {/* Enhanced Table of Contents for Mobile */}
             {tocItems.length > 0 && (
               <div className="xl:hidden">
@@ -706,6 +702,21 @@ const Article: React.FC<ArticleProps> = ({
                 </Card>
               </div>
             )}
+
+            {/* Article Content */}
+            <article className="article-content pt-6">
+              {/* Content will be inserted here by useEffect */}
+            </article>
+            {author && (
+              <AuthorBox 
+                author={author}
+                showbio={true}
+                showsocial={true}
+                articles={author.articles}
+                publicationStats={author.publicationStats}
+              />
+            )}
+
           </div>
         </div>
       </div>
