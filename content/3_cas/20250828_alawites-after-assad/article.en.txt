@@ -90,7 +90,7 @@ Date: 2025-08-28
 
 ----
 
-Type: Oped
+Format: Oped
 
 ----
 
@@ -123,6 +123,10 @@ Latitude:
 ----
 
 Longitude: 
+
+----
+
+Type: Oped
 
 ----
 

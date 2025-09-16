@@ -10,11 +10,11 @@ Header: [{"content":{"logolight":[],"logodark":[],"logotext":"TAP","shownavigati
 
 ----
 
-Blocks: [{"content":{"title":"Connected Across Continents","subtitle":"Our presence spans across continents.","bottomtext":"For a United Assembly of Alawites worldwide.","selectionmode":"category","articles":[],"latestcount":10,"filtercategory":"Map","categorycount":20,"onlywithcoordinates":"true"},"id":"88e3cefd-4bf3-4db2-b5ab-bd7c8b4ed2b6","isHidden":false,"type":"worldmaphero"}]
+Blocks: 
 
 ----
 
-Footer: [{"content":{"name":"","logo":[],"columns":[],"copyright":"© 2025 The Alawite Project. All rights reserved","policies":[],"showmodetoggle":"true"},"id":"aa01ac2e-d153-4242-abb2-5b38a1cc3608","isHidden":false,"type":"footer"}]
+Footer: [{"content":{"copyright":"© 2025 The Alawite Project. All rights reserved","socials":[],"showmodetoggle":"true","name":"","logo":[],"columns":[],"policies":[]},"id":"aa01ac2e-d153-4242-abb2-5b38a1cc3608","isHidden":false,"type":"footer"}]
 
 ----
 

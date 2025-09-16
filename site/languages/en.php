@@ -112,6 +112,8 @@ return [
     'no_description_available' => 'No description available',
     'article_image' => 'Article image',
     'toggle_theme' => 'Toggle Theme',
+    'format_browser' => 'Browse by Format',
+    'formats'       => 'Formats',
     ],
   'locale'  => 'en_US',
   'url'     => '/',

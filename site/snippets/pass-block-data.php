@@ -273,7 +273,7 @@ if (!function_exists('processArticleCollection')) {
                 'title' => $article->title()->value(),
                 'description' => $article->description()->isNotEmpty() ? $article->description()->value() : $article->text()->excerpt(150),
                 'category' => $article->category()->isNotEmpty() ? $article->category()->value() : ($article->parent() ? $article->parent()->title()->value() : 'Articles'),
-                'type' => $article->type()->isNotEmpty() ? $article->type()->value() : ($article->parent() ? $article->parent()->title()->value() : 'Articles'),
+                'format' => $article->format()->isNotEmpty() ? $article->format()->value() : ($article->parent() ? $article->parent()->title()->value() : 'Articles'),
                 'date' => $article->date()->toDate('M j, Y'),
                 'readTime' => $article->readTime()->isNotEmpty() ? (int)$article->readTime()->value() : 5,
                 'url' => $article->url(),
@@ -288,31 +288,95 @@ if (!function_exists('processArticleCollection')) {
     }
 }
 
-// Add auto-selection logic for empty article fields (like bentogrid's fallback)
-// This runs after initial field processing to handle empty pages fields 
-// TODO: reoptimize, it doesnt respect max in blueprints currently
+// Add auto-selection logic for empty article fields (supports selectionMode: manual/latest/category)
+// This runs after initial field processing to handle empty pages fields
+// Blocks can define selectionMode, latestCount, filterCategory, categoryCount in their blueprints
+// When an articles-like field is empty, use those settings to auto-select pages
 foreach ($blockData as $key => $value) {
     // Check if this is an articles field that came back empty or null
-    if (($key === 'articles' || strpos($key, 'article') !== false) && 
+    if (($key === 'articles' || strpos($key, 'article') !== false) &&
         (is_null($value) || (is_array($value) && empty($value)))) {
-        
-        // Auto-select articles with smart fallback logic
+
+        // Read selection settings from block if provided
+    $selectionMode = null;
+    $latestCount = 8;
+    $filterCategory = null;
+    $categoryCount = 8;
+    // New: selection by article meta 'format'
+    $filterFormat = null;
+    $formatCount = 8;
+
+            if (isset($block)) {
+                $selectionMode = $block->selectionMode()->value() ?: null;
+                $latestCount = (int)($block->latestCount()->value() ?: 8);
+                $filterCategory = $block->filterCategory()->value() ?: null;
+                $categoryCount = (int)($block->categoryCount()->value() ?: 8);
+                // Read new format filter fields if present on the block blueprint
+                $filterFormat = $block->filterFormat()->value() ?: null;
+                $formatCount = (int)($block->formatCount()->value() ?: 8);
+            }
+
         $selectedArticles = null;
-        
-        // Try current page's children first
-        if (isset($page)) {
-            $pageArticles = $page->children()->filterBy('template', 'article')->listed();
-            if ($pageArticles->count() > 0) {
-                $selectedArticles = $pageArticles->limit(8); // Default limit, can be overridden by blueprint max
+
+        // Selection: latest from parent
+        if ($selectionMode === 'latest') {
+            // Get latest articles from parent section
+            if (isset($block)) {
+                $parentPage = $block->parent();
+            } else {
+                $parentPage = isset($page) ? $page : null;
+            }
+
+            if ($parentPage && $parentPage->hasChildren()) {
+                $parentArticles = $parentPage->children()->filterBy('template', 'article')->listed()->sortBy('date', 'desc');
+            } else {
+                $parentArticles = site()->index()->filterBy('template', 'article')->listed()->sortBy('date', 'desc');
+            }
+
+            $selectedArticles = $parentArticles->limit($latestCount);
+        }
+
+        // Selection: latest from specific category
+        elseif ($selectionMode === 'category') {
+            $categoryArticles = site()->index()->filterBy('template', 'article')->listed();
+
+            if ($filterCategory) {
+                $categoryArticles = $categoryArticles->filterBy('category', $filterCategory);
+            }
+
+            $categoryArticles = $categoryArticles->sortBy('date', 'desc');
+            $selectedArticles = $categoryArticles->limit($categoryCount);
+        }
+
+        // Selection: latest from specific format (new)
+        elseif ($selectionMode === 'format') {
+            $formatArticles = site()->index()->filterBy('template', 'article')->listed();
+
+            if ($filterFormat) {
+                $formatArticles = $formatArticles->filterBy('format', $filterFormat);
+            }
+
+            $formatArticles = $formatArticles->sortBy('date', 'desc');
+            $selectedArticles = $formatArticles->limit($formatCount);
+        }
+
+        // Default/manual fallback: try page children then site index
+        else {
+            // Try current page's children first
+            if (isset($page)) {
+                $pageArticles = $page->children()->filterBy('template', 'article')->listed();
+                if ($pageArticles->count() > 0) {
+                    $selectedArticles = $pageArticles->limit(8); // Default limit, can be overridden by blueprint max
+                }
+            }
+
+            // Fallback to all site articles if no page articles found
+            if (!$selectedArticles || $selectedArticles->count() === 0) {
+                $siteArticles = site()->index()->filterBy('template', 'article')->listed()->sortBy('date', 'desc');
+                $selectedArticles = $siteArticles->limit(8); // Default limit
             }
         }
-        
-        // Fallback to all site articles if no page articles found
-        if (!$selectedArticles || $selectedArticles->count() === 0) {
-            $siteArticles = site()->index()->filterBy('template', 'article')->listed()->sortBy('date', 'desc');
-            $selectedArticles = $siteArticles->limit(8); // Default limit
-        }
-        
+
         if ($selectedArticles && $selectedArticles->count() > 0) {
             $blockData[$key] = processArticleCollection($selectedArticles);
         }
@@ -476,7 +540,9 @@ $siteData['translations'] = [
     'untitled' => t('untitled'),
     'no_description_available' => t('no_description_available'),
     'article_image' => t('article_image'),
-    'toggle_theme' => t('toggle_theme')
+    'toggle_theme' => t('toggle_theme'),
+    'format_browser' => t('format_browser'),
+    'formats'       => t('formats'),
 ];
 
 // Merge site data with block data

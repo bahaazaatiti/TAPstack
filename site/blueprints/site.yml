@@ -24,9 +24,9 @@ tabs:
             label: Category
             text: "{{ page.category }}"
             width: 1/7
-          type:
-            label: Type
-            text: "{{ page.type }}"
+          format:
+            label: Format
+            text: "{{ page.format }}"
             width: 1/7
           created:
             label: Created
@@ -61,9 +61,9 @@ tabs:
             label: Category
             text: "{{ page.category }}"
             width: 1/6
-          type:
-            label: Type
-            text: "{{ page.type }}"
+          format:
+            label: Format
+            text: "{{ page.format }}"
             width: 1/6
           created:
             label: Created

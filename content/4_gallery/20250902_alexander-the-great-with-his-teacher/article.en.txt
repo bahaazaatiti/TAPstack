@@ -10,7 +10,7 @@ Date: 2025-09-02
 
 ----
 
-Type: Media
+Format: Media
 
 ----
 
@@ -43,6 +43,10 @@ Latitude:
 ----
 
 Longitude: 
+
+----
+
+Type: Media
 
 ----
 

@@ -112,6 +112,8 @@ return [
     'no_description_available' => 'لا يوجد وصف متاح',
     'article_image' => 'صورة المقال',
     'toggle_theme' => 'تبديل المظهر',
+    'format_browser' => 'تصفح حسب التنسيق',
+    'formats'       => 'التنسيقات',
   ],
   'locale'  => 'ar_EG',
   'url'     => '/ar',

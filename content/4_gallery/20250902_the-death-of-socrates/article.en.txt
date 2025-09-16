@@ -10,6 +10,10 @@ Date: 2025-09-02
 
 ----
 
+Format: Media
+
+----
+
 Category: Symbolic
 
 ----
@@ -31,6 +35,14 @@ Readtime: 5
 ----
 
 Featuredimage: - file://zvqqlc6o8c4364te
+
+----
+
+Latitude: 
+
+----
+
+Longitude: 
 
 ----
 

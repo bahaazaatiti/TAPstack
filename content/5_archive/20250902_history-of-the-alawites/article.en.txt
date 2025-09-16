@@ -10,6 +10,10 @@ Date: 2025-09-02
 
 ----
 
+Format: About the Alawites
+
+----
+
 Category: History and Heritage
 
 ----
@@ -39,6 +43,10 @@ Latitude:
 ----
 
 Longitude: 
+
+----
+
+Type: About the Alawites
 
 ----
 

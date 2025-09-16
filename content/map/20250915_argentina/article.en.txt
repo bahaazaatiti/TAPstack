@@ -10,7 +10,7 @@ Date: 2025-09-15
 
 ----
 
-Type: Demographic Profile
+Format: Demographic Profile
 
 ----
 
@@ -43,6 +43,10 @@ Latitude: -34.6118
 ----
 
 Longitude: -63.396
+
+----
+
+Type: Demographic Profile
 
 ----
 

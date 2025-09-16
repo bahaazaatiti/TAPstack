@@ -33,16 +33,16 @@ columns:
             type: date
             required: true
             default: today
-          type:
-            label: Type
+          format:
+            label: Format
             type: select
             options:
-              Oped: Oped
-              Academic Research: Academic Research
-              About the Alawites: About the Alawites
-              Alawite Books: Alawite Books
-              Media: Media
-              Demographic Profile: Demographic Profile
+              Oped: "Oped"
+              Academic Research: "Academic Research"
+              About the Alawites: "About the Alawites"
+              Alawite Books: "Alawite Books"
+              Media: "Media"
+              Demographic Profile: "Demographic Profile"
             required: true
           category:
             label: Category

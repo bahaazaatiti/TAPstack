@@ -25,7 +25,7 @@ if ($isSearchPage) {
         // Search within the specific blog with query
         $articlePages = $blogPage->children()
           ->filterBy('intendedTemplate', 'article')
-          ->search($searchQuery, ['fields' => ['title', 'text', 'description', 'author', 'category', 'type']])
+          ->search($searchQuery, ['fields' => ['title', 'text', 'description', 'author', 'category', 'format']])
           ->sortBy('date', 'desc');
       } else {
         // Show all articles from the specific blog
@@ -42,7 +42,7 @@ if ($isSearchPage) {
     if ($searchQuery) {
       $articlePages = site()->index()
         ->filterBy('intendedTemplate', 'article')
-        ->search($searchQuery, ['fields' => ['title', 'text', 'description', 'author', 'category', 'type']])
+        ->search($searchQuery, ['fields' => ['title', 'text', 'description', 'author', 'category', 'format']])
         ->sortBy('date', 'desc');
     } else {
       // No search query, show all articles
@@ -102,7 +102,7 @@ foreach ($articlePages as $article) {
     'title' => (string)$article->title()->value(),
     'description' => $article->description()->isNotEmpty() ? (string)$article->description()->value() : (string)$article->text()->excerpt(200),
     'category' => (string)$article->category()->value(),
-  'type' => trim((string)$article->type()->value()) !== '' ? trim((string)$article->type()->value()) : 'Unknown',
+    'format' => trim((string)$article->format()->value()) !== '' ? trim((string)$article->format()->value()) : 'Unknown',
     'date' => $article->date()->toDate('M j, Y'),
     'readTime' => $article->readTime()->isNotEmpty() ? (int)$article->readTime()->value() : 5,
     'url' => (string)$article->url(),

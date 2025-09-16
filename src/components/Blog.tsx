@@ -71,7 +71,7 @@ interface Article {
   title: string;
   description: string;
   category: string;
-  type: string;
+  format: string;
   date: string;
   readTime: number;
   url: string;
@@ -127,7 +127,7 @@ const Blog: React.FC<BlogProps> = (props) => {
   const [searchQuery, setSearchQuery] = useState(initialSearchQuery);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
+  const [selectedFormats, setSelectedFormats] = useState<string[]>([]);
   const [sortOption, setSortOption] = useState("date-desc");
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchSuggestions, setSearchSuggestions] = useState<string[]>([]);
@@ -189,9 +189,9 @@ const Blog: React.FC<BlogProps> = (props) => {
       filtered = filtered.filter(article => selectedCategories.includes(article.category));
     }
 
-    // Filter by selected types
-    if (selectedTypes.length > 0) {
-      filtered = filtered.filter(article => selectedTypes.includes(article.type));
+    // Filter by selected formats
+    if (selectedFormats.length > 0) {
+      filtered = filtered.filter(article => selectedFormats.includes(article.format));
     }
 
     // Filter by date range
@@ -240,7 +240,7 @@ const Blog: React.FC<BlogProps> = (props) => {
     }
 
     return filtered;
-  }, [allArticles, searchQuery, selectedCategories, selectedTypes, sortOption, selectedDateRange]);
+  }, [allArticles, searchQuery, selectedCategories, selectedFormats, sortOption, selectedDateRange]);
 
   // Calculate pagination
   const totalPages = Math.ceil(filteredArticles.length / postsPerPage);
@@ -248,10 +248,10 @@ const Blog: React.FC<BlogProps> = (props) => {
   const endIndex = startIndex + postsPerPage;
   const paginatedArticles = filteredArticles.slice(startIndex, endIndex);
 
-  // Reset to page 1 when search, category, type, sort, or date range changes
+  // Reset to page 1 when search, category, format, sort, or date range changes
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchQuery, selectedCategories, selectedTypes, sortOption, selectedDateRange]);
+  }, [searchQuery, selectedCategories, selectedFormats, sortOption, selectedDateRange]);
 
   // Calculate category counts from all articles
   const categoryCounts = allArticles.reduce((acc: Record<string, number>, article: Article) => {
@@ -265,15 +265,15 @@ const Blog: React.FC<BlogProps> = (props) => {
     ...categoryIcons[name as keyof typeof categoryIcons]
   })).filter(category => category.icon); // Only include categories with icons
 
-  // Calculate type counts from all articles
-  const typeCounts = allArticles.reduce((acc: Record<string, number>, article: Article) => {
-    const t = article.type || "";
+  // Calculate format counts from all articles
+  const formatCounts = allArticles.reduce((acc: Record<string, number>, article: Article) => {
+    const t = article.format || "";
     if (!t) return acc;
     acc[t] = (acc[t] || 0) + 1;
     return acc;
   }, {} as Record<string, number>);
 
-  const types = Object.entries(typeCounts).map(([name, count]) => ({
+  const formats = Object.entries(formatCounts).map(([name, count]) => ({
     name,
     totalPosts: count,
   }));
@@ -291,16 +291,16 @@ const Blog: React.FC<BlogProps> = (props) => {
     handleCategoryToggle(category);
   };
 
-  const handleTypeToggle = (type: string) => {
-    setSelectedTypes(prev => 
-      prev.includes(type) 
-        ? prev.filter(t => t !== type)
-        : [...prev, type]
+  const handleFormatToggle = (format: string) => {
+    setSelectedFormats(prev => 
+      prev.includes(format) 
+        ? prev.filter(t => t !== format)
+        : [...prev, format]
     );
   };
 
-  const handleTypeClick = (type: string) => {
-    handleTypeToggle(type);
+  const handleFormatClick = (format: string) => {
+    handleFormatToggle(format);
   };
 
   const handleDateRangeSelect = (range: DateRange | undefined) => {
@@ -315,7 +315,7 @@ const Blog: React.FC<BlogProps> = (props) => {
   const handleClearAllFilters = () => {
     setSearchQuery("");
     setSelectedCategories([]);
-    setSelectedTypes([]);
+    setSelectedFormats([]);
     setSortOption("date-desc");
     setSelectedDateRange(undefined);
   };
@@ -407,7 +407,7 @@ const Blog: React.FC<BlogProps> = (props) => {
   const hasActiveFilters = !!(
     searchQuery ||
     selectedCategories.length > 0 ||
-    selectedTypes.length > 0 ||
+    selectedFormats.length > 0 ||
     sortOption !== "date-desc" ||
     selectedDateRange?.from ||
     selectedDateRange?.to
@@ -555,17 +555,17 @@ const Blog: React.FC<BlogProps> = (props) => {
                     <Separator />
 
                     <div>
-                      <h4 className="font-medium mb-3">{translations.types || "Types"}</h4>
+                      <h4 className="font-medium mb-3">{translations.formats || "Formats"}</h4>
                       <div className="grid grid-cols-2 gap-2">
-                        {types.map((t) => (
+                        {formats.map((t) => (
                           <div key={t.name} className="flex items-center space-x-2">
                             <Checkbox
-                              id={`type-${t.name}`}
-                              checked={selectedTypes.includes(t.name)}
-                              onCheckedChange={() => handleTypeToggle(t.name)}
+                              id={`format-${t.name}`}
+                              checked={selectedFormats.includes(t.name)}
+                              onCheckedChange={() => handleFormatToggle(t.name)}
                             />
                             <Label 
-                              htmlFor={`type-${t.name}`} 
+                              htmlFor={`format-${t.name}`} 
                               className="text-sm flex items-center gap-1.5 cursor-pointer"
                             >
                               <span className="">{t.name}</span>
@@ -634,12 +634,12 @@ const Blog: React.FC<BlogProps> = (props) => {
                   />
                 </Badge>
               ))}
-              {selectedTypes.map((type) => (
-                <Badge key={type} variant="secondary" className="gap-1">
-                  {type}
+              {selectedFormats.map((format) => (
+                <Badge key={format} variant="secondary" className="gap-1">
+                  {format}
                   <X 
                     className="h-3 w-3 cursor-pointer" 
-                    onClick={() => handleTypeToggle(type)}
+                    onClick={() => handleFormatToggle(format)}
                   />
                 </Badge>
               ))}
@@ -960,16 +960,16 @@ const Blog: React.FC<BlogProps> = (props) => {
             })}
           </div>
           
-          {types.length > 0 && (
+          {formats.length > 0 && (
             <>
-              <h3 className="text-lg font-semibold tracking-tight mt-6 mb-2">{translations.type_browser || "Browse by Type"}</h3>
+              <h3 className="text-lg font-semibold tracking-tight mt-6 mb-2">{translations.format_browser || "Browse by Formats"}</h3>
               <div className="space-y-2">
-                {types.map((t) => {
-                  const isSelected = selectedTypes.includes(t.name);
+                {formats.map((t) => {
+                  const isSelected = selectedFormats.includes(t.name);
                   return (
                     <div
                       key={t.name}
-                      onClick={() => handleTypeClick(t.name)}
+                      onClick={() => handleFormatClick(t.name)}
                       className={cn(
                         "flex items-center justify-between gap-2 p-3 rounded-lg transition-colors cursor-pointer",
                         "bg-muted/50 hover:bg-muted",
