@@ -48,7 +48,11 @@ Date: 2025-09-02
 
 ----
 
-Category: Politics
+Type: Oped
+
+----
+
+Category: Society and Everyday Life
 
 ----
 
@@ -69,6 +73,14 @@ Readtime: 4
 ----
 
 Featuredimage: - file://xjyogntaz6xxfjnx
+
+----
+
+Latitude: 
+
+----
+
+Longitude: 
 
 ----
 

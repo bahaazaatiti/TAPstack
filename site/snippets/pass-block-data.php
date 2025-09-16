@@ -273,6 +273,7 @@ if (!function_exists('processArticleCollection')) {
                 'title' => $article->title()->value(),
                 'description' => $article->description()->isNotEmpty() ? $article->description()->value() : $article->text()->excerpt(150),
                 'category' => $article->category()->isNotEmpty() ? $article->category()->value() : ($article->parent() ? $article->parent()->title()->value() : 'Articles'),
+                'type' => $article->type()->isNotEmpty() ? $article->type()->value() : ($article->parent() ? $article->parent()->title()->value() : 'Articles'),
                 'date' => $article->date()->toDate('M j, Y'),
                 'readTime' => $article->readTime()->isNotEmpty() ? (int)$article->readTime()->value() : 5,
                 'url' => $article->url(),

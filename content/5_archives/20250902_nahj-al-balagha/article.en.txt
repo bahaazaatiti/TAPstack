@@ -14,7 +14,7 @@ Date: 2025-09-02
 
 ----
 
-Category: Culture
+Category: Culture and Religion
 
 ----
 
@@ -35,6 +35,14 @@ Readtime: 5
 ----
 
 Featuredimage: - file://g2jeyy2plu3hqs9m
+
+----
+
+Latitude: 
+
+----
+
+Longitude: 
 
 ----
 

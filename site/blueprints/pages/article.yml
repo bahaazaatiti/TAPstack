@@ -33,21 +33,29 @@ columns:
             type: date
             required: true
             default: today
+          type:
+            label: Type
+            type: select
+            options:
+              Oped: Oped
+              Academic Research: Academic Research
+              About the Alawites: About the Alawites
+              Alawite Books: Alawite Books
           category:
             label: Category
             type: select
             options:
               "--- Gallery ---": ""
-              Religious: Religious
+              Political: Political
               Historic: Historic
               Cultural: Cultural
               Symbolic: Symbolic
               "--- Articles ---": ""
-              History: History
-              Geography: Geography
-              Politics: Politics
-              Economy: Economy
-              Culture: Culture
+              Politics and Economics: "Politics and Economics"
+              History and Heritage: "History and Heritage"
+              Geography and Demography: "Geography and Demography"
+              Culture and Religion: "Culture and Religion"
+              Society and Everyday Life: "Society and Everyday Life"
               "--- Misc ---": ""
               Map: Map
             required: true

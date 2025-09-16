@@ -44,10 +44,10 @@ import {
   Copy,
   Share2,
   Bookmark,
-  TrendingUp,
+  Handshake,
   Palette,
   Scroll,
-  MapPin,
+  Globe,
   Church,
   Archive,
   Users,
@@ -71,6 +71,7 @@ interface Article {
   title: string;
   description: string;
   category: string;
+  type: string;
   date: string;
   readTime: number;
   url: string;
@@ -88,12 +89,12 @@ interface Article {
 }
 
 const categoryIcons = {
-  Economy: { icon: TrendingUp, background: "bg-emerald-500", color: "text-emerald-500" },
-  Politics: { icon: Scale, background: "bg-blue-500", color: "text-blue-500" },
-  Culture: { icon: Palette, background: "bg-purple-500", color: "text-purple-500" },
-  History: { icon: Scroll, background: "bg-amber-500", color: "text-amber-500" },
-  Geography: { icon: MapPin, background: "bg-teal-500", color: "text-teal-500" },
-  Religious: { icon: Church, background: "bg-rose-500", color: "text-rose-500" },
+  "Society and Everyday Life": { icon: Handshake, background: "bg-emerald-500", color: "text-emerald-500" },
+  "Politics and Economics": { icon: Scale, background: "bg-blue-500", color: "text-blue-500" },
+  "Culture and Religion": { icon: Palette, background: "bg-purple-500", color: "text-purple-500" },
+  "History and Heritage": { icon: Scroll, background: "bg-amber-500", color: "text-amber-500" },
+  "Geography and Demography": { icon: Globe, background: "bg-teal-500", color: "text-teal-500" },
+  Political: { icon: Church, background: "bg-rose-500", color: "text-rose-500" },
   Historic: { icon: Archive, background: "bg-orange-500", color: "text-orange-500" },
   Cultural: { icon: Users, background: "bg-indigo-500", color: "text-indigo-500" },
   Symbolic: { icon: Eye, background: "bg-pink-500", color: "text-pink-500" },
@@ -126,6 +127,7 @@ const Blog: React.FC<BlogProps> = (props) => {
   const [searchQuery, setSearchQuery] = useState(initialSearchQuery);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
   const [sortOption, setSortOption] = useState("date-desc");
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchSuggestions, setSearchSuggestions] = useState<string[]>([]);
@@ -187,6 +189,11 @@ const Blog: React.FC<BlogProps> = (props) => {
       filtered = filtered.filter(article => selectedCategories.includes(article.category));
     }
 
+    // Filter by selected types
+    if (selectedTypes.length > 0) {
+      filtered = filtered.filter(article => selectedTypes.includes(article.type));
+    }
+
     // Filter by date range
     if (selectedDateRange?.from || selectedDateRange?.to) {
       filtered = filtered.filter(article => {
@@ -233,7 +240,7 @@ const Blog: React.FC<BlogProps> = (props) => {
     }
 
     return filtered;
-  }, [allArticles, searchQuery, selectedCategories, sortOption, selectedDateRange]);
+  }, [allArticles, searchQuery, selectedCategories, selectedTypes, sortOption, selectedDateRange]);
 
   // Calculate pagination
   const totalPages = Math.ceil(filteredArticles.length / postsPerPage);
@@ -241,10 +248,10 @@ const Blog: React.FC<BlogProps> = (props) => {
   const endIndex = startIndex + postsPerPage;
   const paginatedArticles = filteredArticles.slice(startIndex, endIndex);
 
-  // Reset to page 1 when search or category changes
+  // Reset to page 1 when search, category, type, sort, or date range changes
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchQuery, selectedCategories, sortOption]);
+  }, [searchQuery, selectedCategories, selectedTypes, sortOption, selectedDateRange]);
 
   // Calculate category counts from all articles
   const categoryCounts = allArticles.reduce((acc: Record<string, number>, article: Article) => {
@@ -257,6 +264,19 @@ const Blog: React.FC<BlogProps> = (props) => {
     totalPosts: count,
     ...categoryIcons[name as keyof typeof categoryIcons]
   })).filter(category => category.icon); // Only include categories with icons
+
+  // Calculate type counts from all articles
+  const typeCounts = allArticles.reduce((acc: Record<string, number>, article: Article) => {
+    const t = article.type || "";
+    if (!t) return acc;
+    acc[t] = (acc[t] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
+
+  const types = Object.entries(typeCounts).map(([name, count]) => ({
+    name,
+    totalPosts: count,
+  }));
 
   const handleCategoryToggle = (category: string) => {
     setSelectedCategories(prev => 
@@ -271,6 +291,18 @@ const Blog: React.FC<BlogProps> = (props) => {
     handleCategoryToggle(category);
   };
 
+  const handleTypeToggle = (type: string) => {
+    setSelectedTypes(prev => 
+      prev.includes(type) 
+        ? prev.filter(t => t !== type)
+        : [...prev, type]
+    );
+  };
+
+  const handleTypeClick = (type: string) => {
+    handleTypeToggle(type);
+  };
+
   const handleDateRangeSelect = (range: DateRange | undefined) => {
     setSelectedDateRange(range);
     setIsCalendarOpen(false);
@@ -283,6 +315,7 @@ const Blog: React.FC<BlogProps> = (props) => {
   const handleClearAllFilters = () => {
     setSearchQuery("");
     setSelectedCategories([]);
+    setSelectedTypes([]);
     setSortOption("date-desc");
     setSelectedDateRange(undefined);
   };
@@ -371,7 +404,14 @@ const Blog: React.FC<BlogProps> = (props) => {
     window.open(fullUrl, '_blank', 'noopener,noreferrer');
   };
 
-  const hasActiveFilters = searchQuery || selectedCategories.length > 0 || sortOption !== "date-desc" || selectedDateRange?.from || selectedDateRange?.to;
+  const hasActiveFilters = !!(
+    searchQuery ||
+    selectedCategories.length > 0 ||
+    selectedTypes.length > 0 ||
+    sortOption !== "date-desc" ||
+    selectedDateRange?.from ||
+    selectedDateRange?.to
+  );
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -504,8 +544,32 @@ const Blog: React.FC<BlogProps> = (props) => {
                               className="text-sm flex items-center gap-1.5 cursor-pointer"
                             >
                               <category.icon className="h-3 w-3" />
-                              {category.name}
+                              <span className="">{category.name}</span>
                               <span className="text-muted-foreground">({category.totalPosts})</span>
+                            </Label>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    <Separator />
+
+                    <div>
+                      <h4 className="font-medium mb-3">{translations.types || "Types"}</h4>
+                      <div className="grid grid-cols-2 gap-2">
+                        {types.map((t) => (
+                          <div key={t.name} className="flex items-center space-x-2">
+                            <Checkbox
+                              id={`type-${t.name}`}
+                              checked={selectedTypes.includes(t.name)}
+                              onCheckedChange={() => handleTypeToggle(t.name)}
+                            />
+                            <Label 
+                              htmlFor={`type-${t.name}`} 
+                              className="text-sm flex items-center gap-1.5 cursor-pointer"
+                            >
+                              <span className="">{t.name}</span>
+                              <span className="text-muted-foreground">({t.totalPosts})</span>
                             </Label>
                           </div>
                         ))}
@@ -567,6 +631,15 @@ const Blog: React.FC<BlogProps> = (props) => {
                   <X 
                     className="h-3 w-3 cursor-pointer" 
                     onClick={() => handleCategoryToggle(category)}
+                  />
+                </Badge>
+              ))}
+              {selectedTypes.map((type) => (
+                <Badge key={type} variant="secondary" className="gap-1">
+                  {type}
+                  <X 
+                    className="h-3 w-3 cursor-pointer" 
+                    onClick={() => handleTypeToggle(type)}
                   />
                 </Badge>
               ))}
@@ -886,6 +959,35 @@ const Blog: React.FC<BlogProps> = (props) => {
               );
             })}
           </div>
+          
+          {types.length > 0 && (
+            <>
+              <h3 className="text-lg font-semibold tracking-tight mt-6 mb-2">{translations.type_browser || "Browse by Type"}</h3>
+              <div className="space-y-2">
+                {types.map((t) => {
+                  const isSelected = selectedTypes.includes(t.name);
+                  return (
+                    <div
+                      key={t.name}
+                      onClick={() => handleTypeClick(t.name)}
+                      className={cn(
+                        "flex items-center justify-between gap-2 p-3 rounded-lg transition-colors cursor-pointer",
+                        "bg-muted/50 hover:bg-muted",
+                        isSelected && "bg-primary/10 border border-primary/20"
+                      )}
+                    >
+                      <div className="flex items-center gap-3">
+                        <span className="font-medium text-sm">{t.name}</span>
+                      </div>
+                      <Badge variant="secondary" className="px-2 py-0.5 text-xs">
+                        {t.totalPosts}
+                      </Badge>
+                    </div>
+                  );
+                })}
+              </div>
+            </>
+          )}
           
           {hasActiveFilters && (
             <div className="mt-6 pt-4 border-t">

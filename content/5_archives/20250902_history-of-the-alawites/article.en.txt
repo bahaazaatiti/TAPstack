@@ -10,7 +10,7 @@ Date: 2025-09-02
 
 ----
 
-Category: History
+Category: History and Heritage
 
 ----
 
@@ -31,6 +31,14 @@ Readtime: 20
 ----
 
 Featuredimage: - file://1nt9nblr5wffa4bl
+
+----
+
+Latitude: 
+
+----
+
+Longitude: 
 
 ----
 
