@@ -2,7 +2,6 @@ import React from 'react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { 
@@ -16,7 +15,6 @@ import {
   Check, 
   Plus, 
   Minus,
-  ChevronDown 
 } from "lucide-react"
 
 interface Features03Props {
@@ -128,17 +126,6 @@ const Features03: React.FC<Features03Props> = (props) => {
     }
   };
 
-  // Enhanced state for collapsible features
-  const [openFeatures, setOpenFeatures] = React.useState<Record<string, boolean>>({})
-
-  // Toggle feature expansion
-  const toggleFeature = (cardIndex: number, featureIndex: number) => {
-    const key = `${cardIndex}-${featureIndex}`
-    setOpenFeatures(prev => ({
-      ...prev,
-      [key]: !prev[key]
-    }))
-  }
 
   return (
     <div className="min-h-screen flex items-center justify-center">
@@ -154,8 +141,8 @@ const Features03: React.FC<Features03Props> = (props) => {
             <Accordion type="single" collapsible className="w-full">
               {faqs.map((faq, index) => (
                 <AccordionItem key={index} value={`item-${index}`}>
-                  <AccordionTrigger>{faq.question}</AccordionTrigger>
-                  <AccordionContent>
+                  <AccordionTrigger className="text-xl cursor-pointer">{faq.question}</AccordionTrigger>
+                  <AccordionContent className="px-9 pb-4 text-sm text-primary">
                     {faq.answer}
                   </AccordionContent>
                 </AccordionItem>
@@ -200,47 +187,41 @@ const Features03: React.FC<Features03Props> = (props) => {
 
                       {/* Enhanced Features with Collapsible Details */}
                       <ScrollArea className="mt-6 max-h-96">
-                        <ul className="space-y-4">
+                        <Accordion type="single" collapsible className="w-full">
                           {card.features.map((feature, index) => (
-                            <li key={index}>
-                              <Collapsible
-                                open={openFeatures[`${cardIndex}-${index}`]}
-                                onOpenChange={() => toggleFeature(cardIndex, index)}
-                              >
-                                <CollapsibleTrigger className="flex items-center justify-between w-full text-start p-2 rounded-lg hover:bg-muted/50 transition-colors">
-                                  <div className="flex items-start gap-3 flex-1">
-                                    {getIcon(feature.icon)}
-                                    <p className="-mt-0.5 font-medium">
-                                      {feature.title}
-                                    </p>
-                                  </div>
-                                  <ChevronDown className={`h-4 w-4 transition-transform ${openFeatures[`${cardIndex}-${index}`] ? 'rotate-180' : ''}`} />
-                                </CollapsibleTrigger>
-                                <CollapsibleContent className="ps-9 pt-2">
-                                  <div className="text-sm text-muted-foreground space-y-2">
-                                    {(() => {
-                                      const parts = feature.text.split(/[-•]\s+/);
-                                      if (parts.length > 1) {
-                                        return parts.slice(1).map((part, idx) => (
-                                          <p key={idx} className="leading-relaxed">
-                                            • {part.trim()}
-                                          </p>
-                                        ));
-                                      } else if (parts[0] && parts[0].trim()) {
-                                        return <p className="leading-relaxed">{parts[0].trim()}</p>;
-                                      }
-                                      return <p className="leading-relaxed">Learn more about this feature and how it can benefit your workflow.</p>;
-                                    })()}
-                                  </div>
-                                </CollapsibleContent>
-                              </Collapsible>
-                            </li>
+                            <AccordionItem key={index} value={`item-${index}`}>
+                              <AccordionTrigger className="flex items-center justify-between w-full text-start p-3 rounded-lg hover:bg-muted/50 transition-colors group">
+                                <div className="flex items-start gap-3 flex-1">
+                                  {getIcon(feature.icon)}
+                                  <p className="-mt-0.5 font-medium">
+                                    {feature.title}
+                                  </p>
+                                </div>
+                              </AccordionTrigger>
+                              <AccordionContent className="ps-9 pt-2">
+                                <div className="text-sm text-muted-foreground space-y-2">
+                                  {(() => {
+                                    const parts = feature.text.split(/[-•]\s+/);
+                                    if (parts.length > 1) {
+                                      return parts.slice(1).map((part, idx) => (
+                                        <p key={idx} className="leading-relaxed">
+                                          • {part.trim()}
+                                        </p>
+                                      ));
+                                    } else if (parts[0] && parts[0].trim()) {
+                                      return <p className="leading-relaxed">{parts[0].trim()}</p>;
+                                    }
+                                    return <p className="leading-relaxed">Learn more about this feature and how it can benefit your workflow.</p>;
+                                  })()}
+                                </div>
+                              </AccordionContent>
+                            </AccordionItem>
                           ))}
-                        </ul>
+                        </Accordion>
                       </ScrollArea>
 
                       <Button 
-                        className="mt-12 w-full"
+                        className="mt-12 w-full cursor-pointer"
                         onClick={() => handleButtonClick(card.buttonurl, card.buttonexternal)}
                       >
                         {card.buttontext} <ArrowRight />
@@ -311,47 +292,41 @@ const Features03: React.FC<Features03Props> = (props) => {
 
                     {/* Enhanced Features with Collapsible Details */}
                     <ScrollArea className="mt-6 max-h-64">
-                      <ul className="space-y-4">
+                      <Accordion type="single" collapsible className="w-full">
                         {card.features.map((feature, index) => (
-                          <li key={index}>
-                            <Collapsible
-                              open={openFeatures[`${cardIndex}-${index}`]}
-                              onOpenChange={() => toggleFeature(cardIndex, index)}
-                            >
-                              <CollapsibleTrigger className="flex items-center justify-between w-full text-start p-2 rounded-lg hover:bg-muted/50 transition-colors">
-                                <div className="flex items-start gap-3 flex-1">
-                                  {getIcon(feature.icon)}
-                                  <p className="-mt-0.5 font-medium">
-                                    {feature.title}
-                                  </p>
-                                </div>
-                                <ChevronDown className={`h-4 w-4 transition-transform ${openFeatures[`${cardIndex}-${index}`] ? 'rotate-180' : ''}`} />
-                              </CollapsibleTrigger>
-                              <CollapsibleContent className="ps-9 pt-2">
-                                <div className="text-sm text-muted-foreground space-y-2">
-                                  {(() => {
-                                    const parts = feature.text.split(/[-•]\s+/);
-                                    if (parts.length > 1) {
-                                      return parts.slice(1).map((part, idx) => (
-                                        <p key={idx} className="leading-relaxed">
-                                          • {part.trim()}
-                                        </p>
-                                      ));
-                                    } else if (parts[0] && parts[0].trim()) {
-                                      return <p className="leading-relaxed">{parts[0].trim()}</p>;
-                                    }
-                                    return <p className="leading-relaxed">Learn more about this feature and how it can benefit your workflow.</p>;
-                                  })()}
-                                </div>
-                              </CollapsibleContent>
-                            </Collapsible>
-                          </li>
+                          <AccordionItem key={index} value={`item-${index}`}>
+                            <AccordionTrigger className="flex items-center justify-between w-full text-start p-3 rounded-lg hover:bg-muted/50 transition-colors group cursor-pointer">
+                              <div className="flex items-start gap-3 flex-1">
+                                {getIcon(feature.icon)}
+                                <p className="-mt-0.5 font-medium">
+                                  {feature.title}
+                                </p>
+                              </div>
+                            </AccordionTrigger>
+                            <AccordionContent className="ps-9 pt-2">
+                              <div className="text-sm text-muted-foreground space-y-2">
+                                {(() => {
+                                  const parts = feature.text.split(/[-•]\s+/);
+                                  if (parts.length > 1) {
+                                    return parts.slice(1).map((part, idx) => (
+                                      <p key={idx} className="leading-relaxed">
+                                        • {part.trim()}
+                                      </p>
+                                    ));
+                                  } else if (parts[0] && parts[0].trim()) {
+                                    return <p className="leading-relaxed">{parts[0].trim()}</p>;
+                                  }
+                                  return <p className="leading-relaxed">Learn more about this feature and how it can benefit your workflow.</p>;
+                                })()}
+                              </div>
+                            </AccordionContent>
+                          </AccordionItem>
                         ))}
-                      </ul>
+                      </Accordion>
                     </ScrollArea>
 
                     <Button 
-                      className="mt-12 w-full"
+                      className="mt-12 w-full cursor-pointer"
                       onClick={() => handleButtonClick(card.buttonurl, card.buttonexternal)}
                     >
                       {card.buttontext} <ArrowRight />

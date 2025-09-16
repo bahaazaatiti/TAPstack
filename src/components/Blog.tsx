@@ -431,11 +431,7 @@ const Blog: React.FC<BlogProps> = (props) => {
               <h2 className="text-3xl font-bold tracking-tight">
                 {blogParamTitle ? `${title} - ${blogParamTitle}` : title}
               </h2>
-              {blogParamTitle && (
-                <p className="text-sm text-muted-foreground">
-                  {translations.searching_within || "Searching within"} {blogParamTitle}
-                </p>
-              )}
+
             </div>
             
             {/* Enhanced Search with Command */}
@@ -667,7 +663,13 @@ const Blog: React.FC<BlogProps> = (props) => {
         </div>
 
         {/* Results counter */}
+
         <div className="mt-6 text-sm text-muted-foreground">
+          {blogParamTitle && (
+            <p className="text-sm text-muted-foreground">
+              {translations.searching_within || "Searching within"} {blogParamTitle}
+            </p>
+          )}
           {hasActiveFilters ? (
             <>
               {translations.showing || "Showing"} {filteredArticles.length} {translations.of || "of"} {allArticles.length} {translations.articles || "articles"}

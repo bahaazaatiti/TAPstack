@@ -14,7 +14,11 @@ Date: 2025-09-02
 
 ----
 
-Category: Health
+Format: Alawite Books
+
+----
+
+Category: Culture and Religion
 
 ----
 
@@ -37,3 +41,15 @@ Readtime: 5
 ----
 
 Featuredimage: - file://g2jeyy2plu3hqs9m
+
+----
+
+Latitude: 
+
+----
+
+Longitude: 
+
+----
+
+Type: Alawite Books

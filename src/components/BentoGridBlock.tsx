@@ -349,13 +349,13 @@ const BentoGridBlock: React.FC<BentoGridBlockProps> = (props) => {
   };
 
   return (
-    <div className="w-full py-10 lg:py-16">
+    <div className="w-full py-6 lg:py-12">
+      <div className="px-6 xl:px-10 pb-8 md:pb-14">
+        <h4 className="text-3xl md:text-5xl font-bold tracking-tighter text-foreground max-w-xl">
+          {title}
+        </h4>
+      </div>
       <div className="container mx-auto flex flex-col gap-14 ps-4">
-        <div className="flex w-full flex-col sm:flex-row sm:justify-between sm:items-center gap-8">
-          <h4 className="text-3xl md:text-5xl tracking-tighter max-w-xl font-bold">
-            {title}
-          </h4>
-        </div>
         
         <div className="max-w-6xl w-full mx-auto">
           {/* Desktop Grid */}

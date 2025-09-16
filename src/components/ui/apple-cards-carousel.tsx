@@ -145,7 +145,7 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
       <div className="relative w-full">
         <div
           className={cn(
-            "flex w-full overflow-x-scroll overscroll-x-auto scroll-smooth py-8 [scrollbar-width:none] md:py-16"
+            "flex w-full overflow-x-scroll overscroll-x-auto scroll-smooth py-8 [scrollbar-width:none] md:py-14"
           )}
           dir={isRTL() ? "rtl" : "ltr"}
           ref={carouselRef}
