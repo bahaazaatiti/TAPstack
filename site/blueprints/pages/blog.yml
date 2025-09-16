@@ -90,7 +90,6 @@ tabs:
             fieldsets:
               - blog
               - latestblog
-              - featuredblog
               - features03
               - wavyhero
               - bentogrid

@@ -46,6 +46,7 @@ interface LatestBlogProps {
   translations?: {
     [key: string]: any;
   };
+  featuredLayout?: boolean;
   [key: string]: any;
 }
 
@@ -113,6 +114,11 @@ const LatestBlog: React.FC<LatestBlogProps> = (props) => {
     window.open(fullUrl, '_blank', 'noopener,noreferrer');
   };
 
+  // Determine whether to use the featured asymmetric layout
+  // The block serializes `featuredlayout` as a string 'true'/'false' in content; read and coerce to boolean
+  const rawPropFeatured = (props as any).featuredlayout;
+  const useFeaturedLayout = rawPropFeatured === 'true' || rawPropFeatured === true || rawPropFeatured === '1';
+
   return (
     <div className="w-full py-10 lg:py-16 px-6 xl:px-10">
       <div className="container mx-auto flex flex-col sm:gap-14">
@@ -126,11 +132,11 @@ const LatestBlog: React.FC<LatestBlogProps> = (props) => {
             </a>
           </Button>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+  <div className={`${useFeaturedLayout ? 'grid grid-cols-1 md:grid-cols-2 gap-8' : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8'}`}>
           {latestArticles.map((article, index) => (
             <ContextMenu key={index}>
               <ContextMenuTrigger asChild>
-                <div>
+                <div className={`${useFeaturedLayout && index === 0 ? 'md:col-span-2' : ''}`}>
                   {/* Desktop: Regular link with HoverCard */}
                   <HoverCard>
                     <HoverCardTrigger asChild>

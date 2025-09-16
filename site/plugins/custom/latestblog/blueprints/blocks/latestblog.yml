@@ -22,6 +22,12 @@ fields:
       category: Latest from Category
       format: Latest from Format
     help: Choose how to select articles
+  
+  featuredLayout:
+    label: Use featured layout
+    type: toggle
+    default: false
+    help: When enabled the block will render using the featured asymmetric layout (first article spans two columns)
     
   articles:
     label: Articles

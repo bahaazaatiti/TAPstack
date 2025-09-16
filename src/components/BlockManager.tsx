@@ -6,7 +6,6 @@ import Comp582 from './Comp582'
 import FooterSection from './default'
 import Blog from './Blog'
 import LatestBlog from './latestblog'
-import FeaturedBlog from './featuredblog'
 import BentoGridBlock from './BentoGridBlock'
 import TextBlock from './textblock'
 import Features03 from './Features03'
@@ -21,7 +20,6 @@ const blockComponents: Record<string, ComponentType<any>> = {
   comp582: Comp582,
   blog: Blog,
   latestblog: LatestBlog,
-  featuredblog: FeaturedBlog,
   bentogrid: BentoGridBlock,
   applecarousel: AppleCarousel,
   textblock: TextBlock,

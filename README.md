@@ -192,10 +192,6 @@ const Hero: React.FC<HeroProps> = ({
 - Responsive grid layout (1-4 columns)
 - Configurable call-to-action button
 
-#### featuredblog - Featured Content
-- Curated article selection
-- Large format article presentation
-
 #### textblock - Simple Text Content
 - Icon, subtitle, title, and description fields
 - Read more/less functionality for long content
