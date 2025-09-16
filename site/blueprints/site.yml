@@ -4,35 +4,39 @@ tabs:
   articles:
     label: Articles
     sections:
-      baa_articles:
+      cas_articles:
         type: pages
-        headline: Baa Articles
-        parent: site.find("baa")
+        headline: CAS Articles
+        parent: site.find("cas")
         template: article
         layout: table
         columns:
           title:
             label: Title
-            width: 3/6
+            width: 3/7
           author:
             label: Author
             type: users
             query: page.author
             text: "{{ user.name }}"
-            width: 1/6
+            width: 1/7
           category:
             label: Category
             text: "{{ page.category }}"
-            width: 1/6
+            width: 1/7
+          type:
+            label: Type
+            text: "{{ page.type }}"
+            width: 1/7
           created:
             label: Created
             type: date
             value: "{{ page.date }}"
-            width: 1/6
+            width: 1/7
           status:
             label: Status
             text: "{{ page.status }}"
-            width: 1/6
+            width: 1/7
         sortBy: date desc
         create:
           template: article
@@ -41,26 +45,25 @@ tabs:
         filters:
           - status
           - category
+          - type
 
-      Archives_articles:
+      Archive_articles:
         type: pages
-        headline: Archives Entries
-        parent: site.find("archives")
+        headline: Archive Entries
+        parent: site.find("archive")
         template: article
         layout: table
         columns:
           title:
             label: Title
             width: 3/6
-          author:
-            label: Author
-            type: users
-            query: page.author
-            text: "{{ user.name }}"
-            width: 1/6
           category:
             label: Category
             text: "{{ page.category }}"
+            width: 1/6
+          type:
+            label: Type
+            text: "{{ page.type }}"
             width: 1/6
           created:
             label: Created
@@ -79,6 +82,7 @@ tabs:
         filters:
           - status
           - category
+          - type
 
       gallery_articles:
         type: pages
@@ -89,26 +93,20 @@ tabs:
         columns:
           title:
             label: Title
-            width: 3/6
-          author:
-            label: Author
-            type: users
-            query: page.author
-            text: "{{ user.name }}"
-            width: 1/6
+            width: 3/5
           category:
             label: Category
             text: "{{ page.category }}"
-            width: 1/6
+            width: 1/5
           created:
             label: Created
             type: date
             value: "{{ page.date }}"
-            width: 1/6
+            width: 1/5
           status:
             label: Status
             text: "{{ page.status }}"
-            width: 1/6
+            width: 1/5
         sortBy: date desc
         create:
           template: article

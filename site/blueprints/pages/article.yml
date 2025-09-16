@@ -41,6 +41,9 @@ columns:
               Academic Research: Academic Research
               About the Alawites: About the Alawites
               Alawite Books: Alawite Books
+              Media: Media
+              Demographic Profile: Demographic Profile
+            required: true
           category:
             label: Category
             type: select
