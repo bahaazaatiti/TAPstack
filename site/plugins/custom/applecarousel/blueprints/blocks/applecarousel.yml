@@ -45,7 +45,7 @@ fields:
     type: select
     options:
       Religious: Religious
-      Historic: Historic
+      Political: Political
       Cultural: Cultural
       Symbolic: Symbolic
     help: Select which category to filter articles by

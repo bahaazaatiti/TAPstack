@@ -95,7 +95,7 @@ const categoryIcons = {
   "History and Heritage": { icon: Scroll, background: "bg-amber-500", color: "text-amber-500" },
   "Geography and Demography": { icon: Globe, background: "bg-teal-500", color: "text-teal-500" },
   Political: { icon: Church, background: "bg-rose-500", color: "text-rose-500" },
-  Historic: { icon: Archive, background: "bg-orange-500", color: "text-orange-500" },
+  Religious: { icon: Archive, background: "bg-orange-500", color: "text-orange-500" },
   Cultural: { icon: Users, background: "bg-indigo-500", color: "text-indigo-500" },
   Symbolic: { icon: Eye, background: "bg-pink-500", color: "text-pink-500" },
   Map: { icon: Map, background: "bg-slate-500", color: "text-slate-500" },
