@@ -122,6 +122,7 @@ const Article: React.FC<ArticleProps> = ({
   const [wordCount, setWordCount] = useState(0)
   const [selectedPdf, setSelectedPdf] = useState<string>('')
   const [isPdfDialogOpen, setIsPdfDialogOpen] = useState(false)
+  const [activeTab, setActiveTab] = useState<string>('')
 
   useEffect(() => {
     // Parse content and generate TOC
@@ -449,7 +450,7 @@ const Article: React.FC<ArticleProps> = ({
                       <FileText className="h-5 w-5" />
                       PDF Viewer
                     </CardTitle>
-                    <div className="flex items-center gap-2 line-clamp-1">
+                    <div className="flex items-center gap-2">
                       <Select value={selectedPdf} onValueChange={setSelectedPdf}>
                         <SelectTrigger className="w-12 md:w-64 [&>svg]:hidden md:[&>svg]:block">
                           <SelectValue placeholder="Select a PDF to view" className="hidden md:block" />
@@ -460,52 +461,77 @@ const Article: React.FC<ArticleProps> = ({
                         <SelectContent>
                           {pdfFiles.map((pdf, index) => (
                             <SelectItem key={index} value={pdf.url}>
-                              {pdf.title} ({pdf.size})
+                              <div className="truncate max-w-3xs">
+                                {pdf.title} ({pdf.size})
+                              </div>
                             </SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
                       
-                      {selectedPdf && (
-                        <Dialog open={isPdfDialogOpen} onOpenChange={setIsPdfDialogOpen}>
-                          <DialogTrigger asChild>
-                            <Button variant="outline" size="sm" className="gap-2">
-                              <Maximize className="h-4 w-4" />
-                              <span className="hidden md:inline">Fullscreen</span>
-                            </Button>
-                          </DialogTrigger>
-                          <DialogContent className=" max-h-[90vh] h-[90vh] p-0 sm:max-w-2xl">
-                            <DialogHeader className="p-4 pb-2">
-                              <DialogTitle className="flex items-center gap-2">
-                                <FileText className="h-5 w-5" />
-                                {pdfFiles.find(pdf => pdf.url === selectedPdf)?.title || 'PDF Viewer'}
-                              </DialogTitle>
-                            </DialogHeader>
-                            <div className="flex-1 p-4 pt-0">
-                              <div className="w-full h-[calc(90vh-120px)] border rounded-lg overflow-hidden">
-                                <iframe
-                                  src={`${selectedPdf}#toolbar=1&navpanes=1&scrollbar=1&view=FitH`}
-                                  className="w-full h-full border-0"
-                                  title="PDF Viewer - Fullscreen"
-                                  loading="lazy"
-                                >
-                                  <p className="p-4 text-center text-muted-foreground">
-                                    Your browser does not support PDFs. 
-                                    <a 
-                                      href={selectedPdf} 
-                                      target="_blank" 
-                                      rel="noopener noreferrer"
-                                      className="text-primary hover:underline ms-1"
-                                    >
-                                      Download the PDF
-                                    </a>
-                                  </p>
-                                </iframe>
+                      {/* Download button: opens the Files tab */}
+                      <div className="flex items-center gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            setActiveTab('files')
+                            requestAnimationFrame(() => {
+                              document.getElementById('article-tabs')?.scrollIntoView({ 
+                                behavior: 'smooth', 
+                                block: 'start' 
+                              })
+                            })
+                          }}
+                          aria-label="Open files tab"
+                          title="Open files tab"
+                          className="gap-2"
+                        >
+                          <Download className="h-4 w-4" />
+                          <span className="hidden md:inline">Files</span>
+                        </Button>
+
+                        {selectedPdf && (
+                          <Dialog open={isPdfDialogOpen} onOpenChange={setIsPdfDialogOpen}>
+                            <DialogTrigger asChild>
+                              <Button variant="outline" size="sm" className="gap-2">
+                                <Maximize className="h-4 w-4" />
+                                <span className="hidden md:inline">Fullscreen</span>
+                              </Button>
+                            </DialogTrigger>
+                            <DialogContent className=" max-h-[90vh] h-[90vh] p-0 sm:max-w-2xl">
+                              <DialogHeader className="p-4 pb-2">
+                                <DialogTitle className="flex items-center gap-2">
+                                  <FileText className="h-5 w-5" />
+                                  {pdfFiles.find(pdf => pdf.url === selectedPdf)?.title || 'PDF Viewer'}
+                                </DialogTitle>
+                              </DialogHeader>
+                              <div className="flex-1 p-4 pt-0">
+                                <div className="w-full h-[calc(90vh-120px)] border rounded-lg overflow-hidden">
+                                  <iframe
+                                    src={`${selectedPdf}#toolbar=1&navpanes=1&scrollbar=1&view=FitH`}
+                                    className="w-full h-full border-0"
+                                    title="PDF Viewer - Fullscreen"
+                                    loading="lazy"
+                                  >
+                                    <p className="p-4 text-center text-muted-foreground">
+                                      Your browser does not support PDFs. 
+                                      <a 
+                                        href={selectedPdf} 
+                                        target="_blank" 
+                                        rel="noopener noreferrer"
+                                        className="text-primary hover:underline ms-1"
+                                      >
+                                        Download the PDF
+                                      </a>
+                                    </p>
+                                  </iframe>
+                                </div>
                               </div>
-                            </div>
-                          </DialogContent>
-                        </Dialog>
-                      )}
+                            </DialogContent>
+                          </Dialog>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </CardHeader>
@@ -545,7 +571,7 @@ const Article: React.FC<ArticleProps> = ({
             )}
 
             {/* Enhanced Article Metadata */}
-            <Tabs defaultValue="" className="w-full">
+            <Tabs id="article-tabs" value={activeTab} onValueChange={setActiveTab} className="w-full" tabIndex={-1}>
               <TabsList className="flex w-full">
                 <TabsTrigger 
                   value="info" 

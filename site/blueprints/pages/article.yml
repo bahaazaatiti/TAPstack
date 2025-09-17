@@ -22,6 +22,44 @@ columns:
             type: textarea
             # translate: true            # api can be added to auto translate
             size: large
+      
+      files:
+        type: files
+        headline: Article Files
+        layout: table
+        columns:
+          filename:
+            label: Filename
+            text: "{{ file.filename }}"
+            width: 2/5
+          extension:
+            label: Type
+            text: "{{ file.extension }}"
+            width: 1/5
+          size:
+            label: Size
+            value: "{{ file.niceSize }}"
+            width: 1/5
+          modified:
+            label: Modified
+            type: date
+            value: "{{ file.modified }}"
+            width: 1/5
+        sortBy: modified desc
+        search: true
+        filters:
+          - extension
+        uploads:
+          accept:
+            - image/*
+            - application/pdf
+            - text/*
+            - application/msword
+            - application/vnd.openxmlformats-officedocument.wordprocessingml.document
+            - application/vnd.ms-excel
+            - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+        help: "Upload files for this article. PLEASE UPLOAD PDFS HERE"
+
   sidebar:
     width: 1/3
     sections:

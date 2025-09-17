@@ -192,3 +192,45 @@ tabs:
             text: "{{ page.intendedTemplate }}"
             width: 1/3
 
+
+  media:
+    label: Media
+    sections:
+      media_files:
+        type: files
+        headline: Media Library
+        query: site.index.files
+        layout: table
+        columns:
+          filename:
+            label: Filename
+            text: "{{ file.filename }}"
+            width: 2/7
+          extension:
+            label: Ext
+            text: "{{ file.extension }}"
+            width: 1/7
+          size:
+            label: Size
+            value: "{{ file.niceSize }}"
+            width: 1/7
+          parent:
+            label: Parent
+            value: "{{ file.parent.parents.last ?? file.parent }}"
+            width: 1/7
+          page:
+            label: Page
+            value: "{{ file.parent.title }}"
+            width: 1/7
+          modified:
+            label: Modified
+            type: date
+            value: "{{ file.modified }}"
+            width: 1/7
+        sortBy: modified desc
+        search: true
+        filters:
+          - extension
+          - page 
+          - parent
+

@@ -1,0 +1,27 @@
+title: File
+preview: true
+fields:
+  caption:
+    label: Caption
+    type: textarea
+    help: Optional short caption or description for this file.
+  alt:
+    label: Alt text
+    type: text
+    help: Alternative text for images (accessibility).
+  credit:
+    label: Credit
+    type: text
+    help: Photographer / source credit.
+  license:
+    label: License
+    type: text
+    help: License or usage terms.
+  tags:
+    label: Tags
+    type: tags
+    help: Helpful keywords to find files later.
+  isPrivate:
+    label: Private
+    type: toggle
+    help: Mark this file as private (you can use this flag in templates).
