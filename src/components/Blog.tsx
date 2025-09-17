@@ -731,7 +731,7 @@ const Blog: React.FC<BlogProps> = (props) => {
                                   <p className="mt-2 text-muted-foreground line-clamp-3 text-ellipsis">
                                     {article.description}
                                   </p>
-                                  <div className="mt-4 flex items-center gap-6 text-muted-foreground text-sm font-medium">
+                                  <div className="mt-4 flex items-center gap-2 md:gap-6 text-muted-foreground text-xs md:text-sm font-medium">
                                     <div className="flex items-center gap-2">
                                       {article.authorImage?.url ? (
                                         <Avatar className="h-5 w-5">

@@ -104,6 +104,7 @@ const AuthorBox: React.FC<AuthorBoxProps> = (props) => {
     translations = {}
   } = props;
   const [isMobile, setIsMobile] = useState(false)
+  const [sheetOpen, setSheetOpen] = useState(false)
 
   React.useEffect(() => {
     const checkDevice = () => {
@@ -177,7 +178,17 @@ const AuthorBox: React.FC<AuthorBoxProps> = (props) => {
       )}
       
       <div className="text-xs text-muted-foreground">
-        {translations.click_full_profile || 'Click for full profile →'}
+        {isMobile ? (
+          (translations.click_full_profile || 'Click for full profile →')
+        ) : (
+          <button
+            onClick={() => setSheetOpen(true)}
+            className="text-xs text-muted-foreground hover:text-primary underline-offset-2 hover:underline"
+            aria-label={translations.click_full_profile || 'Click for full profile'}
+          >
+            {translations.click_full_profile || 'Click for full profile →'}
+          </button>
+        )}
       </div>
     </div>
   )
@@ -416,17 +427,25 @@ const AuthorBox: React.FC<AuthorBoxProps> = (props) => {
             <HoverCard>
               <HoverCardTrigger asChild>
                 <div className="cursor-pointer">
-                  <Avatar className="size-12 border hover:ring-2 hover:ring-primary/20 transition-all duration-200">
-                    {author.avatar ? (
-                      <AvatarImage 
-                        src={author.avatar.url} 
-                        alt={author.avatar.alt} 
-                      />
-                    ) : null}
-                    <AvatarFallback>
-                      <User className="w-5 h-5" />
-                    </AvatarFallback>
-                  </Avatar>
+                  {/* Avatar clickable on desktop to open the sheet; hover still shows preview */}
+                  <button
+                    onClick={() => { if (!isMobile) setSheetOpen(true) }}
+                    className="p-0 bg-transparent border-0 cursor-pointer"
+                    aria-label={translations.view_profile || 'View Profile'}
+                    type="button"
+                  >
+                    <Avatar className="size-12 border hover:ring-2 hover:ring-primary/20 transition-all duration-200">
+                      {author.avatar ? (
+                        <AvatarImage 
+                          src={author.avatar.url} 
+                          alt={author.avatar.alt} 
+                        />
+                      ) : null}
+                      <AvatarFallback>
+                        <User className="w-5 h-5" />
+                      </AvatarFallback>
+                    </Avatar>
+                  </button>
                 </div>
               </HoverCardTrigger>
               <HoverCardContent className="w-80" side="top">
@@ -469,32 +488,21 @@ const AuthorBox: React.FC<AuthorBoxProps> = (props) => {
                   </DrawerContent>
                 </Drawer>
               ) : (
-                // Desktop: Use Sheet
-                <Sheet>
-                  <SheetTrigger asChild>
-                    <button className="text-start hover:text-primary transition-colors">
-                      <div className="text-sm font-medium leading-normal">{author.name}</div>
-                      {(author.position || author.affiliation) && (
-                        <div className="text-muted-foreground text-sm font-normal leading-normal">
-                          {author.position}
-                          {author.position && author.affiliation && ' & '}
-                          {author.affiliation}
-                        </div>
-                      )}
-                    </button>
-                  </SheetTrigger>
-                  <SheetContent className="sm:max-w-md">
-                    <SheetHeader>
-                      <SheetTitle>{translations.author_profile || 'Author Profile'}</SheetTitle>
-                      <SheetDescription>
-                        {translations.detailed_info_about || 'Detailed information about'} {author.name}
-                      </SheetDescription>
-                    </SheetHeader>
-                    <div className="mt-6">
-                      <FullProfile />
+                // Desktop: show name as button that opens the shared sheet
+                <button
+                  onClick={() => setSheetOpen(true)}
+                  className="text-start hover:text-primary transition-colors"
+                  type="button"
+                >
+                  <div className="text-sm font-medium leading-normal">{author.name}</div>
+                  {(author.position || author.affiliation) && (
+                    <div className="text-muted-foreground text-sm font-normal leading-normal">
+                      {author.position}
+                      {author.position && author.affiliation && ' & '}
+                      {author.affiliation}
                     </div>
-                  </SheetContent>
-                </Sheet>
+                  )}
+                </button>
               )}
             </div>
 
@@ -641,6 +649,22 @@ const AuthorBox: React.FC<AuthorBoxProps> = (props) => {
           )}
         </CardContent>
       </Card>
+      {/* Shared Sheet for desktop full profile (controlled) */}
+      {!isMobile && (
+        <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
+          <SheetContent className="sm:max-w-md">
+            <SheetHeader>
+              <SheetTitle>{translations.author_profile || 'Author Profile'}</SheetTitle>
+              <SheetDescription>
+                {translations.detailed_info_about || 'Detailed information about'} {author.name}
+              </SheetDescription>
+            </SheetHeader>
+            <div className="mt-6">
+              <FullProfile />
+            </div>
+          </SheetContent>
+        </Sheet>
+      )}
     </div>
   )
 }
