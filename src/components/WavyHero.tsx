@@ -16,7 +16,7 @@ const WavyHero: React.FC<WavyHeroProps> = (props) => {
   useEffect(() => {
     const updateBackgroundColor = () => {
       const isDark = document.documentElement.classList.contains('dark');
-      const color = isDark ? '#0a0a0a' : '#ffffff'; // Use simple hex colors
+      const color = isDark ? '#021301' : '#ffff'; // Use simple hex colors
       console.log('Theme detected:', isDark ? 'dark' : 'light', 'Setting color:', color);
       setBackgroundFill(color);
     };

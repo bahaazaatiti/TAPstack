@@ -95,6 +95,7 @@ tabs:
               - bentogrid
               - applecarousel
               - authorbox
+              - cta
               - textblock
               - worldmaphero
             label: Content Blocks

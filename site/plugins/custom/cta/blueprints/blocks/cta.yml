@@ -1,0 +1,29 @@
+name: Call to Action
+fields:
+  heading:
+    label: Heading
+    type: text
+    width: 1/1
+  description:
+    label: Description
+    type: textarea
+    width: 1/1
+  primaryButtonText:
+    label: Primary Button Text
+    type: text
+  primaryButtonUrl:
+    label: Primary Button URL
+    type: url
+  secondaryButtonText:
+    label: Secondary Button Text
+    type: text
+  secondaryButtonUrl:
+    label: Secondary Button URL
+    type: url
+  layout:
+    label: Layout
+    type: select
+    options:
+      stacked: Stacked
+      side_by_side: Side by side
+    default: side_by_side

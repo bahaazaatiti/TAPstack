@@ -24,6 +24,7 @@ fields:
     type: blocks
     fieldsets:
       - blog
+      - cta
     label: Content Blocks
     
   footer:

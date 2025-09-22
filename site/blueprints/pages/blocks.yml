@@ -41,6 +41,7 @@ fields:
       - worldmaphero
       - bentogrid
       - applecarousel
+      - cta
       - authorbox
       - textblock
     label: Content Blocks

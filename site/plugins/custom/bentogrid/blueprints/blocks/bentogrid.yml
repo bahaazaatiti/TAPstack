@@ -59,7 +59,7 @@ fields:
     label: Format
     type: select
     options:
-      Oped: "Oped"
+      Op-Ed: "Op-Ed"
       Academic Research: "Academic Research"
       About the Alawites: "About the Alawites"
       Alawite Books: "Alawite Books"
