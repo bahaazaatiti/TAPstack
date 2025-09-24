@@ -88,6 +88,33 @@ const WorldMapHero: React.FC<WorldMapHeroProps> = ({
 
   const dotColor = "#4b7346";
 
+  // Reset mobile zoom to default by temporarily setting the viewport meta tag.
+  // Many mobile browsers will reset the visual zoom when viewport's initial-scale/maximum-scale are changed.
+  const resetMobileZoom = () => {
+    if (typeof window === 'undefined' || typeof document === 'undefined') return;
+    try {
+      const meta = document.querySelector('meta[name="viewport"]') as HTMLMetaElement | null;
+      if (!meta) return;
+      // store original content so we can restore it
+      if (!meta.dataset.originalContent) {
+        meta.dataset.originalContent = meta.content || '';
+      }
+      // Set a strict viewport to force the browser to reset zoom to 1
+      meta.content = 'width=device-width, initial-scale=1, maximum-scale=1';
+      // A tiny delay then restore the original viewport so zooming can be used again
+      window.setTimeout(() => {
+        if (meta.dataset.originalContent !== undefined) {
+          meta.content = meta.dataset.originalContent;
+          // keep dataset so subsequent taps still work
+        }
+      }, 700);
+      // also try a small scroll/resize to encourage layout repaint on some browsers
+      window.scrollTo(window.scrollX, window.scrollY);
+    } catch (e) {
+      // no-op
+    }
+  };
+
   return (
     <section className="w-full py-16 lg:px-4 bg-background">
       <div className="max-w-7xl mx-auto">
@@ -244,6 +271,10 @@ const WorldMapHero: React.FC<WorldMapHeroProps> = ({
                         left: `${leftPercent}%`,
                         top: `${topPercent}%`,
                         transform: 'translate(-50%, -50%)'
+                      }}
+                      onClick={() => {
+                        // when tapping a dot on mobile, reset zoom to default so drawer is usable
+                        resetMobileZoom();
                       }}
                     />
                   </DrawerTrigger>
