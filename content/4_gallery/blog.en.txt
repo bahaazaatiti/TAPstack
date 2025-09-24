@@ -10,11 +10,11 @@ Header: [{"content":{"logolight":["file://6mnvswiucrxjrtnh"],"logodark":["file:/
 
 ----
 
-Blocks: [{"content":{"title":"Gallery","selectionmode":"category","articles":[],"latestcount":10,"filtercategory":"Symbolic","categorycount":6,"onlywithimages":"true","initialscroll":0},"id":"37b15aea-fc4e-4198-ae6b-17d4b391744d","isHidden":false,"type":"applecarousel"}]
+Blocks: [{"content":{"title":"Gallery","selectionmode":"category","articles":[],"latestcount":10,"filtercategory":"symbolic","categorycount":6,"onlywithimages":"true","initialscroll":0},"id":"37b15aea-fc4e-4198-ae6b-17d4b391744d","isHidden":false,"type":"applecarousel"}]
 
 ----
 
-Footer: [{"content":{"name":"","logo":[],"columns":[],"copyright":"© 2025 The Alawite Project. All Rights Reserved","policies":[],"showmodetoggle":"true"},"id":"18b0687c-9477-4760-8c2a-22b8c94af858","isHidden":false,"type":"footer"}]
+Footer: [{"content":{"copyright":"© 2025 The Alawite Project. All Rights Reserved","socials":[],"showmodetoggle":"true","name":"","logo":[],"columns":[],"policies":[]},"id":"18b0687c-9477-4760-8c2a-22b8c94af858","isHidden":false,"type":"footer"}]
 
 ----
 

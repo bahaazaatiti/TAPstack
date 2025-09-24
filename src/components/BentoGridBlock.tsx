@@ -77,6 +77,17 @@ const BentoGridBlock: React.FC<BentoGridBlockProps> = (props) => {
     articles: articleData = [],
     translations = {}
   } = props;
+    // Helpers to translate category and format labels
+    // TODO: MAKE HELPER FUNCTION FOR THIS IN A UTIL FILE AND IMPORT
+  const normalizeKey = (prefix: string, s?: string) => {
+    if (!s) return ''
+    return prefix + s.toLowerCase().replace(/[^a-z0-9]+/g, '_')
+  }
+
+  const tCategory = (name?: string) => {
+    if (!name) return ''
+    return translations[normalizeKey('category_', name)] || name
+  }
 
   // Use articles from props (now always provided by pass-block-data.php)
   const articles: Article[] = articleData;
@@ -183,7 +194,7 @@ const BentoGridBlock: React.FC<BentoGridBlockProps> = (props) => {
                             )}
                           </div>
                           <Badge variant="secondary" className="text-xs">
-                            {article.category}
+                            {tCategory(article.category)}
                           </Badge>
                         </div>
                         <div className="font-sans font-bold text-neutral-600 dark:text-neutral-200 truncate mb-2">
@@ -209,7 +220,7 @@ const BentoGridBlock: React.FC<BentoGridBlockProps> = (props) => {
                     <div className="flex items-center gap-2">
                       {article.category && (
                         <Badge variant="secondary" className="text-xs">
-                          {article.category}
+                          {tCategory(article.category)}
                         </Badge>
                       )}
                       <div className="flex items-center gap-1 text-sm text-muted-foreground">
@@ -259,7 +270,7 @@ const BentoGridBlock: React.FC<BentoGridBlockProps> = (props) => {
                             )}
                           </div>
                           <Badge variant="secondary" className="text-xs">
-                            {article.category}
+                            {tCategory(article.category)}
                           </Badge>
                         </div>
                         <div className="font-sans font-bold text-neutral-600 dark:text-neutral-200 truncate mb-2">
@@ -286,7 +297,7 @@ const BentoGridBlock: React.FC<BentoGridBlockProps> = (props) => {
                       <div className="flex items-center gap-2">
                         {article.category && (
                           <Badge variant="secondary" className="text-xs">
-                            {article.category}
+                            {tCategory(article.category)}
                           </Badge>
                         )}
                         <div className="flex items-center gap-1 text-sm text-muted-foreground">
@@ -408,7 +419,7 @@ const BentoGridBlock: React.FC<BentoGridBlockProps> = (props) => {
                                           )}
                                         </div>
                                         <Badge variant="secondary" className="text-xs">
-                                          {article.category}
+                                          {tCategory(article.category)}
                                         </Badge>
                                       </div>
                                       <div className="font-sans font-bold text-neutral-600 dark:text-neutral-200 truncate mb-2">
@@ -434,7 +445,7 @@ const BentoGridBlock: React.FC<BentoGridBlockProps> = (props) => {
                                   <div className="flex items-center gap-2">
                                     {article.category && (
                                       <Badge variant="secondary" className="text-xs">
-                                        {article.category}
+                                        {tCategory(article.category)}
                                       </Badge>
                                     )}
                                     <div className="flex items-center gap-1 text-sm text-muted-foreground">
@@ -484,7 +495,7 @@ const BentoGridBlock: React.FC<BentoGridBlockProps> = (props) => {
                                           )}
                                         </div>
                                         <Badge variant="secondary" className="text-xs">
-                                          {article.category}
+                                          {tCategory(article.category)}
                                         </Badge>
                                       </div>
                                       <div className="font-sans font-bold text-neutral-600 dark:text-neutral-200 truncate mb-2">
@@ -511,7 +522,7 @@ const BentoGridBlock: React.FC<BentoGridBlockProps> = (props) => {
                                     <div className="flex items-center gap-2">
                                       {article.category && (
                                         <Badge variant="secondary" className="text-xs">
-                                          {article.category}
+                                          {tCategory(article.category)}
                                         </Badge>
                                       )}
                                       <div className="flex items-center gap-1 text-sm text-muted-foreground">

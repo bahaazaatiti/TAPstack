@@ -97,7 +97,11 @@ Date: 2025-09-02
 
 ----
 
-Category: Politics
+Format: oped
+
+----
+
+Category: politicsandeconomics
 
 ----
 
@@ -128,3 +132,7 @@ Latitude:
 ----
 
 Longitude: 
+
+----
+
+Type: Academic Research

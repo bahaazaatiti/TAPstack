@@ -71,7 +71,11 @@ Date: 2025-08-28
 
 ----
 
-Category: Politics and Economics
+Format: oped
+
+----
+
+Category: politicsandeconomics
 
 ----
 
@@ -102,3 +106,7 @@ Latitude:
 ----
 
 Longitude: 
+
+----
+
+Type: Oped

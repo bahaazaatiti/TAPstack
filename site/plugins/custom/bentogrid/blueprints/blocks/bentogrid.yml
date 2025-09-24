@@ -46,11 +46,11 @@ fields:
     label: Category
     type: select
     options:
-      Politics and Economics: "Politics and Economics"
-      History and Heritage: "History and Heritage"
-      Geography and Demography: "Geography and Demography"
-      Culture and Religion: "Culture and Religion"
-      Society and Everyday Life: "Society and Everyday Life"
+      politicsandeconomics: "Politics and Economics"
+      historyandheritage: "History and Heritage"
+      geographyanddemography: "Geography and Demography"
+      cultureandreligion: "Culture and Religion"
+      societyandeverydaylife: "Society and Everyday Life"
     help: Select which category to filter articles by
     when:
       selectionMode: category
@@ -59,12 +59,8 @@ fields:
     label: Format
     type: select
     options:
-      Op-Ed: "Op-Ed"
-      Academic Research: "Academic Research"
-      About the Alawites: "About the Alawites"
-      Alawite Books: "Alawite Books"
-      Media: "Media"
-      Demographic Profile: "Demographic Profile"
+      oped: "Op-Ed"
+      academicresearch: "Academic Research"
     help: Select which article format to filter by
     when:
       selectionMode: format

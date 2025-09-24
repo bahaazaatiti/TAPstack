@@ -90,11 +90,11 @@ Date: 2025-08-28
 
 ----
 
-Format: Op-Ed
+Format: oped
 
 ----
 
-Category: Politics and Economics
+Category: politicsandeconomics
 
 ----
 

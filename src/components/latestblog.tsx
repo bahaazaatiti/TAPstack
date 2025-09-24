@@ -79,6 +79,18 @@ const LatestBlog: React.FC<LatestBlogProps> = (props) => {
     translations = {}
   } = props;
 
+  // Helpers to translate category and format labels
+  // TODO: MAKE HELPER FUNCTION FOR THIS IN A UTIL FILE AND IMPORT
+  const normalizeKey = (prefix: string, s?: string) => {
+    if (!s) return ''
+    return prefix + s.toLowerCase().replace(/[^a-z0-9]+/g, '_')
+  }
+
+  const tCategory = (name?: string) => {
+    if (!name) return ''
+    return translations[normalizeKey('category_', name)] || name
+  }
+
   // Use articles from props (now always provided by pass-block-data.php)
   const articles: Article[] = articleData;
 
@@ -200,7 +212,7 @@ const LatestBlog: React.FC<LatestBlogProps> = (props) => {
                             <div className="flex items-center gap-2">
                               {article.category && (
                                 <Badge variant="secondary" className="text-xs">
-                                  {article.category}
+                                  {tCategory(article.category)}
                                 </Badge>
                               )}
                               <div className="flex items-center gap-1 text-sm text-muted-foreground">
@@ -286,7 +298,7 @@ const LatestBlog: React.FC<LatestBlogProps> = (props) => {
                               <div className="flex items-center gap-2">
                                 {article.category && (
                                   <span className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
-                                    {article.category}
+                                    {tCategory(article.category)}
                                   </span>
                                 )}
                                 <div className="flex items-center gap-1 text-sm text-muted-foreground">

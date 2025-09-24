@@ -89,16 +89,16 @@ interface Article {
 }
 
 const categoryIcons = {
-  "Society and Everyday Life": { icon: Handshake, background: "bg-emerald-500", color: "text-emerald-500" },
-  "Politics and Economics": { icon: Scale, background: "bg-blue-500", color: "text-blue-500" },
-  "Culture and Religion": { icon: Palette, background: "bg-purple-500", color: "text-purple-500" },
-  "History and Heritage": { icon: Scroll, background: "bg-amber-500", color: "text-amber-500" },
-  "Geography and Demography": { icon: Globe, background: "bg-teal-500", color: "text-teal-500" },
-  Political: { icon: Church, background: "bg-rose-500", color: "text-rose-500" },
-  Religious: { icon: Archive, background: "bg-orange-500", color: "text-orange-500" },
-  Cultural: { icon: Users, background: "bg-indigo-500", color: "text-indigo-500" },
-  Symbolic: { icon: Eye, background: "bg-pink-500", color: "text-pink-500" },
-  Map: { icon: Map, background: "bg-slate-500", color: "text-slate-500" },
+  societyandeverydaylife: { icon: Handshake, background: "bg-emerald-500", color: "text-emerald-500" },
+  politicsandeconomics: { icon: Scale, background: "bg-blue-500", color: "text-blue-500" },
+  cultureandreligion: { icon: Palette, background: "bg-purple-500", color: "text-purple-500" },
+  historyandheritage: { icon: Scroll, background: "bg-amber-500", color: "text-amber-500" },
+  geographyanddemography: { icon: Globe, background: "bg-teal-500", color: "text-teal-500" },
+  political: { icon: Church, background: "bg-rose-500", color: "text-rose-500" },
+  religious: { icon: Archive, background: "bg-orange-500", color: "text-orange-500" },
+  cultural: { icon: Users, background: "bg-indigo-500", color: "text-indigo-500" },
+  symbolic: { icon: Eye, background: "bg-pink-500", color: "text-pink-500" },
+  map: { icon: Map, background: "bg-slate-500", color: "text-slate-500" },
 };
 
 const Blog: React.FC<BlogProps> = (props) => {
@@ -112,6 +112,23 @@ const Blog: React.FC<BlogProps> = (props) => {
     blogParamTitle = "",
     translations = {},
   } = props;
+
+  // Helpers to translate category and format labels 
+  // TODO: MAKE HELPER FUNCTION FOR THIS IN A UTIL FILE AND IMPORT
+  const normalizeKey = (prefix: string, s?: string) => {
+    if (!s) return ''
+    return prefix + s.toLowerCase().replace(/[^a-z0-9]+/g, '_')
+  }
+
+  const tCategory = (name?: string) => {
+    if (!name) return ''
+    return translations[normalizeKey('category_', name)] || name
+  }
+
+  const tFormat = (name?: string) => {
+    if (!name) return ''
+    return translations[normalizeKey('format_', name)] || name
+  }
 
   // Dynamic sort options using translations
   const sortOptions = [
@@ -325,7 +342,7 @@ const Blog: React.FC<BlogProps> = (props) => {
     <div className="space-y-3">
       <div className="flex items-center gap-2">
         <Badge variant="secondary" className="text-xs">
-          {article.category}
+          {tCategory(article.category)}
         </Badge>
         <span className="text-xs text-muted-foreground">
           {new Date(article.date).toLocaleDateString()}
@@ -540,7 +557,7 @@ const Blog: React.FC<BlogProps> = (props) => {
                               className="text-sm flex items-center gap-1.5 cursor-pointer"
                             >
                               <category.icon className="h-3 w-3" />
-                              <span className="">{category.name}</span>
+                              <span className="">{tCategory(category.name)}</span>
                               <span className="text-muted-foreground">({category.totalPosts})</span>
                             </Label>
                           </div>
@@ -564,7 +581,7 @@ const Blog: React.FC<BlogProps> = (props) => {
                               htmlFor={`format-${t.name}`} 
                               className="text-sm flex items-center gap-1.5 cursor-pointer"
                             >
-                              <span className="">{t.name}</span>
+                              <span className="">{tFormat(t.name)}</span>
                               <span className="text-muted-foreground">({t.totalPosts})</span>
                             </Label>
                           </div>
@@ -623,7 +640,7 @@ const Blog: React.FC<BlogProps> = (props) => {
               )}
               {selectedCategories.map((category) => (
                 <Badge key={category} variant="secondary" className="gap-1">
-                  {category}
+                  {tCategory(category)}
                   <X 
                     className="h-3 w-3 cursor-pointer" 
                     onClick={() => handleCategoryToggle(category)}
@@ -632,7 +649,7 @@ const Blog: React.FC<BlogProps> = (props) => {
               ))}
               {selectedFormats.map((format) => (
                 <Badge key={format} variant="secondary" className="gap-1">
-                  {format}
+                  {tFormat(format)}
                   <X 
                     className="h-3 w-3 cursor-pointer" 
                     onClick={() => handleFormatToggle(format)}
@@ -677,7 +694,7 @@ const Blog: React.FC<BlogProps> = (props) => {
                 <span> {translations.for_search || "for"} "{searchQuery}"</span>
               )}
               {selectedCategories.length > 0 && (
-                <span> {translations.in_categories || "in"} {selectedCategories.join(", ")}</span>
+                <span> {translations.in_categories || "in"} {selectedCategories.map(c => tCategory(c)).join(", ")}</span>
               )}
               {blogParamTitle && (
                 <span> {translations.from_blog || "from"} {blogParamTitle} </span>
@@ -721,7 +738,7 @@ const Blog: React.FC<BlogProps> = (props) => {
                                 <div className="px-4 sm:px-6 py-0 flex flex-col">
                                   <div className="flex items-center gap-6">
                                     <Badge className="bg-primary/5 text-primary hover:bg-primary/5 shadow-none">
-                                      {article.category}
+                                      {tCategory(article.category)}
                                     </Badge>
                                   </div>
 
@@ -797,7 +814,7 @@ const Blog: React.FC<BlogProps> = (props) => {
                                 <div className="px-0 sm:px-6 py-0 flex flex-col">
                                   <div className="flex items-center gap-6">
                                     <Badge className="bg-primary/5 text-primary hover:bg-primary/5 shadow-none">
-                                      {article.category}
+                                      {tCategory(article.category)}
                                     </Badge>
                                   </div>
 
@@ -950,9 +967,9 @@ const Blog: React.FC<BlogProps> = (props) => {
                     isSelected && "bg-primary/10 border border-primary/20"
                   )}
                 >
-                  <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3">
                     <IconComponent className={cn("h-4 w-4", category.color)} />
-                    <span className="font-medium text-sm">{category.name}</span>
+                    <span className="font-medium text-sm">{tCategory(category.name)}</span>
                   </div>
                   <Badge variant="secondary" className="px-2 py-0.5 text-xs">
                     {category.totalPosts}
@@ -979,7 +996,7 @@ const Blog: React.FC<BlogProps> = (props) => {
                       )}
                     >
                       <div className="flex items-center gap-3">
-                        <span className="font-medium text-sm">{t.name}</span>
+                        <span className="font-medium text-sm">{tFormat(t.name)}</span>
                       </div>
                       <Badge variant="secondary" className="px-2 py-0.5 text-xs">
                         {t.totalPosts}

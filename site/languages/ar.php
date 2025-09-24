@@ -76,6 +76,25 @@ return [
     'no_results_found' => 'لم توجد نتائج',
     'try_adjusting_search' => 'جرب تعديل البحث أو معايير التصفية.',
     'no_articles_available' => 'لا توجد مقالات متاحة في الوقت الحالي.',
+    // Category translations
+    'category_political' => 'سياسي',
+    'category_religious' => 'ديني',
+    'category_cultural' => 'ثقافي',
+    'category_symbolic' => 'رمزي',
+    'category_politicsandeconomics' => 'السياسة والاقتصاد',
+    'category_historyandheritage' => 'التاريخ والتراث',
+    'category_geographyanddemography' => 'الجغرافيا والديموغراف',
+    'category_cultureandreligion' => 'الثقافة والدين',
+    'category_societyandeverydaylife' => 'المجتمع والحياة اليومية',
+    'category_map' => 'خريطة',
+    // Format translations
+    'format_academicresearch' => 'بحث أكاديمي',
+    'format_aboutthealawites' => 'حول العلويين',
+    'format_oped' => 'مقال رأي',
+    'format_alawitebooks' => 'كتب علوية',
+    'format_media' => 'وسائل الإعلام',
+    'format_demographicprofile' => 'الملف الديموغرافي',
+
     'link_copied'   => 'تم نسخ الرابط:',
     'bookmarked'    => 'تم إضافة للمفضلة:',
     'categories'    => 'الفئات',
@@ -119,3 +138,4 @@ return [
   'url'     => '/ar',
   'direction' => 'rtl'
 ];
+

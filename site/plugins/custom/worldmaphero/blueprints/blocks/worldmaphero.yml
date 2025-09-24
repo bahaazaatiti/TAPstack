@@ -58,7 +58,7 @@ fields:
     label: Category
     type: select
     options:
-      Map: Map
+      map: Map
     help: Select which category to filter articles by
     when:
       selectionMode: category

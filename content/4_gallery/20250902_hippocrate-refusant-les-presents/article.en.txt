@@ -10,11 +10,11 @@ Date: 2025-09-02
 
 ----
 
-Format: Media
+Format: media
 
 ----
 
-Category: Symbolic
+Category: symbolic
 
 ----
 

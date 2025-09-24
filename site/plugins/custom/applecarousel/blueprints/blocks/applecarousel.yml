@@ -44,10 +44,10 @@ fields:
     label: Category
     type: select
     options:
-      Religious: Religious
-      Political: Political
-      Cultural: Cultural
-      Symbolic: Symbolic
+      political: Political
+      religious: Religious
+      cultural: Cultural
+      symbolic: Symbolic
     help: Select which category to filter articles by
     when:
       selectionMode: category

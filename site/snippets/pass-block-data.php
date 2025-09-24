@@ -543,6 +543,23 @@ $siteData['translations'] = [
     'toggle_theme' => t('toggle_theme'),
     'format_browser' => t('format_browser'),
     'formats'       => t('formats'),
+    'category_political' => t('category_political'),
+    'category_religious' => t('category_religious'),
+    'category_cultural' => t('category_cultural'),
+    'category_symbolic' => t('category_symbolic'),
+    'category_politicsandeconomics' => t('category_politicsandeconomics'),
+    'category_historyandheritage' => t('category_historyandheritage'),
+    'category_geographyanddemography' => t('category_geographyanddemography'),
+    'category_cultureandreligion' => t('category_cultureandreligion'),
+    'category_societyandeverydaylife' => t('category_societyandeverydaylife'),
+    'category_map' => t('category_map'),
+    // Format translations
+    'format_academicresearch' => t('format_academicresearch'),
+    'format_aboutthealawites' => t('format_aboutthealawites'),
+    'format_oped' => t('format_oped'),
+    'format_alawitebooks' => t('format_alawitebooks'),
+    'format_media' => t('format_media'),
+    'format_demographicprofile' => t('format_demographicprofile'),
 ];
 
 // Merge site data with block data

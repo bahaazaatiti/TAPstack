@@ -75,30 +75,30 @@ columns:
             label: Format
             type: select
             options:
-              Op-Ed: "Op-Ed"
-              Academic Research: "Academic Research"
-              About the Alawites: "About the Alawites"
-              Alawite Books: "Alawite Books"
-              Media: "Media"
-              Demographic Profile: "Demographic Profile"
+              oped: "Op-Ed"
+              academicresearch: "Academic Research"
+              aboutthealawites: "About the Alawites"
+              alawitebooks: "Alawite Books"
+              media: "Media"
+              demographicprofile: "Demographic Profile"
             required: true
           category:
             label: Category
             type: select
             options:
               "--- Gallery ---": ""
-              Political: Political
-              Religious: Religious
-              Cultural: Cultural
-              Symbolic: Symbolic
+              political: Political
+              religious: Religious
+              cultural: Cultural
+              symbolic: Symbolic
               "--- Articles ---": ""
-              Politics and Economics: "Politics and Economics"
-              History and Heritage: "History and Heritage"
-              Geography and Demography: "Geography and Demography"
-              Culture and Religion: "Culture and Religion"
-              Society and Everyday Life: "Society and Everyday Life"
+              politicsandeconomics: "Politics and Economics"
+              historyandheritage: "History and Heritage"
+              geographyanddemography: "Geography and Demography"
+              cultureandreligion: "Culture and Religion"
+              societyandeverydaylife: "Society and Everyday Life"
               "--- Misc ---": ""
-              Map: Map
+              map: Map
             required: true
           author:
             label: Author

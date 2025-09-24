@@ -47,7 +47,3 @@ Longitude: -63.396
 ----
 
 Type: Demographic Profile
-
-----
-
-Uuid: vyafgzqfa2a8dffk

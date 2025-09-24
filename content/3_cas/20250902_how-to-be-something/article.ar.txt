@@ -73,7 +73,11 @@ Date: 2025-09-02
 
 ----
 
-Category: Lifestyle
+Format: oped
+
+----
+
+Category: societyandeverydaylife
 
 ----
 
@@ -96,3 +100,15 @@ Readtime: 5
 ----
 
 Featuredimage: - file://xjyogntaz6xxfjnx
+
+----
+
+Latitude: 
+
+----
+
+Longitude: 
+
+----
+
+Type: Oped

@@ -105,7 +105,17 @@ const AuthorBox: React.FC<AuthorBoxProps> = (props) => {
   } = props;
   const [isMobile, setIsMobile] = useState(false)
   const [sheetOpen, setSheetOpen] = useState(false)
+  // Helpers to translate category and format labels
+    // TODO: MAKE HELPER FUNCTION FOR THIS IN A UTIL FILE AND IMPORT
+  const normalizeKey = (prefix: string, s?: string) => {
+    if (!s) return ''
+    return prefix + s.toLowerCase().replace(/[^a-z0-9]+/g, '_')
+  }
 
+  const tCategory = (name?: string) => {
+    if (!name) return ''
+    return translations[normalizeKey('category_', name)] || name
+  }
   React.useEffect(() => {
     const checkDevice = () => {
       setIsMobile(window.innerWidth < 768)
@@ -319,7 +329,7 @@ const AuthorBox: React.FC<AuthorBoxProps> = (props) => {
                       </p>
                       <div className="flex items-center gap-2 text-xs text-muted-foreground">
                         <Badge variant="outline" className="text-xs">
-                          {typeof article.category === 'string' ? article.category : 'Article'}
+                          {tCategory(article.category)}
                         </Badge>
                         <span>{typeof article.dateFormatted === 'string' ? article.dateFormatted : ''}</span>
                         <span>•</span>

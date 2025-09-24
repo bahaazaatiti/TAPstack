@@ -89,7 +89,11 @@ Date: 2025-09-02
 
 ----
 
-Category: Politics
+Format: oped
+
+----
+
+Category: politicsandeconomics
 
 ----
 
@@ -112,3 +116,15 @@ Readtime: 5
 ----
 
 Featuredimage: - file://ecxlyezun4duf3p8
+
+----
+
+Latitude: 
+
+----
+
+Longitude: 
+
+----
+
+Type: Oped
