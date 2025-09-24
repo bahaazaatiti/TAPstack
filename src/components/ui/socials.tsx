@@ -4,6 +4,7 @@ import {
   Instagram,
   Youtube,
   Music,
+  Phone,
 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -14,7 +15,7 @@ import {
 } from "@/components/ui/tooltip"
 
 interface SocialLink {
-  platform: 'twitter' | 'facebook' | 'instagram' | 'tiktok' | 'youtube'
+  platform: 'twitter' | 'facebook' | 'instagram' | 'tiktok' | 'youtube' | 'whatsapp'
   href: string
   label?: string
 }
@@ -30,6 +31,7 @@ const iconMap = {
   instagram: Instagram,
   tiktok: Music, // Using Music icon for TikTok since there's no specific TikTok icon in Lucide
   youtube: Youtube,
+  whatsapp: Phone,
 }
 
 const defaultLabels = {
@@ -38,6 +40,7 @@ const defaultLabels = {
   instagram: "Follow on Instagram",
   tiktok: "Follow on TikTok",
   youtube: "Subscribe on YouTube",
+  whatsapp: "Chat on WhatsApp",
 }
 
 export default function Socials({ socials = [], className = "" }: SocialsProps) {

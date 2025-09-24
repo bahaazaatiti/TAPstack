@@ -19,6 +19,7 @@ fields:
           instagram: Instagram
           tiktok: TikTok
           youtube: YouTube
+          whatsapp: WhatsApp
       href:
         label: Profile URL
         type: url
